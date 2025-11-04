@@ -3,172 +3,401 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>이력서 미리보기</title>
+    <title>김준영 - 백엔드 개발자</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.6;
-            max-width: 1200px;
+            font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Segoe UI", sans-serif;
+            line-height: 1.8;
+            max-width: 850px;
             margin: 0 auto;
-            padding: 40px 20px;
-            color: #333;
+            padding: 80px 40px;
+            color: #2d3748;
+            background: #ffffff;
         }
+        
+        /* 헤더 */
+        .header {
+            margin-bottom: 60px;
+        }
+        
         h1 {
-            font-size: 2.5em;
-            margin-bottom: 30px;
-            color: #2c3e50;
-        }
-        h2 {
-            font-size: 1.8em;
-            margin-top: 50px;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e0e0e0;
-            color: #2c3e50;
-        }
-        h3 {
-            font-size: 1.3em;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            color: #34495e;
-        }
-        h4 {
-            font-size: 1.1em;
-            margin-top: 25px;
-            margin-bottom: 10px;
-            color: #2c3e50;
-            font-weight: 600;
-        }
-        h4 + p {
-            margin-top: 10px;
-        }
-        h4 + p strong {
-            display: inline-block;
-            background-color: #fff3cd;
-            padding: 2px 8px;
-            border-radius: 3px;
-            font-weight: 600;
-        }
-        p {
-            margin-bottom: 15px;
-        }
-        ul {
-            margin-bottom: 20px;
-            padding-left: 25px;
-        }
-        li {
-            margin-bottom: 8px;
-        }
-        strong {
-            color: #2c3e50;
-        }
-        p > strong:first-child {
-            color: #c7254e;
+            font-size: 2em;
             font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
         }
+        
+        .subtitle {
+            font-size: 1.1em;
+            color: #718096;
+            font-weight: 400;
+        }
+        
+        /* Contact 섹션 */
+        .contact-section {
+            display: flex;
+            gap: 40px;
+            margin: 50px 0;
+            padding: 30px 0;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .profile-img {
+            flex-shrink: 0;
+        }
+        
+        .profile-img img {
+            width: 140px;
+            height: 140px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        
+        .contact-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .contact-title {
+            font-size: 0.8em;
+            font-weight: 600;
+            color: #a0aec0;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
+        }
+        
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        
+        .contact-links a {
+            color: #4a5568;
+            text-decoration: none;
+            font-size: 0.95em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .contact-links a:hover {
+            color: #1a202c;
+        }
+        
+        .contact-links .icon {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .contact-description {
+            font-size: 0.88em;
+            color: #718096;
+            line-height: 1.6;
+        }
+        
+        /* 섹션 헤더 */
+        h2 {
+            font-size: 0.8em;
+            font-weight: 700;
+            color: #1a202c;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 60px 0 28px 0;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #1a202c;
+        }
+        
+        /* 서브 헤더 */
+        h3 {
+            font-size: 1.15em;
+            font-weight: 600;
+            color: #1a202c;
+            margin: 40px 0 12px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        
+        h3 .project-period {
+            font-size: 0.75em;
+            color: #a0aec0;
+            font-weight: 400;
+        }
+        
+        .company-period {
+            font-size: 0.9em;
+            color: #718096;
+            font-weight: 400;
+            margin-bottom: 16px;
+        }
+        
+        /* 프로젝트 헤더 */
+        h4 {
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #1a202c;
+            margin: 48px 0 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        
+        .project-period {
+            font-size: 0.8em;
+            color: #a0aec0;
+            font-weight: 400;
+        }
+        
+        .project-overview {
+            margin: 16px 0 32px 0;
+            padding-left: 0;
+        }
+        
+        .project-overview ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .project-overview li {
+            position: relative;
+            padding-left: 0;
+            margin-bottom: 6px;
+            color: #718096;
+            font-size: 0.92em;
+            line-height: 1.6;
+        }
+        
+        .project-overview li:before {
+            content: none;
+        }
+        
+        .project-overview li:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* 문제해결 카드 */
+        .problem-solving {
+            margin-bottom: 48px;
+        }
+        
+        .ps-title {
+            font-size: 1em;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 24px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .ps-section {
+            margin-bottom: 20px;
+        }
+        
+        .ps-label {
+            display: inline-block;
+            font-size: 0.7em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+        
+        .ps-label.problem {
+            background: #fff5f5;
+            color: #c53030;
+        }
+        
+        .ps-label.solution {
+            background: #ebf8ff;
+            color: #2c5282;
+        }
+        
+        .ps-label.result {
+            background: #f0fff4;
+            color: #22543d;
+        }
+        
+        .ps-content {
+            padding-left: 16px;
+        }
+        
+        .ps-content ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .ps-content li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 10px;
+            color: #4a5568;
+            font-size: 0.95em;
+            line-height: 1.7;
+        }
+        
+        .ps-content li:before {
+            content: "–";
+            position: absolute;
+            left: 0;
+            color: #cbd5e0;
+        }
+        
+        /* 일반 리스트 */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 16px 0;
+        }
+        
+        li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 12px;
+            color: #4a5568;
+            font-size: 0.95em;
+            line-height: 1.7;
+        }
+        
+        li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #cbd5e0;
+            font-weight: bold;
+        }
+        
+        /* 강조 텍스트 */
+        strong {
+            color: #1a202c;
+            font-weight: 600;
+        }
+        
+        /* 링크 */
         a {
-            color: #555;
+            color: #4a5568;
             text-decoration: none;
         }
+        
         a:hover {
-            text-decoration: underline;
-            color: #000;
+            color: #1a202c;
         }
+        
+        /* 코드 */
+        code {
+            background: #edf2f7;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'SF Mono', 'Monaco', 'Menlo', monospace;
+            font-size: 0.88em;
+            color: #2d3748;
+        }
+        
+        /* 테이블 */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            margin: 24px 0;
         }
+        
         th, td {
-            padding: 12px;
+            padding: 14px 16px;
             text-align: left;
-            border: 1px solid #ddd;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.95em;
         }
+        
         th {
-            background-color: #f8f9fa;
-            font-weight: bold;
+            background: #f7fafc;
+            font-weight: 600;
+            color: #2d3748;
         }
-        code {
-            background-color: #f4f4f4;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', 'Liberation Mono', monospace;
-            font-size: 0.9em;
-            color: #d73a49;
+        
+        td {
+            color: #4a5568;
         }
+        
+        /* 구분선 */
         hr {
             border: none;
-            border-top: 1px solid #ddd;
-            margin: 40px 0;
+            border-top: 1px solid #e2e8f0;
+            margin: 48px 0;
         }
-        .contact-section {
-            display: flex;
-            align-items: flex-start;
-            gap: 30px;
-            margin-top: 30px;
+        
+        /* 인증 */
+        .cert-item {
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-size: 0.95em;
         }
-        .profile-img {
-            flex: 1;
+        
+        .cert-item strong {
+            color: #1a202c;
         }
-        .profile-img img {
-            width: 200px;
-            border-radius: 10px;
-        }
-        .contact-info {
-            flex: 2;
-        }
-        .contact-info h3 {
-            margin-top: 0;
-        }
-        .contact-info p {
-            line-height: 2;
-        }
-        .github-icon {
-            width: 14px;
-            vertical-align: middle;
-            margin-right: 2px;
+        
+        .cert-item em {
+            color: #a0aec0;
+            font-style: normal;
+            margin-left: 8px;
         }
     </style>
 </head>
 <body>
-    <h1>문제의 본질을 해결하는 백엔드 전문가</h1>
+    <div class="header">
+        <h1>김준영</h1>
+        <div class="subtitle">문제의 본질을 해결하는 백엔드 전문가</div>
+    </div>
 
     <div class="contact-section">
         <div class="profile-img">
             <img src="/mnt/user-data/uploads/프로필.png" alt="프로필" onerror="this.style.display='none'"/>
         </div>
         <div class="contact-info">
-            <h3>Contact</h3>
-            <p>
-                ✉️ wnsdud1900427@gmail.com<br>
-                <img src="/mnt/user-data/uploads/github-mark.png" class="github-icon" alt="GitHub" onerror="this.style.display='none'"/> <a href="https://github.com/kimjunyoung90">https://github.com/kimjunyoung90</a><br>
-                📝 <a href="https://snvlqkq.tistory.com/">https://snvlqkq.tistory.com/</a>
-            </p>
-            <p style="line-height: 1.6; margin-top: 10px; font-size: 0.95em;">
+            <div class="contact-title">Contact</div>
+            <div class="contact-links">
+                <a href="mailto:wnsdud1900427@gmail.com">✉️ wnsdud1900427@gmail.com</a>
+                <a href="https://github.com/kimjunyoung90">
+                    <img src="/mnt/user-data/uploads/github-mark.png" class="icon" alt="GitHub" onerror="this.style.display='none'"/>
+                    github.com/kimjunyoung90
+                </a>
+                <a href="https://snvlqkq.tistory.com/">📝 snvlqkq.tistory.com</a>
+            </div>
+            <div class="contact-description">
                 <strong>GitHub:</strong> 동시성 처리 전략 및 오픈 소스 개발<br>
                 <strong>Blog:</strong> SQL 튜닝 가이드 및 캐싱 처리 전략
-            </p>
+            </div>
         </div>
     </div>
 
     <h2>Core Competency</h2>
     <ul>
-        <li><strong>대규모 트래픽 서비스 운영</strong>: 월 6,500만건+ 요청 처리하는 HAProxy + 이중화 구조의 <strong>고가용성 시스템</strong> 설계 및 운영</li>
-        <li><strong>분산 트랜잭션</strong>: MSA 환경에서 <strong>Saga 패턴</strong> 기반 분산 트랜잭션 설계 및 <strong>실패 복구 메커니즘</strong> 구현으로 데이터 정합성 보장</li>
-        <li><strong>성능 최적화</strong>: <strong>APM 도구와 스레드 분석</strong>을 통해 병목 개선, <strong>테이블 파티셔닝</strong>, <strong>SQL 쿼리 튜닝, 인덱스 설계</strong>로 <strong>데이터 처리 성능 개선</strong></li>
-        <li><strong>기술 부채 해소</strong>: <strong>레거시 프레임워크 마이그레이션</strong>, <strong>코드 리팩토링</strong>, <strong>테스트 코드 작성</strong>으로 시스템 안정성 및 생산성 개선</li>
+        <li><strong>대규모 트래픽 서비스 운영:</strong> 월 6,500만건+ 요청 처리하는 HAProxy + 이중화 구조의 고가용성 시스템 설계 및 운영</li>
+        <li><strong>분산 트랜잭션:</strong> MSA 환경에서 Saga 패턴 기반 분산 트랜잭션 설계 및 실패 복구 메커니즘 구현으로 데이터 정합성 보장</li>
+        <li><strong>성능 최적화:</strong> APM 도구와 스레드 분석을 통해 병목 개선, 테이블 파티셔닝, SQL 쿼리 튜닝, 인덱스 설계로 데이터 처리 성능 개선</li>
+        <li><strong>기술 부채 해소:</strong> 레거시 프레임워크 마이그레이션, 코드 리팩토링, 테스트 코드 작성으로 시스템 안정성 및 생산성 개선</li>
     </ul>
-
-    <hr>
 
     <h2>My Working Style</h2>
     <ul>
-        <li>단순 증상 해결이 아닌 <strong>근본 원인 분석</strong>과 <strong>구조적 개선</strong>을 지향합니다. 스레드 경합, 메모리 누수, 데이터베이스 교착상태 등의 원인을 <strong>성능 분석 도구</strong>로 정확히 진단하고 해결합니다.</li>
-        <li>레거시 정비와 <strong>주기적 리팩토링</strong>을 통해 장기적 유지보수성을 추구합니다. <strong>기술 부채 개선</strong>, <strong>코드 품질 관리, 테스트 코드 작성</strong>으로 안정적인 시스템을 구축합니다.</li>
-        <li>개발자 언어를 <strong>비즈니스 언어로 설명</strong>하고, <strong>기술 문서 작성</strong>과 <strong>아키텍처 공유</strong>를 통해 기획·QA와 원활한 협업을 이끌어냅니다.</li>
+        <li>단순 증상 해결이 아닌 <strong>근본 원인 분석</strong>과 <strong>구조적 개선</strong>을 지향합니다. 스레드 경합, 메모리 누수, 데이터베이스 교착상태 등의 원인을 성능 분석 도구로 정확히 진단하고 해결합니다.</li>
+        <li>레거시 정비와 <strong>주기적 리팩토링</strong>을 통해 장기적 유지보수성을 추구합니다. 기술 부채 개선, 코드 품질 관리, 테스트 코드 작성으로 안정적인 시스템을 구축합니다.</li>
+        <li>개발자 언어를 <strong>비즈니스 언어로 설명</strong>하고, 기술 문서 작성과 아키텍처 공유를 통해 기획·QA와 원활한 협업을 이끌어냅니다.</li>
     </ul>
-
-    <hr>
 
     <h2>Skills</h2>
     <table>
@@ -181,262 +410,377 @@
         <tbody>
             <tr>
                 <td>Backend</td>
-                <td><code>Java</code>, <code>Spring</code>, <code>Spring AOP</code>, <code>MyBatis</code></td>
+                <td><code>Java</code> <code>Spring</code> <code>Spring AOP</code> <code>MyBatis</code></td>
             </tr>
             <tr>
-                <td>DB</td>
-                <td><code>PostgreSQL</code>, <code>Oracle</code></td>
+                <td>Database</td>
+                <td><code>PostgreSQL</code> <code>Oracle</code></td>
             </tr>
             <tr>
                 <td>Frontend</td>
-                <td><code>React</code>, <code>Redux</code>, <code>Redux-Saga</code>, <code>JavaScript</code></td>
+                <td><code>React</code> <code>Redux</code> <code>Redux-Saga</code> <code>JavaScript</code></td>
             </tr>
             <tr>
                 <td>DevOps</td>
-                <td><code>Jenkins</code>, <code>ELK</code>, <code>APM</code></td>
+                <td><code>Jenkins</code> <code>ELK</code> <code>APM</code></td>
             </tr>
             <tr>
                 <td>협업/관리</td>
-                <td><code>Jira</code>, <code>Confluence</code>, <code>GitLab</code></td>
+                <td><code>Jira</code> <code>Confluence</code> <code>GitLab</code></td>
             </tr>
         </tbody>
     </table>
 
-    <hr>
-
     <h2>Work Experience</h2>
 
-    <h3>더존비즈온 WEHAGO 개발센터 (4년차)</h3>
-    <p><em>2021.09 ~ 재직중</em></p>
+    <h3>더존비즈온 WEHAGO 개발센터</h3>
+    <div class="company-period">2021.09 ~ 재직중 (4년차)</div>
     <ul>
-        <li><strong>HAProxy 기반 로드밸런싱 + 서버 이중화</strong>로 고가용성 시스템 설계·운영</li>
-        <li><strong>RESTful API 설계·구현</strong> 및 <strong>JUnit/Mockito 기반 테스트 코드 작성</strong></li>
-        <li>MSA 환경 기반 <strong>분산 트랜잭션 처리 및 오류 복구 흐름 설계 및 구현</strong></li>
-        <li><strong>대용량 데이터 테이블 파티션 관리, 인덱스 설계, 쿼리 튜닝</strong> 등을 통한 데이터 처리 성능 개선</li>
-        <li><strong>레거시 아키텍처 마이그레이션으로</strong> 기술부채 해소</li>
-        <li><strong>React 컴포넌트 개발 및 Redux 기반 상태 관리 적용</strong></li>
+        <li>HAProxy 기반 로드밸런싱 + 서버 이중화로 고가용성 시스템 설계·운영</li>
+        <li>RESTful API 설계·구현 및 JUnit/Mockito 기반 테스트 코드 작성</li>
+        <li>MSA 환경 기반 분산 트랜잭션 처리 및 오류 복구 흐름 설계 및 구현</li>
+        <li>대용량 데이터 테이블 파티션 관리, 인덱스 설계, 쿼리 튜닝 등을 통한 데이터 처리 성능 개선</li>
+        <li>레거시 아키텍처 마이그레이션으로 기술부채 해소</li>
+        <li>React 컴포넌트 개발 및 Redux 기반 상태 관리 적용</li>
     </ul>
-
-    <hr>
 
     <h2>Projects</h2>
 
-    <h3>전자세금계산서 서비스 운영 및 유지보수 (2021.09 ~ 현재)</h3>
+    <h3>전자세금계산서 서비스 운영 및 유지보수 <span class="project-period">2021.09 ~ 현재</span></h3>
+    
+    <div class="project-overview">
+        <ul>
+            <li>B2B, B2C 전자세금계산서 발행·신고 및 기타 전자문서 관리 플랫폼</li>
+            <li>월 평균 6,500만 건, 최대 1,200 TPS의 대규모 트래픽 처리 시스템</li>
+        </ul>
+    </div>
 
-    <h4>프로젝트 개요</h4>
-    <ul>
-        <li>B2B, B2C 전자세금계산서 발행·신고 및 기타 전자문서 관리 플랫폼</li>
-        <li>월 평균 6,500만 건, 최대 1,200 TPS의 대규모 트래픽 처리 규모 시스템</li>
-    </ul>
+    <div class="problem-solving">
+        <div class="ps-title">1) 대량 지연 병목 해소</div>
+        
+        <div class="ps-section">
+            <span class="ps-label problem">Problem</span>
+            <div class="ps-content">
+                <ul>
+                    <li>세금계산서 신고 기간 중 트래픽이 몰리면서 p95 응답시간이 25초까지 상승</li>
+                    <li>DB, 서버 리소스 이상 없음 → 애플리케이션 처리량 한계 의심</li>
+                </ul>
+            </div>
+        </div>
 
-    <h4>1) 대량 지연 병목 해소</h4>
-    <p><strong>문제</strong></p>
-    <ul>
-        <li>세금계산서 신고 기간 중 트래픽이 몰리면서 p95 응답시간이 25초까지 상승</li>
-        <li>DB, 서버 리소스 이상 없음 → 애플리케이션 처리량 한계 의심</li>
-    </ul>
+        <div class="ps-section">
+            <span class="ps-label solution">Solution</span>
+            <div class="ps-content">
+                <ul>
+                    <li>Thread Dump 분석으로 특정 구간에서 <code>BLOCKED</code> 상태의 스레드 다수 확인</li>
+                    <li>특정 메서드에 <code>synchronized</code> 키워드로 인한 락 경합이 원인임을 파악</li>
+                    <li>단기적으로 Scale-out, 근본 해결로 synchronized 제거</li>
+                    <li>ExecutorService 기반 동시성 검증 및 JMeter 부하 테스트 수행</li>
+                </ul>
+            </div>
+        </div>
 
-    <p><strong>해결 전략</strong></p>
-    <ul>
-        <li>Thread Dump 분석으로 특정 구간에서 <code>BLOCKED</code> 상태의 스레드 다수 확인</li>
-        <li>특정 메서드에 <code>synchronized</code> 키워드로 인한 락 경합이 원인임을 파악</li>
-        <li>단기적으로 Scale-out, 근본 해결로 synchronized 제거</li>
-        <li>ExecutorService 기반 동시성 검증 및 JMeter 부하 테스트 수행</li>
-        <li>TPS 3 → 25 (8배) 개선, p95 응답시간 15초 → 1.5초 단축</li>
-    </ul>
+        <div class="ps-section">
+            <span class="ps-label result">Result</span>
+            <div class="ps-content">
+                <ul>
+                    <li><strong>TPS 3 → 25 (8배 개선)</strong>, p95 응답시간 15초 → 1.5초 단축</li>
+                    <li>Thread 상태 분석으로 애플리케이션 병목 정확히 진단</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
-    <p><strong>성과</strong></p>
-    <ul>
-        <li>Thread 상태 분석으로 애플리케이션 병목 정확히 진단</li>
-        <li>시스템 처리량 개선</li>
-    </ul>
+    <div class="problem-solving">
+        <div class="ps-title">2) 분산 트랜잭션 정합성 확보 (Saga Orchestration)</div>
+        
+        <div class="ps-section">
+            <span class="ps-label problem">Problem</span>
+            <div class="ps-content">
+                <ul>
+                    <li>포인트 차감 → 세금계산서 발행 시 분산 시스템 간 트랜잭션 오류 발생</li>
+                    <li>발행 실패 시 포인트 복구 누락으로 데이터 정합성 오류 발생</li>
+                </ul>
+            </div>
+        </div>
 
-    <h4>2) 분산 트랜잭션 정합성 확보 (Saga Orchestration)</h4>
-    <p><strong>문제</strong></p>
-    <ul>
-        <li>포인트 차감 → 세금계산서 발행 시 분산 시스템 간 트랜잭션 오류 발생</li>
-        <li>발행 실패 시 포인트 복구 누락으로 데이터 정합성 오류 발생</li>
-    </ul>
+        <div class="ps-section">
+            <span class="ps-label solution">Solution</span>
+            <div class="ps-content">
+                <ul>
+                    <li>Orchestration 기반 Saga 패턴 설계 및 구현</li>
+                    <li>전자세금계산서 시스템이 Orchestrator 역할 수행</li>
+                    <li>포인트 차감 → 발행 → 실패 시 보상 트랜잭션 수행</li>
+                    <li>Kafka 등 이벤트 브로커 고려했으나, 단일 서비스 내 트랜잭션 제어를 위해 Orchestration 방식 채택</li>
+                </ul>
+            </div>
+        </div>
 
-    <p><strong>해결 전략</strong></p>
-    <ul>
-        <li>Orchestration 기반 Saga 패턴 설계 및 구현</li>
-        <li>전자세금계산서 시스템이 Orchestrator 역할 수행</li>
-        <li>포인트 차감 → 발행 → 실패 시 보상 트랜잭션 수행</li>
-        <li>Kafka 등 이벤트 브로커 고려했으나, 단일 서비스 내 트랜잭션 제어를 위해 Orchestration 방식 채택</li>
-    </ul>
+        <div class="ps-section">
+            <span class="ps-label result">Result</span>
+            <div class="ps-content">
+                <ul>
+                    <li><strong>데이터 정합성 및 트랜잭션 복원력 확보</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
-    <p><strong>성과</strong></p>
-    <ul>
-        <li>데이터 정합성 및 트랜잭션 복원력 확보</li>
-    </ul>
+    <div class="problem-solving">
+        <div class="ps-title">3) 이벤트 동시성 제어</div>
+        
+        <div class="ps-section">
+            <span class="ps-label problem">Problem</span>
+            <div class="ps-content">
+                <ul>
+                    <li>신규 채권 발행 서비스 출시 이벤트로 무료 발행 100건 제공</li>
+                    <li>무료 발행 건수 차감 시 SELECT 후 UPDATE로 인한 동시성 문제 발생</li>
+                </ul>
+            </div>
+        </div>
 
-    <h4>3) 이벤트 동시성 제어</h4>
-    <p><strong>문제</strong></p>
-    <ul>
-        <li>신규 채권 발행 서비스 출시 이벤트로 무료 발행 100건 제공</li>
-        <li>무료 발행 건수 차감 시 SELECT 후 UPDATE로 인한 동시성 문제 발생</li>
-    </ul>
+        <div class="ps-section">
+            <span class="ps-label solution">Solution</span>
+            <div class="ps-content">
+                <ul>
+                    <li>경합 확률이 낮은 구조를 고려해 Optimistic Lock + Spring Retry 적용</li>
+                    <li><code>update_timestamp</code> 컬럼을 버전 컬럼으로 활용해 충돌 감지</li>
+                    <li>재시도 3회, 랜덤 Backoff 딜레이로 재충돌 방지</li>
+                </ul>
+            </div>
+        </div>
 
-    <p><strong>해결 전략</strong></p>
-    <ul>
-        <li>경합 확률이 낮은 구조를 고려해 Optimistic Lock + Spring Retry 적용</li>
-        <li><code>update_timestamp</code> 컬럼을 버전 컬럼으로 활용해 충돌 감지</li>
-        <li>재시도 3회, 랜덤 Backoff 딜레이로 재충돌 방지</li>
-    </ul>
+        <div class="ps-section">
+            <span class="ps-label result">Result</span>
+            <div class="ps-content">
+                <ul>
+                    <li><strong>이벤트 트래픽 100만 건 이상에서도 중복 차감 0건</strong></li>
+                    <li>분산락 없이 경량화된 동시성 제어 달성</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
-    <p><strong>성과</strong></p>
-    <ul>
-        <li>이벤트 트래픽 100만 건 이상에서도 중복 차감 0건</li>
-        <li>분산락 없이 경량화된 동시성 제어 달성</li>
-    </ul>
+    <div class="problem-solving">
+        <div class="ps-title">4) 레거시 마이그레이션</div>
+        
+        <div class="ps-section">
+            <span class="ps-label problem">Problem</span>
+            <div class="ps-content">
+                <ul>
+                    <li>Spring 3.x + iBatis 기반의 노후 아키텍처로 유지보수 어려움</li>
+                </ul>
+            </div>
+        </div>
 
-    <h4>4) 레거시 마이그레이션</h4>
-    <p><strong>문제</strong></p>
-    <ul>
-        <li>Spring 3.x + iBatis 기반의 노후 아키텍처로 유지보수 어려움</li>
-    </ul>
+        <div class="ps-section">
+            <span class="ps-label solution">Solution</span>
+            <div class="ps-content">
+                <ul>
+                    <li>iBatis → MyBatis 전환 자동화 스크립트(Python) 작성</li>
+                    <li>Spring 4.x 전환 시 <code>mvn dependency:tree</code> 기반 의존성 충돌 검증</li>
+                    <li>인터페이스 중심 구조로 재설계하여 유지보수성 개선</li>
+                </ul>
+            </div>
+        </div>
 
-    <p><strong>해결 전략</strong></p>
-    <ul>
-        <li>iBatis → MyBatis 전환 자동화 스크립트(Python) 작성</li>
-        <li>Spring 4.x 전환 시 <code>mvn dependency:tree</code> 기반 의존성 충돌 검증</li>
-        <li>인터페이스 중심 구조로 재설계하여 유지보수성 개선</li>
-    </ul>
+        <div class="ps-section">
+            <span class="ps-label result">Result</span>
+            <div class="ps-content">
+                <ul>
+                    <li><strong>코드 품질 향상 및 빌드 오류율 30% → 5% 감소</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
-    <p><strong>성과</strong></p>
-    <ul>
-        <li>코드 품질 향상 및 빌드 오류율 30% → 5% 감소</li>
-    </ul>
+    <div class="problem-solving">
+        <div class="ps-title">5) 테스트 코드 도입</div>
+        
+        <div class="ps-section">
+            <span class="ps-label solution">Solution</span>
+            <div class="ps-content">
+                <ul>
+                    <li>JUnit + Mockito 기반 단위/통합 테스트 케이스 작성</li>
+                    <li>AI 도구(Claude Code) 활용해 테스트 커버리지 확대</li>
+                </ul>
+            </div>
+        </div>
 
-    <h4>5) 테스트 코드 도입</h4>
-    <ul>
-        <li>JUnit + Mockito 기반 단위/통합 테스트 케이스 작성</li>
-        <li>AI 도구(Claude Code) 활용해 테스트 커버리지 확대</li>
-        <li>배포 안정성 및 장애 예방 효과 확보</li>
-    </ul>
-
-    <hr>
-
-    <h3>의료마이데이터 신규 서비스 개발 (2024.05 ~ 2024.07)</h3>
-
-    <h4>프로젝트 개요</h4>
-    <ul>
-        <li>공공기관에 분산된 개인 의료 데이터를 수집하여 통합 관리하는 건강정보 플랫폼 개발</li>
-        <li>건강검진, 진료기록, 처방기록 등의 정보를 조회·관리 할 수 있는 시스템 구축</li>
-    </ul>
-
-    <h4>1) 외부 시스템 장애 격리 구현</h4>
-    <p><strong>문제</strong></p>
-    <ul>
-        <li>공공기관으로 부터 수집한 개인 의료 데이터는 내부 데이터 수집 시스템에서 관리</li>
-        <li>의료마이데이터 시스템은 플랫폼 전체적인 역할을 하며 데이터 수집 시스템에서 관리하는 데이터를 조회 해야하는 구조</li>
-        <li>데이터 수집 시스템 API 지연·장애 발생 시 의료마이데이터 서비스에 영향 우려</li>
-    </ul>
-
-    <p><strong>해결 전략</strong></p>
-    <ul>
-        <li>Hystrix Circuit Breaker 적용으로 외부 API 지연·장애로부터 서비스 보호
-            <ul>
-                <li>도메인별(진료, 검진, 의료기록 등) 스레드풀 격리 및 큐 용량 제한(10)</li>
-                <li>실패율 50% 이상 시 회로 차단(Open), 10초 후 Half-Open 전환</li>
-                <li>DynamicPropertyFactory 기반으로 설정값 30초 단위 동적 반영</li>
-            </ul>
-        </li>
-        <li>회로 차단 시 대체 응답("일시적 조회 불가") 반환</li>
-        <li>Resilience4j 대신 Spring 4.3 기술 스택과 맞는 Hystrix 선택</li>
-    </ul>
-
-    <p><strong>성과</strong></p>
-    <ul>
-        <li>외부 API 지연 시에도 서비스 가용성 99.9% 유지</li>
-        <li>톰캣 워커 스레드 고갈 방지 및 장애 전파 차단</li>
-    </ul>
-
-    <hr>
-
-    <h3>뉴스 데이터 수집 시스템 개선 (2024.03)</h3>
-
-    <h4>프로젝트 개요</h4>
-    <ul>
-        <li>제휴 신문사에서 뉴스 데이터를 수집하여 플랫폼 사용자에게 뉴스 컨텐츠 제공</li>
-        <li>뉴스 서비스는 초기 설계상 특정 1개 신문사 데이터만 수집·제공 → 신규 매체 확장이 어려운 구조</li>
-        <li>다수 신문사 데이터를 수집·검색·제공할 수 있는 확장형 구조로 개선</li>
-    </ul>
-
-    <h4>1) 구조적 문제 해결</h4>
-    <p><strong>문제</strong></p>
-    <ul>
-        <li>특정 1개 신문사만 고려하여 설계된 데이터베이스</li>
-        <li>기사 수집·가공 로직이 중복되어 신규 매체 추가 시 개발 공수 증가</li>
-        <li>외부 이미지 URL 직접 의존으로 원본 장애 시 이미지 미노출</li>
-    </ul>
-
-    <p><strong>해결 전략</strong></p>
-    <ul>
-        <li><strong>카테고리 표준화 및 DB 재설계</strong>
-            <ul>
-                <li>플랫폼 전용 카테고리 테이블(정치·경제·사회·IT·문화 등) 설계</li>
-                <li>신문사별 카테고리를 플랫폼 카테고리에 매핑하는 <code>category_mapping</code> 테이블 설계</li>
-                <li>신규 매체 추가 시 매핑만으로 확장 가능</li>
-            </ul>
-        </li>
-        <li><strong>수집·가공 모듈 공통화</strong>
-            <ul>
-                <li>기사 데이터를 표준 DTO로 변환 후 UPSERT 정책 적용</li>
-                <li>중복 적재 방지 및 최신 데이터 자동 갱신</li>
-            </ul>
-        </li>
-        <li><strong>이미지 안정화</strong>
-            <ul>
-                <li>수집 시점에 이미지 다운로드 후 NAS 저장, 내부 URL로 치환</li>
-                <li>원본 서버 장애 시에도 안정적인 이미지 제공</li>
-            </ul>
-        </li>
-    </ul>
-
-    <p><strong>성과</strong></p>
-    <ul>
-        <li>신규 매체(전자신문) 연동 완료, 플랫폼 확장성 확보</li>
-        <li>신규 매체 추가 시 DB 변경 불필요, 개발 공수 절감</li>
-        <li>이미지 노출 실패율 <strong>1% 미만</strong>, 운영 효율성 및 유지보수성 향상</li>
-    </ul>
+        <div class="ps-section">
+            <span class="ps-label result">Result</span>
+            <div class="ps-content">
+                <ul>
+                    <li>배포 안정성 및 장애 예방 효과 확보</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
     <hr>
 
-    <h3>소식지 신규 서비스 개발 (2022.04)</h3>
+    <h3>의료마이데이터 신규 서비스 개발 <span class="project-period">2024.05 ~ 2024.07</span></h3>
+    
+    <div class="project-overview">
+        <ul>
+            <li>공공기관에 분산된 개인 의료 데이터를 수집하여 통합 관리하는 건강정보 플랫폼 개발</li>
+            <li>건강검진, 진료기록, 처방기록 등의 정보를 조회·관리 할 수 있는 시스템 구축</li>
+        </ul>
+    </div>
 
-    <h4>프로젝트 개요</h4>
-    <ul>
-        <li>기업 주요 소식을 게시판 형태로 관리‧배포하는 콘텐츠 관리 서비스</li>
-    </ul>
+    <div class="problem-solving">
+        <div class="ps-title">외부 시스템 장애 격리 구현</div>
+        
+        <div class="ps-section">
+            <span class="ps-label problem">Problem</span>
+            <div class="ps-content">
+                <ul>
+                    <li>공공기관으로 부터 수집한 개인 의료 데이터는 내부 데이터 수집 시스템에서 관리</li>
+                    <li>의료마이데이터 시스템은 플랫폼 전체적인 역할을 하며 데이터 수집 시스템에서 관리하는 데이터를 조회 해야하는 구조</li>
+                    <li>데이터 수집 시스템 API 지연·장애 발생 시 의료마이데이터 서비스에 영향 우려</li>
+                </ul>
+            </div>
+        </div>
 
-    <p><strong>문제</strong></p>
-    <ul>
-        <li>운영자가 기업 소식을 손쉽게 등록·수정·삭제·조회(CRUD) 할 수 있는 관리 도구 필요</li>
-        <li>2주 내 요구사항 정의 → 데이터 모델링 → API 설계 → UI 구현 단독 수행</li>
-    </ul>
+        <div class="ps-section">
+            <span class="ps-label solution">Solution</span>
+            <div class="ps-content">
+                <ul>
+                    <li>Hystrix Circuit Breaker 적용으로 외부 API 지연·장애로부터 서비스 보호
+                        <ul style="margin-top: 8px;">
+                            <li>도메인별(진료, 검진, 의료기록 등) 스레드풀 격리 및 큐 용량 제한(10)</li>
+                            <li>실패율 50% 이상 시 회로 차단(Open), 10초 후 Half-Open 전환</li>
+                            <li>DynamicPropertyFactory 기반으로 설정값 30초 단위 동적 반영</li>
+                        </ul>
+                    </li>
+                    <li>회로 차단 시 대체 응답("일시적 조회 불가") 반환</li>
+                    <li>Resilience4j 대신 Spring 4.3 기술 스택과 맞는 Hystrix 선택</li>
+                </ul>
+            </div>
+        </div>
 
-    <p><strong>해결 전략</strong></p>
-    <ul>
-        <li>관리자 UI 및 RESTful API 기반 CRUD 플로우 설계·구현</li>
-        <li>Redux + Redux-Saga 적용으로 상태 관리 및 비동기 호출 체계화</li>
-    </ul>
-
-    <p><strong>성과</strong></p>
-    <ul>
-        <li>짧은 일정 내 신규 서비스 안정적 출시</li>
-        <li>전역 상태 관리 도입으로 유지보수성 향상</li>
-    </ul>
+        <div class="ps-section">
+            <span class="ps-label result">Result</span>
+            <div class="ps-content">
+                <ul>
+                    <li><strong>외부 API 지연 시에도 서비스 가용성 99.9% 유지</strong></li>
+                    <li>톰캣 워커 스레드 고갈 방지 및 장애 전파 차단</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
     <hr>
+
+    <h3>뉴스 데이터 수집 시스템 개선 <span class="project-period">2024.03</span></h3>
+    
+    <div class="project-overview">
+        <ul>
+            <li>제휴 신문사에서 뉴스 데이터를 수집하여 플랫폼 사용자에게 뉴스 컨텐츠 제공</li>
+            <li>뉴스 서비스는 초기 설계상 특정 1개 신문사 데이터만 수집·제공 → 신규 매체 확장이 어려운 구조</li>
+            <li>다수 신문사 데이터를 수집·검색·제공할 수 있는 확장형 구조로 개선</li>
+        </ul>
+    </div>
+
+    <div class="problem-solving">
+        <div class="ps-title">구조적 문제 해결</div>
+        
+        <div class="ps-section">
+            <span class="ps-label problem">Problem</span>
+            <div class="ps-content">
+                <ul>
+                    <li>특정 1개 신문사만 고려하여 설계된 데이터베이스</li>
+                    <li>기사 수집·가공 로직이 중복되어 신규 매체 추가 시 개발 공수 증가</li>
+                    <li>외부 이미지 URL 직접 의존으로 원본 장애 시 이미지 미노출</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label solution">Solution</span>
+            <div class="ps-content">
+                <ul>
+                    <li><strong>카테고리 표준화 및 DB 재설계</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>플랫폼 전용 카테고리 테이블(정치·경제·사회·IT·문화 등) 설계</li>
+                            <li>신문사별 카테고리를 플랫폼 카테고리에 매핑하는 <code>category_mapping</code> 테이블 설계</li>
+                            <li>신규 매체 추가 시 매핑만으로 확장 가능</li>
+                        </ul>
+                    </li>
+                    <li><strong>수집·가공 모듈 공통화</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>기사 데이터를 표준 DTO로 변환 후 UPSERT 정책 적용</li>
+                            <li>중복 적재 방지 및 최신 데이터 자동 갱신</li>
+                        </ul>
+                    </li>
+                    <li><strong>이미지 안정화</strong>
+                        <ul style="margin-top: 8px;">
+                            <li>수집 시점에 이미지 다운로드 후 NAS 저장, 내부 URL로 치환</li>
+                            <li>원본 서버 장애 시에도 안정적인 이미지 제공</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label result">Result</span>
+            <div class="ps-content">
+                <ul>
+                    <li><strong>신규 매체(전자신문) 연동 완료, 플랫폼 확장성 확보</strong></li>
+                    <li>신규 매체 추가 시 DB 변경 불필요, 개발 공수 절감</li>
+                    <li>이미지 노출 실패율 1% 미만, 운영 효율성 및 유지보수성 향상</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <h3>소식지 신규 서비스 개발 <span class="project-period">2022.04</span></h3>
+    
+    <div class="project-overview">
+        <ul>
+            <li>기업 주요 소식을 게시판 형태로 관리‧배포하는 콘텐츠 관리 서비스</li>
+        </ul>
+    </div>
+
+    <div class="problem-solving">
+        <div class="ps-section">
+            <span class="ps-label problem">Problem</span>
+            <div class="ps-content">
+                <ul>
+                    <li>운영자가 기업 소식을 손쉽게 등록·수정·삭제·조회(CRUD) 할 수 있는 관리 도구 필요</li>
+                    <li>2주 내 요구사항 정의 → 데이터 모델링 → API 설계 → UI 구현 단독 수행</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label solution">Solution</span>
+            <div class="ps-content">
+                <ul>
+                    <li>관리자 UI 및 RESTful API 기반 CRUD 플로우 설계·구현</li>
+                    <li>Redux + Redux-Saga 적용으로 상태 관리 및 비동기 호출 체계화</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label result">Result</span>
+            <div class="ps-content">
+                <ul>
+                    <li><strong>짧은 일정 내 신규 서비스 안정적 출시</strong></li>
+                    <li>전역 상태 관리 도입으로 유지보수성 향상</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
     <h2>Certifications</h2>
-    <ul>
-        <li><strong>정보처리기사</strong> <em>(2023.09)</em></li>
-        <li><strong>SQLD</strong> <em>(2022.06)</em></li>
-        <li><strong>네트워크 관리사 2급</strong> <em>(2022.04)</em></li>
-    </ul>
+    <div class="cert-item"><strong>정보처리기사</strong> <em>2023.09</em></div>
+    <div class="cert-item"><strong>SQLD</strong> <em>2022.06</em></div>
+    <div class="cert-item"><strong>네트워크 관리사 2급</strong> <em>2022.04</em></div>
 
 </body>
 </html>
