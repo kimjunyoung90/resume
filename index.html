@@ -1,1 +1,442 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><link rel="icon" href="/hosting-test/favicon.ico"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#000000"/><meta name="description" content="Web site created using create-react-app"/><link rel="apple-touch-icon" href="/hosting-test/logo192.png"/><link rel="manifest" href="/hosting-test/manifest.json"/><title>React App</title><script defer="defer" src="/hosting-test/static/js/main.10f1b78a.js"></script><link href="/hosting-test/static/css/main.f855e6bc.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div></body></html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이력서 미리보기</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            color: #333;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        h2 {
+            font-size: 1.8em;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+            color: #2c3e50;
+        }
+        h3 {
+            font-size: 1.3em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #34495e;
+        }
+        h4 {
+            font-size: 1.1em;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        h4 + p {
+            margin-top: 10px;
+        }
+        h4 + p strong {
+            display: inline-block;
+            background-color: #fff3cd;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        ul {
+            margin-bottom: 20px;
+            padding-left: 25px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        strong {
+            color: #2c3e50;
+        }
+        p > strong:first-child {
+            color: #c7254e;
+            font-weight: 700;
+        }
+        a {
+            color: #555;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #000;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', 'Liberation Mono', monospace;
+            font-size: 0.9em;
+            color: #d73a49;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 40px 0;
+        }
+        .contact-section {
+            display: flex;
+            align-items: flex-start;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .profile-img {
+            flex: 1;
+        }
+        .profile-img img {
+            width: 200px;
+            border-radius: 10px;
+        }
+        .contact-info {
+            flex: 2;
+        }
+        .contact-info h3 {
+            margin-top: 0;
+        }
+        .contact-info p {
+            line-height: 2;
+        }
+        .github-icon {
+            width: 14px;
+            vertical-align: middle;
+            margin-right: 2px;
+        }
+    </style>
+</head>
+<body>
+    <h1>문제의 본질을 해결하는 백엔드 전문가</h1>
+
+    <div class="contact-section">
+        <div class="profile-img">
+            <img src="/mnt/user-data/uploads/프로필.png" alt="프로필" onerror="this.style.display='none'"/>
+        </div>
+        <div class="contact-info">
+            <h3>Contact</h3>
+            <p>
+                ✉️ wnsdud1900427@gmail.com<br>
+                <img src="/mnt/user-data/uploads/github-mark.png" class="github-icon" alt="GitHub" onerror="this.style.display='none'"/> <a href="https://github.com/kimjunyoung90">https://github.com/kimjunyoung90</a><br>
+                📝 <a href="https://snvlqkq.tistory.com/">https://snvlqkq.tistory.com/</a>
+            </p>
+            <p style="line-height: 1.6; margin-top: 10px; font-size: 0.95em;">
+                <strong>GitHub:</strong> 동시성 처리 전략 및 오픈 소스 개발<br>
+                <strong>Blog:</strong> SQL 튜닝 가이드 및 캐싱 처리 전략
+            </p>
+        </div>
+    </div>
+
+    <h2>Core Competency</h2>
+    <ul>
+        <li><strong>대규모 트래픽 서비스 운영</strong>: 월 6,500만건+ 요청 처리하는 HAProxy + 이중화 구조의 <strong>고가용성 시스템</strong> 설계 및 운영</li>
+        <li><strong>분산 트랜잭션</strong>: MSA 환경에서 <strong>Saga 패턴</strong> 기반 분산 트랜잭션 설계 및 <strong>실패 복구 메커니즘</strong> 구현으로 데이터 정합성 보장</li>
+        <li><strong>성능 최적화</strong>: <strong>APM 도구와 스레드 분석</strong>을 통해 병목 개선, <strong>테이블 파티셔닝</strong>, <strong>SQL 쿼리 튜닝, 인덱스 설계</strong>로 <strong>데이터 처리 성능 개선</strong></li>
+        <li><strong>기술 부채 해소</strong>: <strong>레거시 프레임워크 마이그레이션</strong>, <strong>코드 리팩토링</strong>, <strong>테스트 코드 작성</strong>으로 시스템 안정성 및 생산성 개선</li>
+    </ul>
+
+    <hr>
+
+    <h2>My Working Style</h2>
+    <ul>
+        <li>단순 증상 해결이 아닌 <strong>근본 원인 분석</strong>과 <strong>구조적 개선</strong>을 지향합니다. 스레드 경합, 메모리 누수, 데이터베이스 교착상태 등의 원인을 <strong>성능 분석 도구</strong>로 정확히 진단하고 해결합니다.</li>
+        <li>레거시 정비와 <strong>주기적 리팩토링</strong>을 통해 장기적 유지보수성을 추구합니다. <strong>기술 부채 개선</strong>, <strong>코드 품질 관리, 테스트 코드 작성</strong>으로 안정적인 시스템을 구축합니다.</li>
+        <li>개발자 언어를 <strong>비즈니스 언어로 설명</strong>하고, <strong>기술 문서 작성</strong>과 <strong>아키텍처 공유</strong>를 통해 기획·QA와 원활한 협업을 이끌어냅니다.</li>
+    </ul>
+
+    <hr>
+
+    <h2>Skills</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>분야</th>
+                <th>기술 스택</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Backend</td>
+                <td><code>Java</code>, <code>Spring</code>, <code>Spring AOP</code>, <code>MyBatis</code></td>
+            </tr>
+            <tr>
+                <td>DB</td>
+                <td><code>PostgreSQL</code>, <code>Oracle</code></td>
+            </tr>
+            <tr>
+                <td>Frontend</td>
+                <td><code>React</code>, <code>Redux</code>, <code>Redux-Saga</code>, <code>JavaScript</code></td>
+            </tr>
+            <tr>
+                <td>DevOps</td>
+                <td><code>Jenkins</code>, <code>ELK</code>, <code>APM</code></td>
+            </tr>
+            <tr>
+                <td>협업/관리</td>
+                <td><code>Jira</code>, <code>Confluence</code>, <code>GitLab</code></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h2>Work Experience</h2>
+
+    <h3>더존비즈온 WEHAGO 개발센터 (4년차)</h3>
+    <p><em>2021.09 ~ 재직중</em></p>
+    <ul>
+        <li><strong>HAProxy 기반 로드밸런싱 + 서버 이중화</strong>로 고가용성 시스템 설계·운영</li>
+        <li><strong>RESTful API 설계·구현</strong> 및 <strong>JUnit/Mockito 기반 테스트 코드 작성</strong></li>
+        <li>MSA 환경 기반 <strong>분산 트랜잭션 처리 및 오류 복구 흐름 설계 및 구현</strong></li>
+        <li><strong>대용량 데이터 테이블 파티션 관리, 인덱스 설계, 쿼리 튜닝</strong> 등을 통한 데이터 처리 성능 개선</li>
+        <li><strong>레거시 아키텍처 마이그레이션으로</strong> 기술부채 해소</li>
+        <li><strong>React 컴포넌트 개발 및 Redux 기반 상태 관리 적용</strong></li>
+    </ul>
+
+    <hr>
+
+    <h2>Projects</h2>
+
+    <h3>전자세금계산서 서비스 운영 및 유지보수 (2021.09 ~ 현재)</h3>
+
+    <h4>프로젝트 개요</h4>
+    <ul>
+        <li>B2B, B2C 전자세금계산서 발행·신고 및 기타 전자문서 관리 플랫폼</li>
+        <li>월 평균 6,500만 건, 최대 1,200 TPS의 대규모 트래픽 처리 규모 시스템</li>
+    </ul>
+
+    <h4>1) 대량 지연 병목 해소</h4>
+    <p><strong>문제</strong></p>
+    <ul>
+        <li>세금계산서 신고 기간 중 트래픽이 몰리면서 p95 응답시간이 25초까지 상승</li>
+        <li>DB, 서버 리소스 이상 없음 → 애플리케이션 처리량 한계 의심</li>
+    </ul>
+
+    <p><strong>해결 전략</strong></p>
+    <ul>
+        <li>Thread Dump 분석으로 특정 구간에서 <code>BLOCKED</code> 상태의 스레드 다수 확인</li>
+        <li>특정 메서드에 <code>synchronized</code> 키워드로 인한 락 경합이 원인임을 파악</li>
+        <li>단기적으로 Scale-out, 근본 해결로 synchronized 제거</li>
+        <li>ExecutorService 기반 동시성 검증 및 JMeter 부하 테스트 수행</li>
+        <li>TPS 3 → 25 (8배) 개선, p95 응답시간 15초 → 1.5초 단축</li>
+    </ul>
+
+    <p><strong>성과</strong></p>
+    <ul>
+        <li>Thread 상태 분석으로 애플리케이션 병목 정확히 진단</li>
+        <li>시스템 처리량 개선</li>
+    </ul>
+
+    <h4>2) 분산 트랜잭션 정합성 확보 (Saga Orchestration)</h4>
+    <p><strong>문제</strong></p>
+    <ul>
+        <li>포인트 차감 → 세금계산서 발행 시 분산 시스템 간 트랜잭션 오류 발생</li>
+        <li>발행 실패 시 포인트 복구 누락으로 데이터 정합성 오류 발생</li>
+    </ul>
+
+    <p><strong>해결 전략</strong></p>
+    <ul>
+        <li>Orchestration 기반 Saga 패턴 설계 및 구현</li>
+        <li>전자세금계산서 시스템이 Orchestrator 역할 수행</li>
+        <li>포인트 차감 → 발행 → 실패 시 보상 트랜잭션 수행</li>
+        <li>Kafka 등 이벤트 브로커 고려했으나, 단일 서비스 내 트랜잭션 제어를 위해 Orchestration 방식 채택</li>
+    </ul>
+
+    <p><strong>성과</strong></p>
+    <ul>
+        <li>데이터 정합성 및 트랜잭션 복원력 확보</li>
+    </ul>
+
+    <h4>3) 이벤트 동시성 제어</h4>
+    <p><strong>문제</strong></p>
+    <ul>
+        <li>신규 채권 발행 서비스 출시 이벤트로 무료 발행 100건 제공</li>
+        <li>무료 발행 건수 차감 시 SELECT 후 UPDATE로 인한 동시성 문제 발생</li>
+    </ul>
+
+    <p><strong>해결 전략</strong></p>
+    <ul>
+        <li>경합 확률이 낮은 구조를 고려해 Optimistic Lock + Spring Retry 적용</li>
+        <li><code>update_timestamp</code> 컬럼을 버전 컬럼으로 활용해 충돌 감지</li>
+        <li>재시도 3회, 랜덤 Backoff 딜레이로 재충돌 방지</li>
+    </ul>
+
+    <p><strong>성과</strong></p>
+    <ul>
+        <li>이벤트 트래픽 100만 건 이상에서도 중복 차감 0건</li>
+        <li>분산락 없이 경량화된 동시성 제어 달성</li>
+    </ul>
+
+    <h4>4) 레거시 마이그레이션</h4>
+    <p><strong>문제</strong></p>
+    <ul>
+        <li>Spring 3.x + iBatis 기반의 노후 아키텍처로 유지보수 어려움</li>
+    </ul>
+
+    <p><strong>해결 전략</strong></p>
+    <ul>
+        <li>iBatis → MyBatis 전환 자동화 스크립트(Python) 작성</li>
+        <li>Spring 4.x 전환 시 <code>mvn dependency:tree</code> 기반 의존성 충돌 검증</li>
+        <li>인터페이스 중심 구조로 재설계하여 유지보수성 개선</li>
+    </ul>
+
+    <p><strong>성과</strong></p>
+    <ul>
+        <li>코드 품질 향상 및 빌드 오류율 30% → 5% 감소</li>
+    </ul>
+
+    <h4>5) 테스트 코드 도입</h4>
+    <ul>
+        <li>JUnit + Mockito 기반 단위/통합 테스트 케이스 작성</li>
+        <li>AI 도구(Claude Code) 활용해 테스트 커버리지 확대</li>
+        <li>배포 안정성 및 장애 예방 효과 확보</li>
+    </ul>
+
+    <hr>
+
+    <h3>의료마이데이터 신규 서비스 개발 (2024.05 ~ 2024.07)</h3>
+
+    <h4>프로젝트 개요</h4>
+    <ul>
+        <li>공공기관에 분산된 개인 의료 데이터를 수집하여 통합 관리하는 건강정보 플랫폼 개발</li>
+        <li>건강검진, 진료기록, 처방기록 등의 정보를 조회·관리 할 수 있는 시스템 구축</li>
+    </ul>
+
+    <h4>1) 외부 시스템 장애 격리 구현</h4>
+    <p><strong>문제</strong></p>
+    <ul>
+        <li>공공기관으로 부터 수집한 개인 의료 데이터는 내부 데이터 수집 시스템에서 관리</li>
+        <li>의료마이데이터 시스템은 플랫폼 전체적인 역할을 하며 데이터 수집 시스템에서 관리하는 데이터를 조회 해야하는 구조</li>
+        <li>데이터 수집 시스템 API 지연·장애 발생 시 의료마이데이터 서비스에 영향 우려</li>
+    </ul>
+
+    <p><strong>해결 전략</strong></p>
+    <ul>
+        <li>Hystrix Circuit Breaker 적용으로 외부 API 지연·장애로부터 서비스 보호
+            <ul>
+                <li>도메인별(진료, 검진, 의료기록 등) 스레드풀 격리 및 큐 용량 제한(10)</li>
+                <li>실패율 50% 이상 시 회로 차단(Open), 10초 후 Half-Open 전환</li>
+                <li>DynamicPropertyFactory 기반으로 설정값 30초 단위 동적 반영</li>
+            </ul>
+        </li>
+        <li>회로 차단 시 대체 응답("일시적 조회 불가") 반환</li>
+        <li>Resilience4j 대신 Spring 4.3 기술 스택과 맞는 Hystrix 선택</li>
+    </ul>
+
+    <p><strong>성과</strong></p>
+    <ul>
+        <li>외부 API 지연 시에도 서비스 가용성 99.9% 유지</li>
+        <li>톰캣 워커 스레드 고갈 방지 및 장애 전파 차단</li>
+    </ul>
+
+    <hr>
+
+    <h3>뉴스 데이터 수집 시스템 개선 (2024.03)</h3>
+
+    <h4>프로젝트 개요</h4>
+    <ul>
+        <li>제휴 신문사에서 뉴스 데이터를 수집하여 플랫폼 사용자에게 뉴스 컨텐츠 제공</li>
+        <li>뉴스 서비스는 초기 설계상 특정 1개 신문사 데이터만 수집·제공 → 신규 매체 확장이 어려운 구조</li>
+        <li>다수 신문사 데이터를 수집·검색·제공할 수 있는 확장형 구조로 개선</li>
+    </ul>
+
+    <h4>1) 구조적 문제 해결</h4>
+    <p><strong>문제</strong></p>
+    <ul>
+        <li>특정 1개 신문사만 고려하여 설계된 데이터베이스</li>
+        <li>기사 수집·가공 로직이 중복되어 신규 매체 추가 시 개발 공수 증가</li>
+        <li>외부 이미지 URL 직접 의존으로 원본 장애 시 이미지 미노출</li>
+    </ul>
+
+    <p><strong>해결 전략</strong></p>
+    <ul>
+        <li><strong>카테고리 표준화 및 DB 재설계</strong>
+            <ul>
+                <li>플랫폼 전용 카테고리 테이블(정치·경제·사회·IT·문화 등) 설계</li>
+                <li>신문사별 카테고리를 플랫폼 카테고리에 매핑하는 <code>category_mapping</code> 테이블 설계</li>
+                <li>신규 매체 추가 시 매핑만으로 확장 가능</li>
+            </ul>
+        </li>
+        <li><strong>수집·가공 모듈 공통화</strong>
+            <ul>
+                <li>기사 데이터를 표준 DTO로 변환 후 UPSERT 정책 적용</li>
+                <li>중복 적재 방지 및 최신 데이터 자동 갱신</li>
+            </ul>
+        </li>
+        <li><strong>이미지 안정화</strong>
+            <ul>
+                <li>수집 시점에 이미지 다운로드 후 NAS 저장, 내부 URL로 치환</li>
+                <li>원본 서버 장애 시에도 안정적인 이미지 제공</li>
+            </ul>
+        </li>
+    </ul>
+
+    <p><strong>성과</strong></p>
+    <ul>
+        <li>신규 매체(전자신문) 연동 완료, 플랫폼 확장성 확보</li>
+        <li>신규 매체 추가 시 DB 변경 불필요, 개발 공수 절감</li>
+        <li>이미지 노출 실패율 <strong>1% 미만</strong>, 운영 효율성 및 유지보수성 향상</li>
+    </ul>
+
+    <hr>
+
+    <h3>소식지 신규 서비스 개발 (2022.04)</h3>
+
+    <h4>프로젝트 개요</h4>
+    <ul>
+        <li>기업 주요 소식을 게시판 형태로 관리‧배포하는 콘텐츠 관리 서비스</li>
+    </ul>
+
+    <p><strong>문제</strong></p>
+    <ul>
+        <li>운영자가 기업 소식을 손쉽게 등록·수정·삭제·조회(CRUD) 할 수 있는 관리 도구 필요</li>
+        <li>2주 내 요구사항 정의 → 데이터 모델링 → API 설계 → UI 구현 단독 수행</li>
+    </ul>
+
+    <p><strong>해결 전략</strong></p>
+    <ul>
+        <li>관리자 UI 및 RESTful API 기반 CRUD 플로우 설계·구현</li>
+        <li>Redux + Redux-Saga 적용으로 상태 관리 및 비동기 호출 체계화</li>
+    </ul>
+
+    <p><strong>성과</strong></p>
+    <ul>
+        <li>짧은 일정 내 신규 서비스 안정적 출시</li>
+        <li>전역 상태 관리 도입으로 유지보수성 향상</li>
+    </ul>
+
+    <hr>
+
+    <h2>Certifications</h2>
+    <ul>
+        <li><strong>정보처리기사</strong> <em>(2023.09)</em></li>
+        <li><strong>SQLD</strong> <em>(2022.06)</em></li>
+        <li><strong>네트워크 관리사 2급</strong> <em>(2022.04)</em></li>
+    </ul>
+
+</body>
+</html>
