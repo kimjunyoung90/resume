@@ -17,7 +17,7 @@
             max-width: 850px;
             margin: 0 auto;
             padding: 80px 40px;
-            color: #2d3748;
+            color: #1a202c;
             background: #ffffff;
         }
         
@@ -85,7 +85,7 @@
         }
         
         .contact-links a {
-            color: #4a5568;
+            color: #2d3748;
             text-decoration: none;
             font-size: 0.95em;
             display: flex;
@@ -104,7 +104,7 @@
         
         .contact-description {
             font-size: 0.88em;
-            color: #718096;
+            color: #2d3748;
             line-height: 1.6;
         }
         
@@ -139,7 +139,7 @@
         
         .company-period {
             font-size: 0.9em;
-            color: #718096;
+            color: #4a5568;
             font-weight: 400;
             margin-bottom: 16px;
         }
@@ -176,7 +176,7 @@
             position: relative;
             padding-left: 0;
             margin-bottom: 6px;
-            color: #718096;
+            color: #2d3748;
             font-size: 0.92em;
             line-height: 1.6;
         }
@@ -190,7 +190,7 @@
         }
         
         /* 문제해결 카드 */
-        .problem-solving {
+        .문제-solving {
             margin-bottom: 48px;
         }
         
@@ -198,57 +198,63 @@
             font-size: 1em;
             font-weight: 600;
             color: #1a202c;
-            margin-bottom: 24px;
+            margin-bottom: 16px;
             padding-bottom: 8px;
             border-bottom: 1px solid #e2e8f0;
         }
         
         .ps-section {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
         
         .ps-label {
             display: inline-block;
-            font-size: 0.7em;
+            font-size: 0.8em;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1.2px;
             padding: 6px 12px;
             border-radius: 4px;
-            margin-bottom: 12px;
+            margin-bottom: 6px;
         }
         
-        .ps-label.problem {
+        .ps-label.문제 {
             background: #fff5f5;
             color: #c53030;
         }
         
-        .ps-label.solution {
+        .ps-label.해결 {
             background: #ebf8ff;
             color: #2c5282;
         }
         
-        .ps-label.result {
+        .ps-label.성과 {
             background: #f0fff4;
             color: #22543d;
         }
         
         .ps-content {
             padding-left: 16px;
+            margin-top: 8px;
         }
         
         .ps-content ul {
             list-style: none;
             padding: 0;
+            margin: 0;
         }
         
         .ps-content li {
             position: relative;
             padding-left: 20px;
-            margin-bottom: 10px;
-            color: #4a5568;
-            font-size: 0.95em;
-            line-height: 1.7;
+            margin-bottom: 8px;
+            color: #1a202c;
+            font-size: 0.97em;
+            line-height: 1.6;
+        }
+        
+        .ps-content li:last-child {
+            margin-bottom: 0;
         }
         
         .ps-content li:before {
@@ -268,8 +274,8 @@
         li {
             position: relative;
             padding-left: 24px;
-            margin-bottom: 12px;
-            color: #4a5568;
+            margin-bottom: 4px;
+            color: #1a202c;
             font-size: 0.95em;
             line-height: 1.7;
         }
@@ -290,7 +296,7 @@
         
         /* 링크 */
         a {
-            color: #4a5568;
+            color: #2d3748;
             text-decoration: none;
         }
         
@@ -300,36 +306,44 @@
         
         /* 코드 */
         code {
-            background: #edf2f7;
-            padding: 3px 8px;
-            border-radius: 4px;
+            background: #f1f5f9;
+            padding: 5px 10px;
+            border-radius: 14px;
             font-family: 'SF Mono', 'Monaco', 'Menlo', monospace;
-            font-size: 0.88em;
+            font-size: 0.85em;
+            color: #475569;
+            font-weight: 500;
+        }
+        
+        
+        /* Skills 리스트 */
+        .skills-list {
+            list-style: none;
+            padding: 0;
+            margin: 16px 0;
+        }
+        
+        .skills-list li {
+            padding-left: 0;
+            margin-bottom: 8px;
             color: #2d3748;
-        }
-        
-        /* 테이블 */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 24px 0;
-        }
-        
-        th, td {
-            padding: 14px 16px;
-            text-align: left;
-            border-bottom: 1px solid #e2e8f0;
             font-size: 0.95em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        th {
-            background: #f7fafc;
+        .skills-list li:before {
+            content: none;
+        }
+        
+        .skills-list li strong {
+            flex-shrink: 0;
+            color: #1a202c;
             font-weight: 600;
-            color: #2d3748;
-        }
-        
-        td {
-            color: #4a5568;
+            margin-right: 8px;
+            display: inline-block;
+            width: 85px;
         }
         
         /* 구분선 */
@@ -342,7 +356,7 @@
         /* 인증 */
         .cert-item {
             margin-bottom: 8px;
-            color: #4a5568;
+            color: #1a202c;
             font-size: 0.95em;
         }
         
@@ -395,44 +409,34 @@
 
     <h2>My Working Style</h2>
     <ul>
-        <li><strong>AI 도구를 활용해 업무 효율을 극대화합니다.</strong> MCP 연동 등으로 AI를 업무 전반에 활용하여 Jira 이슈 관리, Wiki 문서 정리, 로그 분석, 코드 리뷰 등 반복 업무를 자동화하고 전체적인 생산성과 품질을 향상시킵니다.</li>
-        <li><strong>업무의 우선순위를 지속적으로 재조정하며 핵심 목표에 집중합니다.</strong> 매일 아침, 매주 금요일 마다 업무 진행 현황을 점검하고, 신규 개발·기능 개선·문의 대응 등 업무의 우선순위를 재조정합니다. 이를 통해 가장 주요한 일에 자원을 집중하여 높은 성과를 달성합니다.</li>
-        <li><strong>이해하기 쉬운 커뮤니케이션으로 협업 효율을 높입니다.</strong> 기술적인 내용을 비즈니스 언어로 풀어 기획자나 다른 서비스 개발자도 이해할 수 있도록 설명합니다. 시스템 흐름이나 업무 진행 현황 등 Mermaid 다이어그램과 Wiki 문서로 작성하여, 복잡한 이슈도 한눈에 파악할 수 있게 합니다.</li>
+        <li>
+            <strong>AI 도구를 활용해 업무 효율을 극대화합니다.</strong>
+            <div style="margin-top: 8px; color: #718096; line-height: 1.7;">
+                MCP 연동 등으로 AI를 업무 전반에 활용하여 Jira 이슈 관리, Wiki 문서 정리, 로그 분석, 코드 리뷰 등 반복 업무를 자동화하고 전체적인 생산성과 품질을 향상시킵니다.
+            </div>
+        </li>
+        <li>
+            <strong>업무의 우선순위를 지속적으로 재조정하며 핵심 목표에 집중합니다.</strong>
+            <div style="margin-top: 8px; color: #718096; line-height: 1.7;">
+                매일 아침, 매주 금요일 마다 업무 진행 현황을 점검하고, 신규 개발·기능 개선·문의 대응 등 업무의 우선순위를 재조정합니다. 이를 통해 가장 주요한 일에 자원을 집중하여 높은 성과를 달성합니다.
+            </div>
+        </li>
+        <li>
+            <strong>이해하기 쉬운 커뮤니케이션으로 협업 효율을 높입니다.</strong>
+            <div style="margin-top: 8px; color: #718096; line-height: 1.7;">
+                기술적인 내용을 비즈니스 언어로 풀어 기획자나 다른 서비스 개발자도 이해할 수 있도록 설명합니다. 시스템 흐름이나 업무 진행 현황 등 Mermaid 다이어그램과 Wiki 문서로 작성하여, 복잡한 이슈도 한눈에 파악할 수 있게 합니다.
+            </div>
+        </li>
     </ul>
 
     <h2>Skills</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>분야</th>
-                <th>기술 스택</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Backend</td>
-                <td><code>Java</code> <code>Spring</code> <code>Spring AOP</code> <code>MyBatis</code></td>
-            </tr>
-            <tr>
-                <td>DB</td>
-                <td><code>PostgreSQL</code> <code>Oracle</code> <code>Redis</code></td>
-            </tr>
-            <tr>
-                <td>Frontend</td>
-                <td><code>React</code> <code>Redux</code> <code>Redux-Saga</code> <code>JavaScript</code></td>
-            </tr>
-            <tr>
-                <td>DevOps</td>
-                <td><code>Jenkins</code> <code>ELK</code> <code>APM</code></td>
-            </tr>
-            <tr>
-                <td>협업/관리</td>
-                <td><code>Jira</code> <code>Confluence</code> <code>Git</code></td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h2>Work Experience</h2>
+    <ul class="skills-list">
+        <li><strong>Backend</strong> <code>Java</code> <code>Spring</code> <code>MyBatis</code></li>
+        <li><strong>DB</strong> <code>PostgreSQL</code> <code>Oracle</code> <code>Redis</code></li>
+        <li><strong>Frontend</strong> <code>JavaScript</code> <code>React</code> <code>Redux</code> <code>Redux-Saga</code></li>
+        <li><strong>DevOps</strong> <code>Jenkins</code> <code>ELK</code> <code>APM</code></li>
+        <li><strong>협업/관리</strong> <code>Jira</code> <code>Confluence</code> <code>Git</code></li>
+    </ul>    <h2>Work Experience</h2>
 
     <h3>더존비즈온 WEHAGO 개발센터</h3>
     <div class="company-period">2021.09 ~ 재직중 (4년차)</div>
@@ -456,11 +460,11 @@
         </ul>
     </div>
 
-    <div class="problem-solving">
-        <div class="ps-title">1) 대량 지연 대응 및 병목 해소</div>
+    <div class="문제-solving">
+        <div class="ps-title">대량 지연 대응 및 병목 해소</div>
         
         <div class="ps-section">
-            <span class="ps-label problem">Problem</span>
+            <span class="ps-label 문제">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>국세청 신고 기간 중 특정 API p95 응답시간이 25초까지 상승</li>
@@ -470,7 +474,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">Solution</span>
+            <span class="ps-label 해결">해결 전략</span>
             <div class="ps-content">
                 <ul>
                     <li>Thread Dump 분석으로 특정 메서드의 synchronized 블록에서 BLOCKED 스레드 대기 현상 발견</li>
@@ -481,7 +485,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">Result</span>
+            <span class="ps-label 성과">성과</span>
             <div class="ps-content">
                 <ul>
                     <li>급격한 트래픽 증가에 신속히 대응하여 서비스 안정적인 운영 유지</li>
@@ -493,11 +497,11 @@
         </div>
     </div>
 
-    <div class="problem-solving">
-        <div class="ps-title">2) 분산 트랜잭션 정합성 확보 (Saga Orchestration)</div>
+    <div class="문제-solving">
+        <div class="ps-title">분산 트랜잭션 정합성 확보 (Saga Orchestration)</div>
         
         <div class="ps-section">
-            <span class="ps-label problem">Problem</span>
+            <span class="ps-label 문제">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>포인트 차감 → 세금계산서 발행 프로세스에서 발행 실패시 포인트 복구가 누락되는 정합성 문제 발생</li>
@@ -506,7 +510,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">Solution</span>
+            <span class="ps-label 해결">해결 전략</span>
             <div class="ps-content">
                 <ul>
                     <li>Orchestration 기반 Saga 패턴 설계 및 구현</li>
@@ -518,7 +522,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">Result</span>
+            <span class="ps-label 성과">성과</span>
             <div class="ps-content">
                 <ul>
                     <li>데이터 정합성 문제 근본 해결</li>
@@ -528,11 +532,11 @@
         </div>
     </div>
 
-    <div class="problem-solving">
-        <div class="ps-title">3) 무료 발행 이벤트 동시성 제어</div>
+    <div class="문제-solving">
+        <div class="ps-title">무료 발행 이벤트 동시성 제어</div>
         
         <div class="ps-section">
-            <span class="ps-label problem">Problem</span>
+            <span class="ps-label 문제">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>신규 채권 발행 서비스 출시 프로모션으로 고객별 무료 발행 100건 이벤트 진행</li>
@@ -542,18 +546,18 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">Solution</span>
+            <span class="ps-label 해결">해결 전략</span>
             <div class="ps-content">
                 <ul>
                     <li>경합 확률이 낮은 구조를 고려해 Optimistic Lock + Spring Retry 적용</li>
-                    <li><code>update_timestamp</code> 컬럼을 버전 컬럼으로 활용해 충돌 감지</li>
+                    <li>update_timestamp 컬럼을 버전 컬럼으로 활용해 충돌 감지</li>
                     <li>재시도 3회, 랜덤 Backoff 딜레이로 재충돌 방지</li>
                 </ul>
             </div>
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">Result</span>
+            <span class="ps-label 성과">성과</span>
             <div class="ps-content">
                 <ul>
                     <li>발행 동시 요청 상황에서도 중복 차감 이슈 없이 안정적으로 처리</li>
@@ -563,11 +567,11 @@
         </div>
     </div>
 
-    <div class="problem-solving">
-        <div class="ps-title">4) 레거시 마이그레이션</div>
+    <div class="문제-solving">
+        <div class="ps-title">레거시 마이그레이션</div>
         
         <div class="ps-section">
-            <span class="ps-label problem">Problem</span>
+            <span class="ps-label 문제">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>Spring 3.x + iBatis 기반 구조로 생산성 저하 및 보안·의존성 관리 어려움 발생</li>
@@ -576,7 +580,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">Solution</span>
+            <span class="ps-label 해결">해결 전략</span>
             <div class="ps-content">
                 <ul>
                     <li>iBatis → MyBatis 전환 자동화 스크립트(Python) 작성으로 DAO·XML 코드 자동 변경</li>
@@ -587,7 +591,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">Result</span>
+            <span class="ps-label 성과">성과</span>
             <div class="ps-content">
                 <ul>
                     <li>전환 효율 향상 및 인적 오류 최소화, 마이그레이션 기간 단축</li>
@@ -597,8 +601,8 @@
         </div>
     </div>
 
-    <div class="problem-solving">
-        <div class="ps-title">5) 테스트 코드 도입</div>
+    <div class="문제-solving">
+        <div class="ps-title">테스트 코드 도입</div>
 
         <div class="ps-content" style="padding-left: 16px;">
             <ul>
@@ -618,11 +622,11 @@
         </ul>
     </div>
 
-    <div class="problem-solving">
+    <div class="문제-solving">
         <div class="ps-title">외부 시스템 장애 격리 구현</div>
         
         <div class="ps-section">
-            <span class="ps-label problem">Problem</span>
+            <span class="ps-label 문제">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>개인 의료 데이터는 데이터 수집 및 관리 시스템에의 높은 의존도</li>
@@ -633,20 +637,20 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">Solution</span>
+            <span class="ps-label 해결">해결 전략</span>
             <div class="ps-content">
                 <ul>
                     <li>Spring 4.3 기술 스택과 호환되는 Hystrix Circuit Breaker 적용</li>
                     <li>도메인별(진료, 검진, 의료기록 등) 스레드풀 격리 및 큐 용량 제한(10)</li>
                     <li>실패율 50% 이상 시 회로 차단(Open), 10초 후 Half-Open 전환</li>
-                    <li>Hystrix 내부에 있는 Archaius 에서 주기적으로 설정값 30초 단위 체크하여 동적 설정 변경가능 하도록 반영하여 실시간 대응 가능하도록 수정</li>
+                    <li>설정값을 30초 주기로 재로드하여 회로 차단 임계값과 타임아웃 등이 실시간으로 변경되도록 적용</li>
                     <li>회로 차단 시 "일시적 조회 불가" 대체 응답 제공</li>
                 </ul>
             </div>
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">Result</span>
+            <span class="ps-label 성과">성과</span>
             <div class="ps-content">
                 <ul>
                     <li>톰캣 워커 스레드 고갈 방지 및 장애 전파 차단</li>
@@ -666,11 +670,11 @@
         </ul>
     </div>
 
-    <div class="problem-solving">
+    <div class="문제-solving">
         <div class="ps-title">구조적 문제 해결</div>
         
         <div class="ps-section">
-            <span class="ps-label problem">Problem</span>
+            <span class="ps-label 문제">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>특정 언론사에 맞춰 설계된 DB 구조로 인해 신규 언론사 추가 시 확장성 제한</li>
@@ -680,7 +684,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">Solution</span>
+            <span class="ps-label 해결">해결 전략</span>
             <div class="ps-content">
                 <p><strong>1. 플랫폼 표준 카테고리 기반 DB 구조 재설계</strong></p>
                 <ul style="margin-left: 20px;">
@@ -706,7 +710,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">Result</span>
+            <span class="ps-label 성과">성과</span>
             <div class="ps-content">
                 <ul>
                     <li>신규 언론사 연동 및 표준 카테고리 변경 시 DB 구조 수정 없이 데이터만으로 즉시 반영 가능</li>
@@ -727,11 +731,11 @@
         </ul>
     </div>
 
-    <div class="problem-solving">
+    <div class="문제-solving">
         <div class="ps-title">CRUD 기반 콘텐츠 관리 시스템 구축</div>
 
         <div class="ps-section">
-            <span class="ps-label problem">Problem</span>
+            <span class="ps-label 문제">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>운영자가 기업 소식을 손쉽게 등록·수정·삭제·조회(CRUD) 할 수 있는 관리 도구 필요</li>
@@ -741,7 +745,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">Solution</span>
+            <span class="ps-label 해결">해결 전략</span>
             <div class="ps-content">
                 <ul>
                     <li>관리자 UI 및 RESTful API 기반 CRUD 플로우 설계·구현</li>
@@ -751,7 +755,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">Result</span>
+            <span class="ps-label 성과">성과</span>
             <div class="ps-content">
                 <ul>
                     <li>짧은 일정 내 신규 서비스 안정적 출시</li>
