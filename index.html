@@ -190,7 +190,7 @@
         }
         
         /* 문제해결 카드 */
-        .problem-solving {
+        .문제-solving {
             margin-bottom: 48px;
         }
         
@@ -215,20 +215,19 @@
             letter-spacing: 1.2px;
             padding: 6px 12px;
             border-radius: 4px;
-            margin-bottom: 12px;
         }
         
-        .ps-label.problem {
+        .ps-label.문제 {
             background: #fff5f5;
             color: #c53030;
         }
         
-        .ps-label.solution {
+        .ps-label.해결 {
             background: #ebf8ff;
             color: #2c5282;
         }
         
-        .ps-label.result {
+        .ps-label.성과 {
             background: #f0fff4;
             color: #22543d;
         }
@@ -268,7 +267,7 @@
         li {
             position: relative;
             padding-left: 24px;
-            margin-bottom: 12px;
+            margin-bottom: 4px;
             color: #4a5568;
             font-size: 0.95em;
             line-height: 1.7;
@@ -471,11 +470,11 @@
         </ul>
     </div>
 
-    <div class="problem-solving">
+    <div class="문제-solving">
         <div class="ps-title">대량 지연 대응 및 병목 해소</div>
         
         <div class="ps-section">
-            <span class="ps-label problem">Problem</span>
+            <span class="ps-label 문제">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>국세청 신고 기간 중 특정 API p95 응답시간이 25초까지 상승</li>
@@ -485,7 +484,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">Solution</span>
+            <span class="ps-label 해결">해결 전략</span>
             <div class="ps-content">
                 <ul>
                     <li>Thread Dump 분석으로 특정 메서드의 synchronized 블록에서 BLOCKED 스레드 대기 현상 발견</li>
@@ -496,7 +495,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">Result</span>
+            <span class="ps-label 성과">성과</span>
             <div class="ps-content">
                 <ul>
                     <li>급격한 트래픽 증가에 신속히 대응하여 서비스 안정적인 운영 유지</li>
@@ -508,11 +507,11 @@
         </div>
     </div>
 
-    <div class="problem-solving">
+    <div class="문제-solving">
         <div class="ps-title">분산 트랜잭션 정합성 확보 (Saga Orchestration)</div>
         
         <div class="ps-section">
-            <span class="ps-label problem">Problem</span>
+            <span class="ps-label 문제">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>포인트 차감 → 세금계산서 발행 프로세스에서 발행 실패시 포인트 복구가 누락되는 정합성 문제 발생</li>
@@ -521,7 +520,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">Solution</span>
+            <span class="ps-label 해결">해결 전략</span>
             <div class="ps-content">
                 <ul>
                     <li>Orchestration 기반 Saga 패턴 설계 및 구현</li>
@@ -533,7 +532,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">Result</span>
+            <span class="ps-label 성과">성과</span>
             <div class="ps-content">
                 <ul>
                     <li>데이터 정합성 문제 근본 해결</li>
@@ -543,11 +542,11 @@
         </div>
     </div>
 
-    <div class="problem-solving">
+    <div class="문제-solving">
         <div class="ps-title">무료 발행 이벤트 동시성 제어</div>
         
         <div class="ps-section">
-            <span class="ps-label problem">Problem</span>
+            <span class="ps-label 문제">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>신규 채권 발행 서비스 출시 프로모션으로 고객별 무료 발행 100건 이벤트 진행</li>
@@ -557,18 +556,18 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">Solution</span>
+            <span class="ps-label 해결">해결 전략</span>
             <div class="ps-content">
                 <ul>
                     <li>경합 확률이 낮은 구조를 고려해 Optimistic Lock + Spring Retry 적용</li>
-                    <li><code>update_timestamp</code> 컬럼을 버전 컬럼으로 활용해 충돌 감지</li>
+                    <li>update_timestamp 컬럼을 버전 컬럼으로 활용해 충돌 감지</li>
                     <li>재시도 3회, 랜덤 Backoff 딜레이로 재충돌 방지</li>
                 </ul>
             </div>
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">Result</span>
+            <span class="ps-label 성과">성과</span>
             <div class="ps-content">
                 <ul>
                     <li>발행 동시 요청 상황에서도 중복 차감 이슈 없이 안정적으로 처리</li>
@@ -578,11 +577,11 @@
         </div>
     </div>
 
-    <div class="problem-solving">
+    <div class="문제-solving">
         <div class="ps-title">레거시 마이그레이션</div>
         
         <div class="ps-section">
-            <span class="ps-label problem">Problem</span>
+            <span class="ps-label 문제">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>Spring 3.x + iBatis 기반 구조로 생산성 저하 및 보안·의존성 관리 어려움 발생</li>
@@ -591,7 +590,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">Solution</span>
+            <span class="ps-label 해결">해결 전략</span>
             <div class="ps-content">
                 <ul>
                     <li>iBatis → MyBatis 전환 자동화 스크립트(Python) 작성으로 DAO·XML 코드 자동 변경</li>
@@ -602,7 +601,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">Result</span>
+            <span class="ps-label 성과">성과</span>
             <div class="ps-content">
                 <ul>
                     <li>전환 효율 향상 및 인적 오류 최소화, 마이그레이션 기간 단축</li>
@@ -612,7 +611,7 @@
         </div>
     </div>
 
-    <div class="problem-solving">
+    <div class="문제-solving">
         <div class="ps-title">테스트 코드 도입</div>
 
         <div class="ps-content" style="padding-left: 16px;">
@@ -633,11 +632,11 @@
         </ul>
     </div>
 
-    <div class="problem-solving">
+    <div class="문제-solving">
         <div class="ps-title">외부 시스템 장애 격리 구현</div>
         
         <div class="ps-section">
-            <span class="ps-label problem">Problem</span>
+            <span class="ps-label 문제">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>개인 의료 데이터는 데이터 수집 및 관리 시스템에의 높은 의존도</li>
@@ -648,7 +647,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">Solution</span>
+            <span class="ps-label 해결">해결 전략</span>
             <div class="ps-content">
                 <ul>
                     <li>Spring 4.3 기술 스택과 호환되는 Hystrix Circuit Breaker 적용</li>
@@ -661,7 +660,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">Result</span>
+            <span class="ps-label 성과">성과</span>
             <div class="ps-content">
                 <ul>
                     <li>톰캣 워커 스레드 고갈 방지 및 장애 전파 차단</li>
@@ -681,11 +680,11 @@
         </ul>
     </div>
 
-    <div class="problem-solving">
+    <div class="문제-solving">
         <div class="ps-title">구조적 문제 해결</div>
         
         <div class="ps-section">
-            <span class="ps-label problem">Problem</span>
+            <span class="ps-label 문제">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>특정 언론사에 맞춰 설계된 DB 구조로 인해 신규 언론사 추가 시 확장성 제한</li>
@@ -695,7 +694,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">Solution</span>
+            <span class="ps-label 해결">해결 전략</span>
             <div class="ps-content">
                 <p><strong>1. 플랫폼 표준 카테고리 기반 DB 구조 재설계</strong></p>
                 <ul style="margin-left: 20px;">
@@ -721,7 +720,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">Result</span>
+            <span class="ps-label 성과">성과</span>
             <div class="ps-content">
                 <ul>
                     <li>신규 언론사 연동 및 표준 카테고리 변경 시 DB 구조 수정 없이 데이터만으로 즉시 반영 가능</li>
@@ -742,11 +741,11 @@
         </ul>
     </div>
 
-    <div class="problem-solving">
+    <div class="문제-solving">
         <div class="ps-title">CRUD 기반 콘텐츠 관리 시스템 구축</div>
 
         <div class="ps-section">
-            <span class="ps-label problem">Problem</span>
+            <span class="ps-label 문제">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>운영자가 기업 소식을 손쉽게 등록·수정·삭제·조회(CRUD) 할 수 있는 관리 도구 필요</li>
@@ -756,7 +755,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">Solution</span>
+            <span class="ps-label 해결">해결 전략</span>
             <div class="ps-content">
                 <ul>
                     <li>관리자 UI 및 RESTful API 기반 CRUD 플로우 설계·구현</li>
@@ -766,7 +765,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">Result</span>
+            <span class="ps-label 성과">성과</span>
             <div class="ps-content">
                 <ul>
                     <li>짧은 일정 내 신규 서비스 안정적 출시</li>
