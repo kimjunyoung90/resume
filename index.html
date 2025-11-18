@@ -480,10 +480,16 @@
 
             .ps-content {
                 margin-bottom: 24px;
+                page-break-inside: auto; /* 내용이 페이지를 넘어갈 수 있도록 */
             }
 
-            /* 개별 리스트는 분리되지 않도록 */
+            /* 개별 리스트는 자연스럽게 나눌 수 있도록 */
             .ps-content ul {
+                page-break-inside: auto;
+            }
+
+            /* 개별 리스트 아이템은 분리되지 않도록 */
+            .ps-content li {
                 page-break-inside: avoid;
             }
 
