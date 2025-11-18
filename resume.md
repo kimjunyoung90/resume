@@ -87,9 +87,9 @@
 
 3) 근본 원인 검증 및 해소
 - 서버 내 synchronized로 영향받는 공유 자원 확인
-- DB 제약조건(Unique Key)으로 데이터 무결성이 이미 보장됨을 확인
+- SELECT UPDATE 구문이 존재했으나 DB 제약조건(Unique Key)으로 데이터 무결성이 이미 보장됨을 확인
 - ExecutorService 기반 동시성 테스트 코드 작성 및 시나리오별 검증
-- JMeter로 실제 트래픽 패턴에 맞춘 부하 테스트 수행하여 안정성 확인
+- JMeter로 부하 테스트 수행하여 추가 안정성 확인
 
 4) 최종 조치
 - 불필요한 synchronized 제거 및 배포
