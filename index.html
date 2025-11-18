@@ -493,6 +493,11 @@
                 page-break-inside: avoid;
             }
 
+            /* 첫 번째 세부 경험은 다음 페이지로 */
+            .first-detail {
+                page-break-before: always; /* 새 페이지에서 시작 */
+            }
+
             /* 프로젝트 전체를 가능한 함께 유지 */
             .project-section {
                 page-break-inside: avoid;
@@ -711,9 +716,9 @@
         </ul>
     </div>
 
-    <div class="문제-solving">
+    <div class="문제-solving first-detail">
         <div class="ps-title">대량 지연 대응 및 병목 해소</div>
-        
+
         <div class="ps-section">
             <span class="ps-label 문제">문제</span>
             <div class="ps-content">
