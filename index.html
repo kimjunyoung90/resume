@@ -237,11 +237,13 @@
             padding-left: 16px;
             margin-top: 8px;
         }
-        
+
         .ps-content ul {
             list-style: none;
             padding: 0;
             margin: 0;
+            margin-top: 8px;
+            margin-bottom: 16px;
         }
         
         .ps-content li {
@@ -370,8 +372,162 @@
             margin-left: 8px;
         }
 
-        /* 반응형 */
-        @media (max-width: 768px) {
+        /* PDF/Print 스타일 */
+        @media print {
+            body {
+                max-width: 210mm; /* A4 width */
+                padding: 15mm 20mm;
+                background: white;
+            }
+
+            /* Contact 섹션 - 가로 레이아웃 유지 */
+            .contact-section {
+                display: flex !important;
+                flex-direction: row !important;
+                gap: 40px !important;
+                margin: 30px 0 !important;
+                padding: 20px 0 !important;
+                page-break-inside: avoid;
+            }
+
+            .profile-img {
+                flex-shrink: 0;
+                text-align: left !important;
+            }
+
+            .profile-img img {
+                width: 140px !important;
+                height: 140px !important;
+                min-width: 140px !important;
+                min-height: 140px !important;
+                max-width: 140px !important;
+                max-height: 140px !important;
+                border-radius: 8px;
+                object-fit: cover;
+            }
+
+            .contact-info {
+                flex: 1;
+                text-align: left !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+            }
+
+            .contact-links {
+                align-items: flex-start !important;
+            }
+
+            /* 링크 색상 */
+            a {
+                color: #2d3748 !important;
+                text-decoration: none;
+            }
+
+            /* 페이지 나누기 제어 */
+
+            /* 주요 섹션(H2) 앞에서 페이지 나누기 선호 */
+            h2 {
+                page-break-before: auto;
+                page-break-after: avoid;
+                margin-top: 40px !important;
+            }
+
+            /* 첫 번째 H2는 페이지 나누기 방지 */
+            h2:first-of-type {
+                page-break-before: avoid;
+            }
+
+            /* Skills 섹션은 새 페이지에서 시작 */
+            #skills-section {
+                page-break-before: always !important;
+            }
+
+            /* 프로젝트/회사(H3)는 함께 유지 */
+            h3 {
+                page-break-before: auto;
+                page-break-after: avoid;
+                page-break-inside: avoid;
+            }
+
+            /* 세부 경험(H4)는 본문과 함께 유지 */
+            h4 {
+                page-break-after: avoid;
+                page-break-inside: avoid;
+            }
+
+            /* Contact 섹션은 첫 페이지에 유지 */
+            .contact-section {
+                page-break-after: avoid;
+                page-break-inside: avoid;
+            }
+
+            /* Working Style, Skills는 함께 유지 */
+            .work-style-section,
+            .skills-section {
+                page-break-inside: avoid;
+            }
+
+            /* 문제-해결-성과 섹션 제어 */
+            .ps-section {
+                page-break-inside: auto; /* 긴 내용은 나눌 수 있도록 */
+            }
+
+            /* 라벨과 내용 첫 부분은 함께 유지 */
+            .ps-label {
+                page-break-after: avoid;
+            }
+
+            .ps-content {
+                margin-bottom: 24px;
+                page-break-inside: auto; /* 내용이 페이지를 넘어갈 수 있도록 */
+            }
+
+            /* 개별 리스트는 자연스럽게 나눌 수 있도록 */
+            .ps-content ul {
+                page-break-inside: auto;
+            }
+
+            /* 개별 리스트 아이템은 분리되지 않도록 */
+            .ps-content li {
+                page-break-inside: avoid;
+            }
+
+            /* 첫 번째 세부 경험은 다음 페이지로 */
+            .first-detail {
+                page-break-before: always; /* 새 페이지에서 시작 */
+            }
+
+            /* 프로젝트 전체를 가능한 함께 유지 */
+            .project-section {
+                page-break-inside: avoid;
+            }
+
+            /* Work Experience 아이템들 */
+            .work-item {
+                page-break-inside: avoid;
+            }
+
+            /* HR 구분선 근처에서 페이지 나누기 선호 */
+            hr {
+                page-break-before: auto;
+                page-break-after: auto;
+                margin: 32px 0 !important;
+            }
+
+            /* Skills 테이블은 분리 방지 */
+            table {
+                page-break-inside: avoid;
+            }
+
+            /* 자격증 목록은 함께 유지 */
+            .cert-list {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* 반응형 (화면용) */
+        @media screen and (max-width: 768px) {
             body {
                 padding: 60px 30px;
             }
@@ -441,7 +597,7 @@
             }
         }
 
-        @media (max-width: 480px) {
+        @media screen and (max-width: 480px) {
             body {
                 padding: 40px 20px;
             }
@@ -528,7 +684,7 @@
         </li>
     </ul>
 
-    <h2>Skills</h2>
+    <h2 id="skills-section">Skills</h2>
     <ul class="skills-list">
         <li><strong>Backend</strong> <code>Java</code> <code>Spring</code> <code>MyBatis</code></li>
         <li><strong>DB</strong> <code>PostgreSQL</code> <code>Oracle</code> <code>Redis</code></li>
@@ -560,9 +716,9 @@
         </ul>
     </div>
 
-    <div class="문제-solving">
+    <div class="문제-solving first-detail">
         <div class="ps-title">대량 지연 대응 및 병목 해소</div>
-        
+
         <div class="ps-section">
             <span class="ps-label 문제">문제</span>
             <div class="ps-content">
