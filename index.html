@@ -772,6 +772,62 @@
     </div>
 
     <div class="문제-solving">
+        <div class="ps-title">세금계산서 중복 발행 방지 기능 고도화</div>
+
+        <div class="ps-section">
+            <span class="ps-label 문제">문제</span>
+            <div class="ps-content">
+                <ul>
+                    <li>고객사의 비정상 요청(중복 요청·응답 미수신 재시도 등)으로 동일 세금계산서가 중복 발행되는 문제 발생</li>
+                    <li>멱등성 보장을 위해 멱등키를 파라미터로 받고 있었으나 기존 구조에는 근본적인 제약이 존재</li>
+                    <li>멱등키 NULL 허용, UNIQUE 제약조건이 없어 중복된 멱등키가 이미 테이블에 다수 존재</li>
+                    <li>멱등키 중복 체크 로직이 SELECT EXISTS 기반이라 동시성 환경에서 보장 불가</li>
+                    <li>운영 DB의 기존 대량 데이터·NULL 값·중복 값 때문에 직접 제약조건을 추가하기 어려운 환경</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label 해결">해결 전략</span>
+            <div class="ps-content">
+                <p><strong>1) 멱등키 전용 테이블 신규 설계</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>기존 세금계산서 테이블의 정합성 문제를 우회하기 위해 멱등키만 관리하는 독립 테이블 신규 구축</li>
+                    <li>기존 테이블 수정 없이도 멱등성 보장을 위한 분리 적용</li>
+                </ul>
+                <p><strong>2) 고객별 멱등키 충돌 방지를 위한 복합 Primary Key 적용</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>PK 구성: (고객 고유번호, 멱등키 값)</li>
+                    <li>고객 단위로 멱등키가 고유하도록 보장</li>
+                    <li>동일 고객의 동일 멱등키 요청은 PK 충돌로 즉시 차단하여 중복 발행 근본 해결</li>
+                </ul>
+                <p><strong>3) 멱등성 보장 로직 구현 (DB 기반 처리 흐름)</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>멱등키 존재 시 멱등키 테이블에 INSERT 시도</li>
+                    <li>이미 존재하는 경우 PK 충돌(duplicate key)로 중복 요청 즉시 감지</li>
+                    <li>중복 발행 응답 반환</li>
+                </ul>
+                <p><strong>4) 멱등키 미전달 고객을 위한 호환성 처리</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>멱등키 미전달 고객은 멱등키 로직을 우회하도록 분기</li>
+                    <li>기존 고객 영향도 최소화</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label 성과">성과</span>
+            <div class="ps-content">
+                <ul>
+                    <li>동일 세금계산서 중복 발행 문제를 전면 차단, API 신뢰도 개선</li>
+                    <li>기존 API 사용 고객의 호환성을 유지하면서도 새로운 멱등성 보장 구조 적용</li>
+                    <li>NULL·중복 멱등키가 포함된 기존 데이터 수정 없이 적용 가능하여 운영 리스크 최소화</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="문제-solving">
         <div class="ps-title">분산 트랜잭션 정합성 확보 (Saga Orchestration)</div>
         
         <div class="ps-section">
