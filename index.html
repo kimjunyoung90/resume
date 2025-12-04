@@ -704,7 +704,6 @@
         <li>시스템 모니터링 및 성능 분석을 통한 병목지점 파악 및 개선</li>
         <li>캐싱, 테이블 파티셔닝 관리, 인덱스 설계, 쿼리 튜닝 등을 통한 데이터 처리 성능 개선</li>
         <li>RESTful API 설계·구현 및 JUnit/Mockito 기반 테스트 코드 작성</li>
-        <li>레거시 아키텍처 마이그레이션으로 기술부채 해소</li>
         <li>React 컴포넌트 개발 및 Redux 기반 상태 관리 적용</li>
     </ul>
 
@@ -925,40 +924,6 @@
                 <ul>
                     <li>발행 동시 요청 상황에서도 중복 차감 이슈 없이 안정적으로 처리</li>
                     <li>Optimistic Lock 기반의 효율적 동시성 제어 구조 구현</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <div class="문제-solving">
-        <div class="ps-title">레거시 마이그레이션</div>
-        
-        <div class="ps-section">
-            <span class="ps-label 문제">문제</span>
-            <div class="ps-content">
-                <ul>
-                    <li>Spring 3.x + iBatis 기반 구조로 생산성 저하 및 보안·의존성 관리 어려움 발생</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="ps-section">
-            <span class="ps-label 해결">해결 전략</span>
-            <div class="ps-content">
-                <ul>
-                    <li>iBatis → MyBatis 전환 자동화 스크립트(Python) 작성으로 DAO·XML 코드 자동 변경</li>
-                    <li>Spring 4.x 전환 과정에서 mvn dependency:tree 활용해 의존성 충돌 분석</li>
-                    <li>빌드 검증 및 기능 테스트를 통해 서비스 안정성 확인</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="ps-section">
-            <span class="ps-label 성과">성과</span>
-            <div class="ps-content">
-                <ul>
-                    <li>전환 효율 향상 및 인적 오류 최소화, 마이그레이션 기간 단축</li>
-                    <li>표준화된 MyBatis 기반 구조로 유지보수성 및 확장성 개선</li>
                 </ul>
             </div>
         </div>
