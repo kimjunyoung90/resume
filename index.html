@@ -878,10 +878,30 @@
         <div class="ps-section">
             <span class="ps-label 해결">해결 전략</span>
             <div class="ps-content">
-                <ul>
+                <p><strong>1) 동시성 문제 재현 및 분석</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>ExecutorService 기반 동시성 테스트 코드 작성하여 이슈 재현</li>
+                    <li>10개 스레드풀 생성만으로도 동시성 이슈 발생 확인</li>
+                    <li>단일 쿼리로 개선 검토했으나, 히스토리를 쌓아야 해서 로직 개선 불가</li>
+                </ul>
+                <p><strong>2) Optimistic Lock 적용 결정</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>한 회사당 100건, 회사에 일반적으로 채권 발행 담당자가 소수이고 초기 서비스라 사용자가 적어 경합이 적을 것으로 판단</li>
                     <li>경합 확률이 낮은 구조를 고려해 Optimistic Lock + Spring Retry 적용</li>
-                    <li>update_timestamp 컬럼을 버전 컬럼으로 활용해 충돌 감지</li>
-                    <li>재시도 3회, 랜덤 딜레이로 재충돌 방지</li>
+                    <li>version 컬럼을 추가하여 충돌 감지</li>
+                </ul>
+                <p><strong>3) 재시도 전략</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>backoff, random, multiplier, maxDelay 설정 적용</li>
+                    <li>충돌 시 즉시 모든 트랜잭션이 재시도하면 재경합 가능성이 높아 대기시간 지정(backoff)</li>
+                    <li>재시도 대기 시간을 랜덤하게 지정하여 동시 추가 경합 가능성 완화(random)</li>
+                    <li>재시도 횟수 증가 시 대기 시간을 점진적으로 증가시켜 경합 완화(multiplier)</li>
+                    <li>임의로 재시도 설정 변경 시 지연이 무한정 길어지는 현상 방지(maxDelay)</li>
+                </ul>
+                <p><strong>4) 최종 실패 처리</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>최종 재시도 실패 시 recover 메서드를 실행하여 실패 응답 반환 및 로그 적재</li>
+                    <li>비관적 락으로의 전환 시점 파악</li>
                 </ul>
             </div>
         </div>
