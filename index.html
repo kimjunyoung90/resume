@@ -740,7 +740,7 @@
                     <li>다수 스레드가 BLOCKED 상태로 대기 중인 현상 발견</li>
                     <li>세금계산서 발행 메서드 부분에 <code>synchronized</code> 키워드 확인</li>
                 </ul>
-                <p><strong>2) 즉각적인 트래픽 방어 (단기 대응)</strong></p>
+                <p><strong>2) 단기 대응</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>synchronized 제거의 안정성 검증 전까지 서버 scale-out(8 → 12대)으로 임시 처리량 확보</li>
                     <li>신고 기간 중 서비스 중단 없이 지연 문제를 빠르게 완화</li>
@@ -779,10 +779,8 @@
             <div class="ps-content">
                 <ul>
                     <li>고객사의 비정상 요청(중복 요청·응답 미수신 재시도 등)으로 동일 세금계산서가 중복 발행되는 문제 발생</li>
-                    <li>멱등성 보장을 위해 멱등키를 파라미터로 받고 있었으나 기존 구조에는 근본적인 제약이 존재</li>
-                    <li>멱등키 NULL 허용, UNIQUE 제약조건이 없어 중복된 멱등키가 이미 테이블에 다수 존재</li>
-                    <li>멱등키 중복 체크 로직이 SELECT EXISTS 기반이라 동시성 환경에서 보장 불가</li>
-                    <li>운영 DB의 기존 대량 데이터·NULL 값·중복 값 때문에 직접 제약조건을 추가하기 어려운 환경</li>
+                    <li>멱등성 보장을 위해 멱등키를 받고 있었으나 멱등키 NULL 허용, UNIQUE 제약조건 부재로 멱등성 보장 불가</li>
+                    <li>테이블에 중복된 멱등키가 다수 존재 하여 제약조건을 추가하기 어려운 환경</li>
                 </ul>
             </div>
         </div>
@@ -884,7 +882,7 @@
                     <li>10개 스레드풀 생성만으로도 동시성 이슈 발생 확인</li>
                     <li>단일 쿼리로 개선 검토했으나, 히스토리를 쌓아야 해서 로직 개선 불가</li>
                 </ul>
-                <p><strong>2) Optimistic Lock 적용 결정</strong></p>
+                <p><strong>2) Optimistic Lock 적용</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>한 회사당 100건, 회사에 일반적으로 채권 발행 담당자가 소수이고 초기 서비스라 사용자가 적어 경합이 적을 것으로 판단</li>
                     <li>경합 확률이 낮은 구조를 고려해 Optimistic Lock + Spring Retry 적용</li>
@@ -893,8 +891,8 @@
                 <p><strong>3) 재시도 전략</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>backoff, random, multiplier, maxDelay 설정 적용</li>
-                    <li>충돌 시 즉시 모든 트랜잭션이 재시도하면 재경합 가능성이 높아 대기시간 지정(backoff)</li>
-                    <li>재시도 대기 시간을 랜덤하게 지정하여 동시 추가 경합 가능성 완화(random)</li>
+                    <li>경합 상황에서 모든 트랜잭션이 즉시 재시도를 수행하면 재경합 가능성이 높아 대기시간 지정(backoff)</li>
+                    <li>재시도 시점을 랜덤하게 지정하여 동시 경합 가능성 완화(random)</li>
                     <li>재시도 횟수 증가 시 대기 시간을 점진적으로 증가시켜 경합 완화(multiplier)</li>
                     <li>임의로 재시도 설정 변경 시 지연이 무한정 길어지는 현상 방지(maxDelay)</li>
                 </ul>
