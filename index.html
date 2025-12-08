@@ -738,25 +738,20 @@
                 <ul style="margin-left: 20px;">
                     <li>외부 호출/DB 지연이 없었기 때문에 Thread 상태를 우선 확인</li>
                     <li>jstack 기반 Thread Dump 분석 과정에서 BLOCKED 스레드 대량 포착</li>
-                    <li>Stack Trace를 통해 공통적으로 Blocking이 발생하는 메서드 특정</li>
-                    <li>코드 레벨 검토 결과, 해당 메서드가 <code>synchronized</code>에 의해 직렬 처리되고 있음을 발견</li>
-                    <li>synchronized가 보호하려던 공유 자원이 없고, 멀티 인스턴스 환경에서는 실효성이 없다고 판단하여 키워드 제거 결정</li>
+                    <li>Stack Trace를 통해 Blocking이 발생하는 메서드 확인</li>
+                    <li>특정 메서드가 <code>synchronized</code>에 의해 직렬 처리되고 있음을 발견</li>
+                    <li>코드 레벨 분석 결과 synchronized가 보호하려던 공유 자원이 없고 멀티 인스턴스 환경에서는 실효성이 없다고 판단하여 키워드 제거 결정</li>
                 </ul>
                 <p><strong>2) 부하 테스트를 통한 개선 효과 검증</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>staging 환경 부재로 개발 환경에서 부하 테스트 수행</li>
-                    <li>절대 수치보다는 synchronized 제거 전/후 비교에 중점</li>
-                    <li>JMeter 기반 검증 결과, 제거 이후 latency 감소 및 throughput 증가 확인</li>
+                    <li>staging 환경 부재로 개발 환경에서 부하 테스트 수행(JMeter)</li>
+                    <li>Stepping Thread Group을 사용하여 동시 요청 수를 단계적으로 증가(20→60)</li>
+                    <li>제거 전·후 latency와 TPS를 동일 조건에서 비교</li>
                 </ul>
-                <p><strong>3) 운영 적용 및 지속적 모니터링</strong></p>
+                <p><strong>3) 운영 적용 및 모니터링</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>개선사항 운영 반영 후 Elastic APM과 Thread 상태 지속 모니터링</li>
-                    <li>월초 피크 구간에서도 동시성 병목이 재발하지 않는 것을 확인</li>
-                </ul>
-                <p><strong>4) 팀 공유를 통한 재발 방지</strong></p>
-                <ul style="margin-left: 20px;">
-                    <li>synchronized 사용 시 병목 위험, 제거 과정, 개선 지표 등을 Wiki 문서화</li>
-                    <li>구성원 대상으로 동시성 제어 베스트 프랙티스 공유</li>
+                    <li>개선사항 적용 후 Elastic APM과 Thread 상태를 지속 관찰</li>
+                    <li>월초 피크 구간에서도 병목이 재발하지 않음</li>
                 </ul>
             </div>
         </div>
@@ -765,8 +760,9 @@
             <span class="ps-label 성과">성과</span>
             <div class="ps-content">
                 <ul>
-                    <li>synchronized 제거 이후 월초 피크 구간에서도 latency 지표가 안정적으로 유지</li>
-                    <li>Thread Dump 상 BLOCKED 스레드가 재발하지 않았으며, 동일한 성능 이슈 근절</li>
+                    <li>latency <strong>2.4초 → 1.8초(약 24% 개선)</strong></li>
+                    <li>TPS <strong>13.5 → 19.8(약 47% 증가)</strong></li>
+                    <li>APM 상 월초 피크 구간에서도 latency 지표가 안정적으로 유지</li>
                 </ul>
             </div>
         </div>

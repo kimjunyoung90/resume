@@ -78,26 +78,23 @@
 **1) Thread 상태 분석을 통한 원인 특정**
 - 외부 호출/DB 지연이 없었기 때문에 Thread 상태를 우선 확인
 - jstack 기반 Thread Dump 분석 과정에서 BLOCKED 스레드 대량 포착
-- Stack Trace를 통해 공통적으로 Blocking이 발생하는 메서드 특정
-- 코드 레벨 검토 결과, 해당 메서드가 `synchronized`에 의해 직렬 처리되고 있음을 발견
-- synchronized가 보호하려던 공유 자원이 없고, 멀티 인스턴스 환경에서는 실효성이 없다고 판단하여 키워드 제거 결정
+- Stack Trace를 통해 Blocking이 발생하는 메서드 확인
+- 특정 메서드가 `synchronized`에 의해 직렬 처리되고 있음을 발견
+- 코드 레벨 분석 결과 synchronized가 보호하려던 공유 자원이 없고 멀티 인스턴스 환경에서는 실효성이 없다고 판단하여 키워드 제거 결정
 
 **2) 부하 테스트를 통한 개선 효과 검증**
-- staging 환경 부재로 개발 환경에서 부하 테스트 수행
-- 절대 수치보다는 synchronized 제거 전/후 비교에 중점
-- JMeter 기반 검증 결과, 제거 이후 latency 감소 및 throughput 증가 확인
+- staging 환경 부재로 개발 환경에서 부하 테스트 수행(JMeter)
+- Stepping Thread Group을 사용하여 동시 요청 수를 단계적으로 증가(20→60)
+- 제거 전·후 latency와 TPS를 동일 조건에서 비교
 
-**3) 운영 적용 및 지속적 모니터링**
-- 개선사항 운영 반영 후 Elastic APM과 Thread 상태 지속 모니터링
-- 월초 피크 구간에서도 동시성 병목이 재발하지 않는 것을 확인
-
-**4) 팀 공유를 통한 재발 방지**
-- synchronized 사용 시 병목 위험, 제거 과정, 개선 지표 등을 Wiki 문서화
-- 구성원 대상으로 동시성 제어 베스트 프랙티스 공유
+**3) 운영 적용 및 모니터링**
+- 개선사항 적용 후 Elastic APM과 Thread 상태를 지속 관찰
+- 월초 피크 구간에서도 병목이 재발하지 않음
 
 #### 성과
-- synchronized 제거 이후 월초 피크 구간에서도 latency 지표가 안정적으로 유지
-- Thread Dump 상 BLOCKED 스레드가 재발하지 않았으며, 동일한 성능 이슈 근절
+- latency **2.4초 → 1.8초(약 24% 개선)**
+- TPS **13.5 → 19.8(약 47% 증가)**
+- APM 상 월초 피크 구간에서도 latency 지표가 안정적으로 유지
 
 ### API 멱등성 개선
 
