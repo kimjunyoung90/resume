@@ -992,19 +992,20 @@
 
     <div class="project-overview">
         <ul>
-            <li>업무 프로세스에서 발생하는 비효율을 개선하여 조직 전체 생산성 향상에 기여합니다.</li>
+            <li>업무 프로세스에서 발생하는 비효율을 개선하여 조직 전체 생산성 향상에 기여했습니다.</li>
         </ul>
     </div>
 
     <div class="problem-solving">
-        <div class="ps-title">API 명세 자동화</div>
+        <div class="ps-title">API 명세서 작성 자동화</div>
 
         <div class="ps-section">
             <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
-                    <li>신규 API 개발 후 Confluence Wiki에 명세서를 수작업으로 작성해야 했음</li>
-                    <li>작성 누락 발생 및 문서화에 시간이 소요되어 개발 집중도 저하</li>
+                    <li>신규 API 개발 시 Confluence Wiki에 명세서를 작성해서 공유해야함</li>
+                    <li>명세서를 일일이 작성하다 보니 작성 시간이 오래 걸리고, 누락되는 경우도 발생하여 개발 비용 증가</li>
+                    <li>개발자들이 불필요한 문서 작업에 시간을 소모하여 개발 집중도 저하</li>
                 </ul>
             </div>
         </div>
@@ -1012,10 +1013,22 @@
         <div class="ps-section">
             <span class="ps-label solution">해결 전략</span>
             <div class="ps-content">
-                <ul>
-                    <li>MCP 공식 Agent가 구축형 Confluence에서는 사용할 수 없는 제약을 해결하기 위해 커뮤니티 MCP 탐색 및 연동</li>
-                    <li>API 명세 자동 생성 기능 테스트 및 적용</li>
-                    <li>적용 및 연동 방법을 가이드 문서로 정리하여 팀 전파</li>
+                <p><strong>1) MCP 기반 자동화 방안 탐색</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>사내 구축형 Confluence에 MCP를 연동하는 방법 조사</li>
+                </ul>
+                <p><strong>2) 구축형 환경 호환 MCP 발굴</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Confluence 공식 MCP는 구축형 Wiki에서 동작하지 않는 문제 확인</li>
+                    <li>커뮤니티 MCP 프로젝트(sooperset/mcp-atlassian)를 발굴하여 직접 테스트 및 연동</li>
+                </ul>
+                <p><strong>3) 자동 명세서 작성 기능 검증</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>AI가 코드를 탐색해 Confluence Wiki에 명세서를 자동으로 작성하는 것을 확인</li>
+                </ul>
+                <p><strong>4) 조직 전파를 위한 가이드 문서 작성</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>팀원 및 부서 개발자들이 바로 사용할 수 있도록 연동 가이드 문서 및 명세서 포맷이 적힌 프롬프트 공유</li>
                 </ul>
             </div>
         </div>
@@ -1024,9 +1037,9 @@
             <span class="ps-label result">성과</span>
             <div class="ps-content">
                 <ul>
-                    <li>명세 작성 누락 감소 및 문서 일관성 확보</li>
-                    <li>수작업 문서 작성 시간 절감, 개발 효율 증가</li>
-                    <li>조직 전체에 자동화 적용 구조 확산</li>
+                    <li>반복적인 API 명세 작성 작업이 자동화되어 문서 작성 시간 절감</li>
+                    <li>개발자가 문서 작성 대신 서비스 개발/품질 개선에 더 집중할 수 있게 됨</li>
+                    <li>조직 전체적으로 비효율적 운영 업무를 개선한 실질적 자동화 사례가 되어 <strong>조직 확산 효과</strong> 달성</li>
                 </ul>
             </div>
         </div>
@@ -1039,8 +1052,9 @@
             <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
-                    <li>React 기반 다국어 적용 시 JSX, 속성, 함수 내 텍스트를 수작업으로 메시지 파일로 변환해야 함</li>
-                    <li>반복 업무로 인해 개발 생산성이 저하되고 누락이 빈번하게 발생</li>
+                    <li>한국어·영어·일본어 3개 언어 서비스를 제공하기 위해 클라이언트 애플리케이션 개발 시 소스코드 내 한국어를 다국어 도구(react-intl)가 읽을 수 있는 형태로 변환하고 메시지 파일 번역 작업 수행 필요</li>
+                    <li>매번 개발 시마다 수행해야 하는 단순 반복 작업으로 빠르게는 몇 분, 길게는 며칠이 소요</li>
+                    <li>비개발 업무와도 같아 많은 개발자들이 기피하는 업무</li>
                 </ul>
             </div>
         </div>
@@ -1048,9 +1062,24 @@
         <div class="ps-section">
             <span class="ps-label solution">해결 전략</span>
             <div class="ps-content">
-                <ul>
-                    <li>babel parser 기반 AST 탐색을 통해 하드코딩된 문자열을 자동으로 추출해 메시지 키로 변환하는 CLI 개발</li>
-                    <li>npm 모듈 형태로 CLI 패키징하여 배포 (오픈소스 공개)</li>
+                <p><strong>1) 문제 정의 및 자동화 목표 설정</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>"하드코딩 문자열을 자동으로 다국어 도구가 읽을 수 있는 형태로 수정해주는 자동화 도구 필요"로 핵심 과제 정의</li>
+                </ul>
+                <p><strong>2) babel parser 기반 자동 변환 구현</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>JavaScript 기반 클라이언트 애플리케이션의 소스 코드를 babel parser로 탐색하여 하드코딩된 문자열 자동 탐색</li>
+                    <li>하드코딩된 문자열을 react-intl이 읽을 수 있는 코드로 변환하고 메시지 파일의 키를 적용</li>
+                </ul>
+                <p><strong>3) CLI 도구 개발 및 배포</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>사용 간편성을 위해 CLI 도구로 구현</li>
+                    <li>노드 모듈로 패키징하여 클라이언트 개발자들이 익숙한 npm으로 실행 가능하도록 설계</li>
+                    <li>수십 개 코드 파일을 명령어 하나로 자동 변환 가능</li>
+                </ul>
+                <p><strong>4) 오픈소스 공개</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>동일한 고민을 겪는 외부 개발자들을 위해 npm 공식 패키지 저장소에 오픈소스로 공유</li>
                 </ul>
             </div>
         </div>
@@ -1059,9 +1088,10 @@
             <span class="ps-label result">성과</span>
             <div class="ps-content">
                 <ul>
-                    <li>기존 수십 분~수 시간 소요되던 작업을 5분 이내로 단축</li>
-                    <li>다국어 적용 반복 업무 대폭 감소로 개발자 생산성 향상</li>
-                    <li>내부뿐 아니라 외부 개발자들도 사용 가능 (npm registry 공개)</li>
+                    <li>다국어 작업 시간 <strong>5분 이내로 단축</strong></li>
+                    <li><strong>반복 업무가 대폭 감소</strong>하여 개발 효율 증가</li>
+                    <li>수동 작업을 코드 기반 자동화로 다국어 변환 실수 감소</li>
+                    <li>오픈소스 공개로 외부 개발자도 활용 가능하게 하여 개발 생태계에 기여</li>
                 </ul>
             </div>
         </div>
