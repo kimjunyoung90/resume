@@ -71,7 +71,7 @@
 
 #### 문제
 - 트래픽 집중 기간(월 1~10일) 요청량 급증으로 문서 발행 API 지연 발생
-- Elastic APM에서 latency 증가·throughput 감소 현상 관측
+- APM에서 latency 증가, throughput 감소 현상 관측
 - DB 및 외부 호출 구간은 정상 응답 → 애플리케이션 내부 처리 병목으로 판단
 
 #### 해결 전략
@@ -80,7 +80,7 @@
 - jstack 기반 Thread Dump 분석 과정에서 BLOCKED 스레드 대량 포착
 - Stack Trace를 통해 Blocking이 발생하는 메서드 확인
 - 특정 메서드가 `synchronized`에 의해 직렬 처리되고 있음을 발견
-- 코드 레벨 분석 결과 synchronized가 보호하려던 공유 자원이 없고 멀티 인스턴스 환경에서는 실효성이 없다고 판단하여 키워드 제거 결정
+- 코드 확인 시 synchronized가 보호하려던 공유 자원이 없고 멀티 인스턴스 환경에서는 실효성이 없어 키워드 제거 결정
 
 **2) 부하 테스트를 통한 개선 효과 검증**
 - staging 환경 부재로 개발 환경에서 부하 테스트 수행(JMeter)
