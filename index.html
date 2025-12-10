@@ -657,8 +657,8 @@
                 <a href="https://snvlqkq.tistory.com/" target="_blank">📝 https://snvlqkq.tistory.com</a>
             </div>
             <div class="contact-description">
-                <strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/concurrency-examples" target="_blank">동시성 처리 전략</a> 및 <a href="https://www.npmjs.com/package/global-message-converter" target="_blank">오픈 소스 개발</a><br>
-                <strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/29" target="_blank">SQL 인덱스 미사용 안티 쿼리 패턴</a> 및 <a href="https://snvlqkq.tistory.com/25" target="_blank">캐싱 처리 전략</a>
+                <strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/saga-examples/blob/main/choreography" target="_blank">MSA 이벤트 기반 분산 트랜잭션 처리(Kafka)</a> 및 <a href="https://www.npmjs.com/package/global-message-converter" target="_blank">오픈 소스 개발</a><br>
+                <strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/29" target="_blank">안티 쿼리 패턴</a> 및 <a href="https://snvlqkq.tistory.com/25" target="_blank">캐싱 처리 전략</a>
             </div>
         </div>
     </div>
@@ -725,7 +725,7 @@
             <div class="ps-content">
                 <ul>
                     <li>트래픽 집중 기간(월 1~10일) 요청량 급증으로 문서 발행 API 지연 발생</li>
-                    <li>APM에서 latency 증가, throughput 감소 현상 관측</li>
+                    <li>APM에서 latency 증가(p95 25초), throughput 감소 현상 관측</li>
                     <li>DB 및 외부 호출 구간은 정상 응답 → 애플리케이션 내부 처리 병목으로 판단</li>
                 </ul>
             </div>
@@ -828,8 +828,8 @@
             <div class="ps-content">
                 <ul>
                     <li>세금계산서 발행 프로세스는 포인트 시스템과 연계되어 <strong>포인트 차감 → 세금계산서 발행 → (실패 시) 포인트 환불</strong> 순으로 진행</li>
-                    <li>기존에는 보상 실패 시 데이터 정합성을 회복할 메커니즘이 부재</li>
-                    <li>결과적으로 문서 발행 실패 시 포인트가 환불되지 않는 정합성 오류 발생</li>
+                    <li>보상 실패 시 데이터 정합성을 회복할 메커니즘이 부재</li>
+                    <li>문서 발행 실패 시 포인트가 환불되지 않는 정합성 오류 발생</li>
                 </ul>
             </div>
         </div>

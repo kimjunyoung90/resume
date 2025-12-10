@@ -11,8 +11,8 @@
 			✉️ wnsdud1900427@gmail.com<br>
 			<img src="https://kimjunyoung90.github.io/resume/images/github-mark.png" width="16" style="vertical-align: middle;"/> <a href="https://github.com/kimjunyoung90">https://github.com/kimjunyoung90</a><br>
 			📝 <a href="https://snvlqkq.tistory.com">https://snvlqkq.tistory.com</a><br><br>
-			<strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/concurrency-examples">동시성 처리 전략</a> 및 <a href="https://www.npmjs.com/package/global-message-converter">오픈 소스 개발</a><br>
-			<strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/29">SQL 인덱스 미사용 안티 쿼리 패턴</a> 및 <a href="https://snvlqkq.tistory.com/25">캐싱 처리 전략</a>
+			<strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/saga-examples/blob/main/choreography">MSA 이벤트 기반 분산 트랜잭션 처리(Kafka)</a> 및 <a href="https://www.npmjs.com/package/global-message-converter">오픈 소스 개발</a><br>
+			<strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/29">안티 쿼리 패턴</a> 및 <a href="https://snvlqkq.tistory.com/25">캐싱 처리 전략</a>
 		</p>
 	</div>
 </div>
@@ -71,7 +71,7 @@
 
 #### 문제
 - 트래픽 집중 기간(월 1~10일) 요청량 급증으로 문서 발행 API 지연 발생
-- APM에서 latency 증가, throughput 감소 현상 관측
+- APM에서 latency 증가(p95 25초), throughput 감소 현상 관측
 - DB 및 외부 호출 구간은 정상 응답 → 애플리케이션 내부 처리 병목으로 판단
 
 #### 해결 전략
@@ -129,8 +129,8 @@
 
 #### 문제
 - 세금계산서 발행 프로세스는 포인트 시스템과 연계되어 **포인트 차감 → 세금계산서 발행 → (실패 시) 포인트 환불** 순으로 진행
-- 기존에는 보상 실패 시 데이터 정합성을 회복할 메커니즘이 부재
-- 결과적으로 문서 발행 실패 시 포인트가 환불되지 않는 정합성 오류 발생
+- 보상 실패 시 데이터 정합성을 회복할 메커니즘이 부재
+- 문서 발행 실패 시 포인트가 환불되지 않는 정합성 오류 발생
 
 #### 해결 전략
 1) 보상 결과 영속화
