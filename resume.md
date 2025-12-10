@@ -12,7 +12,7 @@
 			<img src="https://kimjunyoung90.github.io/resume/images/github-mark.png" width="16" style="vertical-align: middle;"/> <a href="https://github.com/kimjunyoung90">https://github.com/kimjunyoung90</a><br>
 			📝 <a href="https://snvlqkq.tistory.com">https://snvlqkq.tistory.com</a><br><br>
 			<strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/concurrency-examples">동시성 처리 전략</a> 및 <a href="https://www.npmjs.com/package/global-message-converter">오픈 소스 개발</a><br>
-			<strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/29">SQL 인덱스 미사용 안티 쿼리 패턴</a> 및 <a href="https://snvlqkq.tistory.com/25">캐싱 처리 전략</a>
+			<strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/29">안티 쿼리 패턴</a> 및 <a href="https://snvlqkq.tistory.com/25">캐싱 처리 전략</a>
 		</p>
 	</div>
 </div>
