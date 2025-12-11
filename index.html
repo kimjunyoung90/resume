@@ -1053,12 +1053,12 @@
             <span class="ps-label solution">해결 전략</span>
             <div class="ps-content">
                 <ul>
-                    <li>babel parser 기반으로 한국어를 자동으로 탐색하고 변환하는 node 모듈 개발</li>
-                    <li>하드코딩된 문자열을 react-intl이 읽을 수 있는 코드로 변환하고 메시지 파일의 키를 적용</li>
-                    <li>CLI 기반으로 간편하게 사용하도록 사용자 편의성 고려</li>
-                    <li>수십 개 코드 파일을 명령어 하나로 자동 변환 가능</li>
-                    <li>react 15, 17 버전 등 다양한 버전 지원</li>
-                    <li>npm 공식 패키지 저장소에 오픈소스로 공유</li>
+                    <li>babel parser를 활용해 React 컴포넌트를 AST(Abstract Syntax Tree)로 파싱</li>
+                    <li>JSX Element와 StringLiteral 노드를 순회하며 한국어 패턴 정규식으로 탐지</li>
+                    <li>하드코딩된 한국어 문자열을 react-intl의 FormattedMessage 컴포넌트로 자동 변환</li>
+                    <li>탐지된 한국어 문자열을 JSON 형태의 메시지 파일에 자동 추가</li>
+                    <li>기존 메시지 파일과 병합하여 키 중복 및 누락 방지</li>
+                    <li>Commander.js로 사용자 친화적인 CLI 인터페이스 구현</li>
                 </ul>
             </div>
         </div>
@@ -1068,7 +1068,7 @@
             <div class="ps-content">
                 <ul>
                     <li>다국어 작업 시간 <strong>5분 이내로 단축</strong></li>
-                    <li><strong>반복 업무가 대폭 감소</strong>하여 개발 효율 증가</li>
+                    <li><strong>반복 업무가 감소</strong>하여 개발 효율 증가</li>
                     <li>수동 작업을 코드 기반 자동화로 다국어 변환 실수 및 누락 감소</li>
                     <li>오픈소스 공개로 개발 생태계에 기여</li>
                 </ul>
