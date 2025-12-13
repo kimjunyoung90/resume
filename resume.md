@@ -39,10 +39,10 @@
 |분야|기술 스택|
 |---|---|
 |Backend|`Java`, `Spring Framework`, `MyBatis`|
-|DB|`Oracle`, `PostgreSQL`|
+|DB|`Oracle`, `PostgreSQL`, `Redis`|
 |Frontend|`JavaScript`, `React`, `Redux`, `Redux-Saga`|
-|DevOps|`Jenkins`, `ELK`, `APM`|
-|협업/관리|`Jira`, `Confluence`, `Git`|
+|DevOps/Operation|`Linux(Rocky/Ubuntu)`, `Jenkins`, `Git`, `ELK`, `APM`|
+|협업|`Jira`, `Confluence`|
 
 ---
 
