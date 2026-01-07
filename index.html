@@ -692,20 +692,20 @@
         <li><strong>Backend</strong> <code>Java</code> <code>Spring Framework</code> <code>MyBatis</code></li>
         <li><strong>DB</strong> <code>Oracle</code> <code>PostgreSQL</code> <code>Redis</code></li>
         <li><strong>Frontend</strong> <code>JavaScript</code> <code>React</code> <code>Redux</code> <code>Redux-Saga</code></li>
-        <li><strong>DevOps</strong> <code>Linux(Rocky/Ubuntu)</code> <code>Jenkins</code> <code>Git</code> <code>ELK</code> <code>APM</code></li>
+        <li><strong>DevOps</strong> <code>Linux</code> <code>Jenkins</code> <code>Git</code> <code>ELK</code> <code>APM</code></li>
         <li><strong>협업</strong> <code>Jira</code> <code>Confluence</code></li>
     </ul>    <h2>Work Experience</h2>
 
     <h3>더존비즈온 WEHAGO 개발센터 (4년차)</h3>
-    <div class="company-period">2021.09 ~ 재직중</div>
+    <div class="company-period"><strong>2021.09 ~ 재직중</strong></div>
     <ul>
-        <li>RESTful API 설계 및 개발</li>
-        <li>분산 트랜잭션 처리를 위한 Saga 패턴 설계 및 구현</li>
-        <li>데이터베이스 쿼리 최적화 및 인덱스 설계</li>
-        <li>멀티 인스턴스 환경에서의 동시성 제어 및 트랜잭션 처리</li>
-        <li>시스템 모니터링 및 성능 분석을 통한 병목지점 개선</li>
-        <li>JUnit/Mockito 기반 테스트 코드 작성</li>
-        <li>React/Redux 기반 프론트엔드 개발</li>
+        <li><strong>RESTful API 설계 및 개발</strong></li>
+        <li><strong>분산 트랜잭션 처리를 위한 Saga 패턴 설계 및 구현</strong></li>
+        <li><strong>데이터베이스 쿼리 최적화 및 인덱스 설계</strong></li>
+        <li><strong>멀티 인스턴스 환경에서의 동시성 제어 및 트랜잭션 처리</strong></li>
+        <li><strong>시스템 모니터링 및 성능 분석을 통한 병목지점 개선</strong></li>
+        <li><strong>JUnit/Mockito 기반 테스트 코드 작성</strong></li>
+        <li><strong>React/Redux 기반 프론트엔드 개발</strong></li>
     </ul>
 
     <h2>Projects</h2>
@@ -714,7 +714,7 @@
     
     <div class="project-overview">
         <ul>
-            <li>월 6,500만 건, 최대 1,200 TPS 트래픽을 처리하는 세금계산서 발행·신고 및 전자문서 플랫폼 운영</li>
+            <li><strong>월 6,500만 건, 최대 1,200 TPS</strong> 트래픽을 처리하는 세금계산서 발행·신고 및 전자문서 플랫폼 운영</li>
         </ul>
     </div>
 
@@ -775,8 +775,8 @@
             <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
-                    <li>고객사의 비정상 요청(중복 요청·응답 미수신)으로 동일 세금계산서가 간헐적으로 중복 발행</li>
-                    <li>기존 구조 : 멱등키 NULL 허용 및 UNIQUE 제약 조건 부재로 동시성 환경에서 멱등성 보장 실패</li>
+                    <li>고객사의 비정상 요청(중복 요청·응답 미수신)으로 동일 세금계산서가 간헐적으로 <strong>중복 발행</strong></li>
+                    <li>기존 구조 : 멱등키 NULL 허용 및 UNIQUE 제약 조건 부재로 동시성 환경에서 <strong>멱등성 보장 실패</strong></li>
                     <li>중복 멱등키, NULL, 대용량 테이블 위험성으로 인해 기존 테이블 제약 조건 추가 불가</li>
                 </ul>
             </div>
@@ -787,7 +787,7 @@
             <div class="ps-content">
                 <p><strong>1) 멱등키 전용 테이블 신규 설계</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>기존 테이블의 정합성 문제를 우회하기 위해 멱등키만 관리하는 독립 테이블 신규 구축</li>
+                    <li>기존 테이블의 정합성 문제를 우회하기 위해 <strong>멱등키만 관리하는 독립 테이블 신규 구축</strong></li>
                 </ul>
                 <p><strong>2) 고객별 멱등키 충돌 방지를 위한 복합 Primary Key 적용</strong></p>
                 <ul style="margin-left: 20px;">
@@ -797,7 +797,7 @@
                 </ul>
                 <p><strong>3) 멱등성 보장 로직 구현 (DB 기반 처리 흐름)</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>멱등키 존재 시 멱등키 테이블에 INSERT 시도</li>
+                    <li>멱등키 존재 시 멱등키 테이블에 <strong>INSERT 시도</strong></li>
                     <li>이미 존재하는 경우 PK 충돌(duplicate key)로 중복 요청 즉시 감지</li>
                     <li>중복 발행 응답 반환</li>
                 </ul>
@@ -813,8 +813,8 @@
             <span class="ps-label result">성과</span>
             <div class="ps-content">
                 <ul>
-                    <li>동일 세금계산서 중복 발행 문제를 전면 차단, API 신뢰도 개선</li>
-                    <li>API 사용 고객의 호환성을 유지하면서도 멱등성 개선</li>
+                    <li>동일 세금계산서 <strong>중복 발행 문제를 전면 차단</strong>, <strong>API 신뢰도 개선</strong></li>
+                    <li>API 사용 고객의 호환성을 유지하면서도 <strong>멱등성 개선</strong></li>
                 </ul>
             </div>
         </div>
@@ -829,7 +829,7 @@
                 <ul>
                     <li>세금계산서 발행 프로세스는 포인트 시스템과 연계되어 <strong>포인트 차감 → 세금계산서 발행 → (실패 시) 포인트 환불</strong> 순으로 진행</li>
                     <li>보상(포인트 환불) 실패 시 데이터 정합성을 회복할 메커니즘이 부재</li>
-                    <li>문서 발행 실패 시 포인트가 환불되지 않는 정합성 오류 발생</li>
+                    <li>문서 발행 실패 시 포인트가 환불되지 않는 <strong>정합성 오류 발생</strong></li>
                 </ul>
             </div>
         </div>
@@ -839,21 +839,21 @@
             <div class="ps-content">
                 <p><strong>1) 보상 결과 영속화</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>보상 트랜잭션 실패 이력을 저장하는 전용 테이블 생성</li>
+                    <li><strong>보상 트랜잭션 실패 이력</strong>을 저장하는 전용 테이블 생성</li>
                     <li>원천 차감건, 문서 번호, 상태(READY, FAIL, RETRY, SUCCESS), 재처리 횟수, 사용자 고유 번호로 구성</li>
                     <li>보상 트랜잭션 실패 시 실패 이력 적재</li>
                 </ul>
 
                 <p><strong>2) 보상 트랜잭션 재처리 프로세스 구축</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>Scheduler를 활용해 실패 트랜잭션을 주기적으로 조회하여 환불 API 호출</li>
+                    <li><strong>Scheduler</strong>를 활용해 실패 트랜잭션을 주기적으로 조회하여 환불 API 호출</li>
                     <li>최대 재시도 횟수 제한으로 무한 재시도 방지</li>
                     <li>최종 실패 시 백오피스에서 수동 복구 기능 제공</li>
                 </ul>
 
                 <p><strong>3) DB 부하 최소화</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>(상태 + 인입 시간) 복합 인덱스 생성</li>
+                    <li><strong>(상태 + 인입 시간) 복합 인덱스</strong> 생성</li>
                     <li>최대 100건 조회 제한으로 DB 부하 및 조회 성능 최적화</li>
                 </ul>
             </div>
@@ -888,15 +888,15 @@
             <div class="ps-content">
                 <p><strong>1) 동시성 문제 재현 및 분석</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>ExecutorService 기반 동시성 테스트 코드 작성하여 이슈 재현</li>
+                    <li><strong>ExecutorService 기반 동시성 테스트 코드</strong> 작성하여 이슈 재현</li>
                     <li>10개 스레드풀 생성만으로도 동시성 이슈 발생 확인</li>
                     <li>단일 쿼리로 개선 검토했으나, 히스토리를 쌓아야 해서 로직 개선 불가</li>
                 </ul>
                 <p><strong>2) Optimistic Lock 적용</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>한 회사당 100건, 회사에 일반적으로 채권 발행 담당자가 소수이고 초기 서비스라 사용자가 적어 경합이 적을 것으로 판단</li>
-                    <li>경합 확률이 낮은 구조를 고려해 Optimistic Lock + Spring Retry 적용</li>
-                    <li>version 컬럼을 추가하여 충돌 감지</li>
+                    <li>경합 확률이 낮은 구조를 고려해 <strong>Optimistic Lock + Spring Retry</strong> 적용</li>
+                    <li><strong>version 컬럼을 추가</strong>하여 충돌 감지</li>
                 </ul>
                 <p><strong>3) 재시도 전략</strong></p>
                 <ul style="margin-left: 20px;">
