@@ -41,7 +41,7 @@
 |Backend|`Java`, `Spring Framework`, `MyBatis`|
 |DB|`Oracle`, `PostgreSQL`, `Redis`|
 |Frontend|`JavaScript`, `React`, `Redux`, `Redux-Saga`|
-|DevOps|`Linux(Rocky/Ubuntu)`, `Jenkins`, `Git`, `ELK`, `APM`|
+|DevOps|`Linux`, `Jenkins`, `Git`, `ELK`, `APM`|
 |협업|`Jira`, `Confluence`|
 
 ---
