@@ -1,133 +1,16 @@
-# CLAUDE.md
+# Repository Guidelines
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+## Project Structure & Module Organization
+All public assets live at the repository root to match GitHub Pages hosting. `index.html` is the canonical resume UI with embedded CSS, while `resume.md` documents the raw content used to draft new sections. Images referenced by the HTML sit under `images/`, and any generated dependencies stay in `node_modules/` (never edit them manually). Keep new media or downloadable assets grouped under `images/` or a new folder created at the root so relative paths stay shallow and easy to audit.
 
-## Project Overview
+## Build, Test, and Development Commands
+Run `npm install` once to pull the single `gh-pages` dependency used for deployment. During authoring, open `index.html` directly in a browser or spin up a local server via `npx serve .` to confirm relative asset paths. Publish updates with `npm run deploy`, which pushes the current root directory to the configured `gh-pages` branch. Avoid custom build steps—the site is a static document and the GitHub Action expects the flat structure.
 
-This is a static resume website for 김준영 (backend developer) hosted on GitHub Pages. The site is built as a single-page HTML document with embedded CSS, following a Modern Minimalist design theme with Minimal Slate color palette.
+## Coding Style & Naming Conventions
+HTML uses four-space indentation and lowercase tags. Prefer semantic grouping with `<section>` and `<h2>` rather than extra `<div>` layers, mirroring the existing hierarchy. CSS is inline within `<style>`; reuse the established neutral palette (`#1a202c`, `#718096`, `#e2e8f0`) and typography stack for consistency. Class names should stay descriptive (`.contact-section`, `.project-period`) and hyphenated. Keep filenames lowercase with hyphens, e.g., `images/company-logo.png`.
 
-## Key Architecture
+## Testing Guidelines
+There is no automated test harness, so rely on manual verification. Check desktop widths up to 1200px and narrow mobile widths (~375px) to ensure flex layouts wrap cleanly and typography remains legible. Validate external links (email, GitHub, blog) after edits, and confirm that all images referenced in `index.html` exist in `images/` to avoid broken deployments. Before running `npm run deploy`, reload the page in a private browser window to ensure cached styles do not hide regressions.
 
-### Content Synchronization Pattern
-- **Source of Truth**: `resume.md` contains the canonical resume content in markdown format
-- **Display Layer**: `index.html` is the styled HTML version that must be kept in sync with `resume.md`
-- **Update Flow**: When updating content, modify `resume.md` first, then apply those changes to `index.html`
-
-### File Structure
-```
-/
-├── index.html          # Main resume page (styled, deployed version)
-├── resume.md           # Content source for drafting/editing
-├── images/             # All image assets (profile.png, github-mark.png)
-├── package.json        # Single dependency: gh-pages for deployment
-└── AGENTS.md          # Repository guidelines (legacy documentation)
-```
-
-## Design System
-
-### Color Palette (Minimal Slate Theme)
-- Primary: `#0f172a` (slate black) - Headers, emphasis
-- Text: `#1e293b`, `#475569` (dark/medium gray) - Body text
-- Secondary: `#94a3b8`, `#64748b` (light gray) - Metadata, captions
-- Background: `#fafafa`, `#f8fafc` - Card backgrounds
-- Borders: `#e2e8f0`, `#f1f5f9` - Subtle dividers
-
-### Typography
-- Font stack: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Segoe UI"
-- Base line-height: 1.75
-- Heading letter-spacing: Negative values for tighter spacing (-1px, -0.3px)
-- Section headers: UPPERCASE with wide letter-spacing (3px)
-
-### Layout Principles
-- Max-width: 900px (centered)
-- Generous padding: 100px 50px (desktop), 60px 30px (mobile)
-- Section spacing: 80px between major sections
-- Hover effects: Subtle transitions (0.2s-0.3s ease)
-
-## Content Structure
-
-### Resume Sections (in order)
-1. **Header**: Name and subtitle
-2. **Contact**: Profile image + contact links (email, GitHub, blog)
-3. **Core Competency**: 5 key technical strengths
-4. **My Working Style**: 3 work principles (claim → detailed example format)
-5. **Skills**: Table of tech stack by category (Backend, DB, Frontend, DevOps, 협업/관리)
-6. **Work Experience**: 더존비즈온 WEHAGO (4년차)
-7. **Projects**: Detailed project experiences with Problem-Solution-Result format
-8. **Certifications**: Professional certifications with dates
-
-### Project Experience Format
-Each project follows this structure:
-- Project title + period
-- Brief overview
-- Sub-experiences using Problem-Solution-Result cards:
-  - `.ps-label.problem` (red background)
-  - `.ps-label.solution` (blue background)
-  - `.ps-label.result` (green background)
-
-## Development Commands
-
-### Setup
-```bash
-npm install  # Install gh-pages dependency (one-time)
-```
-
-### Local Development
-```bash
-# Open index.html directly in browser, or use a local server:
-npx serve .
-# Then visit http://localhost:3000
-```
-
-### Deployment
-```bash
-npm run deploy  # Pushes current directory to gh-pages branch
-```
-
-## Common Editing Tasks
-
-### Updating Resume Content
-1. Edit `resume.md` with new content
-2. Apply the same changes to `index.html` (maintain HTML structure and CSS classes)
-3. Test locally by opening `index.html` in browser
-4. Check responsive layout at ~375px and ~1200px widths
-5. Deploy with `npm run deploy`
-
-### Adding New Skills
-- Update Skills table in both `resume.md` and `index.html`
-- Use `<code>` tags for tech stack items in HTML
-- Maintain categories: Backend, DB, Frontend, DevOps, 협업/관리
-
-### Adding New Project Experience
-- Follow Problem-Solution-Result structure
-- Use appropriate `.ps-label` classes (problem/solution/result)
-- Maintain consistent spacing with existing projects
-- Add `<hr>` separator between different projects
-
-### Modifying Design
-- All CSS is inline in `<style>` tag within `index.html`
-- Follow existing class naming conventions (`.contact-section`, `.problem-solving`, `.ps-title`)
-- Maintain color palette consistency
-- Test hover effects and transitions
-
-## Git Workflow
-
-### Commit Message Style
-- Use short, present-tense Korean summaries (e.g., "내용 수정", "디자인 개선")
-- Group related changes in single commit
-- Keep dependency updates separate
-
-### Before Deployment
-1. Verify all image paths are correct (`images/` directory)
-2. Test external links (email, GitHub, blog)
-3. Check layout on mobile and desktop widths
-4. Clear browser cache and test in private window
-5. Ensure `resume.md` and `index.html` are synchronized
-
-## Important Notes
-
-- **Never edit files in `node_modules/`** - managed by npm
-- **Image references** must use relative paths from repository root
-- **No build process** - site is deployed as-is from root directory
-- **GitHub Pages URL**: https://kimjunyoung90.github.io/resume/
-- **Design theme**: Modern Minimalist with Minimal Slate palette (maintain consistency)
+## Commit & Pull Request Guidelines
+Recent history favors short, Korean summaries (e.g., `내용 수정`, `md 파일 수정`). Follow that style: one-line present-tense statements that describe the scope. Group related visual and content tweaks into a single commit; leave dependency updates isolated. Pull requests should include a concise description of the resume sections touched, before/after screenshots when layout changes, and links to any issue or ticket motivating the edit. Mention manual test steps performed so reviewers can reproduce results quickly.
