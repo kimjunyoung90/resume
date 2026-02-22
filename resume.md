@@ -11,7 +11,7 @@
 			✉️ wnsdud1900427@gmail.com<br>
 			<img src="https://kimjunyoung90.github.io/resume/images/github-mark.png" width="16" style="vertical-align: middle;"/> <a href="https://github.com/kimjunyoung90">https://github.com/kimjunyoung90</a><br>
 			📝 <a href="https://snvlqkq.tistory.com">https://snvlqkq.tistory.com</a><br><br>
-			<strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/saga-examples/blob/main/choreography">MSA 이벤트 기반 분산 트랜잭션 처리(Kafka)</a> 및 <a href="https://www.npmjs.com/package/global-message-converter">오픈 소스 개발</a><br>
+			<strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/saga-examples/blob/main/choreography">MSA 이벤트 기반 분산 트랜잭션 처리</a> 및 <a href="https://www.npmjs.com/package/global-message-converter">오픈 소스 개발</a><br>
 			<strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/29">안티 쿼리 패턴</a> 및 <a href="https://snvlqkq.tistory.com/25">캐싱 처리 전략</a>
 		</p>
 	</div>
