@@ -12,7 +12,7 @@
 			<img src="https://kimjunyoung90.github.io/resume/images/github-mark.png" width="16" style="vertical-align: middle;"/> <a href="https://github.com/kimjunyoung90">https://github.com/kimjunyoung90</a><br>
 			📝 <a href="https://snvlqkq.tistory.com">https://snvlqkq.tistory.com</a><br><br>
 			<strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/saga-examples/blob/main/choreography">MSA 이벤트 기반 분산 트랜잭션 처리</a> 및 <a href="https://www.npmjs.com/package/global-message-converter">오픈 소스 개발</a><br>
-			<strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/29">안티 쿼리 패턴</a> 및 <a href="https://snvlqkq.tistory.com/54">동시성 처리 전략</a>
+			<strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/54">동시성 처리 전략</a> 및  <a href="https://snvlqkq.tistory.com/29">안티 쿼리 패턴</a>
 		</p>
 	</div>
 </div>
@@ -26,7 +26,7 @@
 
 - **AI 도구를 활용하여 개발 생산성을 높이고 있습니다.**
 
-    반복적으로 수행되는 작업은 프롬프트로 정의하고, 원하는 품질의 결과를 생산하도록 프롬프트를 반복 개선하여 재사용 가능한 형태로 관리하고 있습니다.
+    반복적으로 수행되는 작업은 프롬프트로 정의하고, 일관된 품질의 결과를 생산하도록 프롬프트를 반복 개선하여 재사용 가능한 형태로 관리하고 있습니다.
 	예를 들어, 유지보수 시 다이어그램 생성 프롬프트를 활용하여 시퀀스 다이어그램과 플로우차트를 생성하고, 코드의 호출 흐름과 처리 순서를 빠르게 파악하여 문제 포인트를 특정하는 데 활용하고 있습니다.
 
 - **정보를 문서로 정리해 공유합니다.**
