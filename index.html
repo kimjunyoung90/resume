@@ -836,8 +836,8 @@
             <div class="ps-content">
                 <ul>
                     <li>세금계산서 발행 프로세스는 포인트 시스템과 연계되어 <strong>포인트 차감 → 세금계산서 발행 → (실패 시) 포인트 환불</strong> 순으로 진행</li>
-                    <li>보상(포인트 환불) 실패 시 데이터 정합성을 회복할 메커니즘이 부재</li>
-                    <li>문서 발행 실패 시 포인트가 환불되지 않는 <strong>정합성 오류 발생</strong></li>
+                    <li>보상 트랜잭션(포인트 환불) 실패 시 데이터 정합성을 회복할 메커니즘이 부재</li>
+                    <li>문서 발행 실패 시 포인트가 환불되지 않는 문제가 발생하여 고객 금전적 손실 야기</li>
                 </ul>
             </div>
         </div>
@@ -848,21 +848,15 @@
                 <p><strong>1) 보상 결과 영속화</strong></p>
                 <ul style="margin-left: 20px;">
                     <li><strong>보상 트랜잭션 실패 이력</strong>을 저장하는 전용 테이블 생성</li>
-                    <li>원천 차감건, 문서 번호, 상태(READY, FAIL, RETRY, SUCCESS), 재처리 횟수, 사용자 고유 번호로 구성</li>
+                    <li>문서 번호, 포인트 코드, 상태(READY, RETRY, SUCCESS, FAIL), 재처리 횟수, 사용자 고유 번호로 구성</li>
                     <li>보상 트랜잭션 실패 시 실패 이력 적재</li>
                 </ul>
 
                 <p><strong>2) 보상 트랜잭션 재처리 프로세스 구축</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li><strong>Scheduler</strong>를 활용해 실패 트랜잭션을 주기적으로 조회하여 환불 API 호출</li>
-                    <li>최대 재시도 횟수 제한으로 무한 재시도 방지</li>
-                    <li>최종 실패 시 백오피스에서 수동 복구 기능 제공</li>
-                </ul>
-
-                <p><strong>3) DB 부하 최소화</strong></p>
-                <ul style="margin-left: 20px;">
-                    <li><strong>(상태, 인입 시간) 복합 인덱스 설계</strong>로 Table Full Scan 방지</li>
-                    <li><strong>범위 탐색</strong>을 통한 조회 성능 최적화</li>
+                    <li><strong>Jenkins 스케줄을 활용</strong>한 API 호출 방식으로 구현</li>
+                    <li>처리 순서: 미처리(<code>READY</code>) 보상 트랜잭션 조회 → 상태를 <code>RETRY</code>로 업데이트 → 환불 API 호출 → 성공 시 <code>SUCCESS</code>, 실패 시 재시도 횟수 증가 후 <code>READY</code>로 복구</li>
+                    <li>최대 재시도 횟수(5회) 초과 시 <code>FAIL</code>로 업데이트, <strong>자사 메신저 알림 발송</strong> 및 백오피스 수동 복구 기능 구현</li>
                 </ul>
             </div>
         </div>
@@ -871,8 +865,8 @@
             <span class="ps-label result">결과</span>
             <div class="ps-content">
                 <ul>
-                    <li><strong>분산 트랜잭션 데이터 정합성 문제 해소</strong>, 포인트·문서 데이터 불일치 제거</li>
-                    <li>보상 실패 시에도 복구 가능한 <strong>재처리/복구 체계를 확보</strong>하여 <strong>시스템 안정성 강화</strong></li>
+                    <li>도입 후 포인트·문서 데이터 불일치 <strong>0건</strong></li>
+                    <li>보상 실패 건 자동 재처리로 수동 개입 없이 정합성 복구 가능한 체계 확보</li>
                 </ul>
             </div>
         </div>
