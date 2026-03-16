@@ -740,7 +740,7 @@
         <div class="ps-title">API 대량 지연 개선</div>
 
         <div class="ps-section">
-            <span class="ps-label problem">문제</span>
+            <span class="ps-label problem">상황</span>
             <div class="ps-content">
                 <ul>
                     <li>트래픽 집중 기간(월 1~10일) 요청량 급증으로 문서 발행 API 지연 발생</li>
@@ -751,7 +751,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">해결</span>
+            <span class="ps-label solution">행동</span>
             <div class="ps-content">
                 <p><strong>1) Thread 상태 분석을 통한 원인 특정</strong></p>
                 <ul style="margin-left: 20px;">
@@ -775,7 +775,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">성과</span>
+            <span class="ps-label result">결과</span>
             <div class="ps-content">
                 <ul>
                     <li>latency <strong>2.4초 → 1.8초(약 24% 개선)</strong></li>
@@ -790,49 +790,39 @@
         <div class="ps-title">API 멱등성 개선</div>
 
         <div class="ps-section">
-            <span class="ps-label problem">문제</span>
+            <span class="ps-label problem">상황</span>
             <div class="ps-content">
                 <ul>
                     <li>고객사의 비정상 요청(중복 요청·응답 미수신)으로 동일 세금계산서가 간헐적으로 <strong>중복 발행</strong></li>
-                    <li>기존 구조 : 멱등키 NULL 허용 및 UNIQUE 제약 조건 부재로 동시성 환경에서 <strong>멱등성 보장 실패</strong></li>
-                    <li>중복 멱등키, NULL, 대용량 테이블 위험성으로 인해 기존 테이블 제약 조건 추가 불가</li>
+                    <li>기존 구조: 고객 제공 멱등키를 세금계산서 테이블에 멱등키 컬럼을 두어 관리했으나, <strong>NULL 허용·UNIQUE 제약 없음</strong></li>
+                    <li>중복 방지 로직이 <strong>애플리케이션 레벨 SELECT 체크</strong>에만 의존 → 동시 요청 시 둘 다 "없음"으로 판단해 <strong>중복 발행 가능</strong></li>
                 </ul>
             </div>
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">해결</span>
+            <span class="ps-label solution">행동</span>
             <div class="ps-content">
                 <p><strong>1) 멱등키 전용 테이블 신규 설계</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>기존 테이블의 정합성 문제를 우회하기 위해 <strong>멱등키만 관리하는 독립 테이블 신규 구축</strong></li>
+                    <li><strong>멱등키만 관리하는 테이블을 신규 구축</strong></li>
+                    <li>기존 500GB 세금계산서 테이블에 UNIQUE 인덱스 추가 시 테이블 락으로 인한 서비스 중단 위험 고려</li>
+                    <li>신규 건부터 멱등키를 새 테이블에 함께 적재, 기존 세금계산서 테이블은 그대로 유지</li>
                 </ul>
-                <p><strong>2) 고객별 멱등키 충돌 방지를 위한 복합 Primary Key 적용</strong></p>
+                <p><strong>2) 복합 Primary Key로 DB 레벨 중복 차단</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>PK 구성: (고객 고유번호, 멱등키 값)</li>
-                    <li>고객 단위로 멱등키가 고유하도록 보장</li>
-                    <li>동일 고객의 동일 멱등키 요청은 PK 충돌로 즉시 차단하여 중복 발행 근본 해결</li>
-                </ul>
-                <p><strong>3) 멱등성 보장 로직 구현 (DB 기반 처리 흐름)</strong></p>
-                <ul style="margin-left: 20px;">
-                    <li>멱등키 존재 시 멱등키 테이블에 <strong>INSERT 시도</strong></li>
-                    <li>이미 존재하는 경우 PK 충돌(duplicate key)로 중복 요청 즉시 감지</li>
-                    <li>중복 발행 응답 반환</li>
-                </ul>
-                <p><strong>4) 멱등키 미전달 고객을 위한 호환성 처리</strong></p>
-                <ul style="margin-left: 20px;">
-                    <li>멱등키 미전달 고객은 멱등키 로직을 우회하도록 분기</li>
-                    <li>고객 영향도 최소화</li>
+                    <li>PK 구성: <code>(고객 고유번호, 멱등키 값)</code>으로 <strong>고객 단위 멱등키 고유성 보장</strong></li>
+                    <li>동시 요청이 들어와도 먼저 INSERT된 요청만 성공하고, 나머지는 <strong>PK 충돌로 즉시 차단</strong></li>
                 </ul>
             </div>
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">성과</span>
+            <span class="ps-label result">결과</span>
             <div class="ps-content">
                 <ul>
-                    <li>동일 세금계산서 <strong>중복 발행 문제를 전면 차단</strong>, <strong>API 신뢰도 개선</strong></li>
-                    <li>API 사용 고객의 호환성을 유지하면서도 <strong>멱등성 개선</strong></li>
+                    <li>도입 후 <strong>중복 발행 0건</strong> (고객 문의 없음으로 확인)</li>
+                    <li>서비스 중단 없이 <strong>멱등성 보장 구조 개선</strong></li>
                 </ul>
             </div>
         </div>
@@ -842,7 +832,7 @@
         <div class="ps-title">분산 시스템간 트랜잭션 정합성 개선</div>
 
         <div class="ps-section">
-            <span class="ps-label problem">문제</span>
+            <span class="ps-label problem">상황</span>
             <div class="ps-content">
                 <ul>
                     <li>세금계산서 발행 프로세스는 포인트 시스템과 연계되어 <strong>포인트 차감 → 세금계산서 발행 → (실패 시) 포인트 환불</strong> 순으로 진행</li>
@@ -853,7 +843,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">해결</span>
+            <span class="ps-label solution">행동</span>
             <div class="ps-content">
                 <p><strong>1) 보상 결과 영속화</strong></p>
                 <ul style="margin-left: 20px;">
@@ -878,7 +868,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">성과</span>
+            <span class="ps-label result">결과</span>
             <div class="ps-content">
                 <ul>
                     <li><strong>분산 트랜잭션 데이터 정합성 문제 해소</strong>, 포인트·문서 데이터 불일치 제거</li>
@@ -892,7 +882,7 @@
         <div class="ps-title">동시성 문제 해결 (Optimistic Lock)</div>
         
         <div class="ps-section">
-            <span class="ps-label problem">문제</span>
+            <span class="ps-label problem">상황</span>
             <div class="ps-content">
                 <ul>
                     <li>신규 채권 발행 서비스 출시 프로모션으로 고객별 무료 발행 100건 이벤트 진행</li>
@@ -902,7 +892,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">해결</span>
+            <span class="ps-label solution">행동</span>
             <div class="ps-content">
                 <p><strong>1) 동시성 문제 재현 및 분석</strong></p>
                 <ul style="margin-left: 20px;">
@@ -933,7 +923,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">성과</span>
+            <span class="ps-label result">결과</span>
             <div class="ps-content">
                 <ul>
                     <li>발행 동시 요청 상황에서도 <strong>중복 차감 이슈 없이 안정적으로 처리</strong></li>
@@ -957,7 +947,7 @@
         <div class="ps-title">DB 구조 재설계 및 확장성 개선</div>
 
         <div class="ps-section">
-            <span class="ps-label problem">문제</span>
+            <span class="ps-label problem">상황</span>
             <div class="ps-content">
                 <ul>
                     <li>기존 뉴스 서비스는 단일 언론사만을 고려해 설계되어 <code>categories</code>에 언론사 고유 카테고리를 그대로 저장하고 UI에 노출하는 구조였음</li>
@@ -967,7 +957,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">해결</span>
+            <span class="ps-label solution">행동</span>
             <div class="ps-content">
                 <p><strong>1) N:M 매핑 구조의 데이터베이스 재설계</strong></p>
                 <ul style="margin-left: 20px;">
@@ -996,7 +986,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">성과</span>
+            <span class="ps-label result">결과</span>
             <div class="ps-content">
                 <ul>
                     <li><strong>N:M 매핑 구조</strong>로 <strong>DB 구조 변경 없이 매핑 데이터만 추가</strong>하여 <strong>비즈워치 외 2개 언론사 확장</strong></li>
@@ -1021,7 +1011,7 @@
         <div class="ps-title">API 명세서 작성 자동화</div>
 
         <div class="ps-section">
-            <span class="ps-label problem">문제</span>
+            <span class="ps-label problem">상황</span>
             <div class="ps-content">
                 <ul>
                     <li>신규 API 개발 시 Confluence Wiki에 명세서를 작성해서 공유해야하는 시스템</li>
@@ -1031,7 +1021,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">해결</span>
+            <span class="ps-label solution">행동</span>
             <div class="ps-content">
                 <ul>
                     <li><strong>AI Agent(Claude Code, Codex)</strong>를 사내 Wiki에 연동하는 방법 탐색</li>
@@ -1044,7 +1034,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">성과</span>
+            <span class="ps-label result">결과</span>
             <div class="ps-content">
                 <ul>
                     <li>반복적인 API 명세 작성 작업이 <strong>자동화</strong>되어 낭비되는 비용을 줄임</li>
@@ -1058,7 +1048,7 @@
         <div class="ps-title">다국어 처리 자동화 도구 개발</div>
 
         <div class="ps-section">
-            <span class="ps-label problem">문제</span>
+            <span class="ps-label problem">상황</span>
             <div class="ps-content">
                 <ul>
                     <li>한국어·영어·일본어 3개 언어로 서비스를 제공하기 위해 클라이언트 코드 내 한국어를 다국어 도구(react-intl)가 읽을 수 있는 형태로 변환 작업의 필요</li>
@@ -1068,7 +1058,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">해결</span>
+            <span class="ps-label solution">행동</span>
             <div class="ps-content">
                 <ul>
                     <li><strong>babel parser</strong>를 활용해 React 컴포넌트를 <strong>AST(Abstract Syntax Tree)</strong>로 파싱</li>
@@ -1082,7 +1072,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">성과</span>
+            <span class="ps-label result">결과</span>
             <div class="ps-content">
                 <ul>
                     <li>다국어 작업 시간 <strong>5분 이내로 단축</strong></li>
