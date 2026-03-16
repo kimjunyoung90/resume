@@ -5,8 +5,9 @@
         "matcher": "Write|Edit",
         "hooks": [
           {
-            "type": "command",
-            "command": "bash .claude/sync-resume.sh"
+            "type": "agent",
+            "prompt": "수정된 파일이 resume.md인 경우에만 실행: resume.md의 변경된 내용을 index.html에 동기화해줘. HTML 구조와 CSS는 유지하고 텍스트 내용만 업데이트해줘.",
+            "timeout": 60
           }
         ]
       }
