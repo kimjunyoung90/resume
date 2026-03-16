@@ -897,21 +897,18 @@
                 <p><strong>2) Optimistic Lock 적용</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>한 회사당 100건, 회사에 일반적으로 채권 발행 담당자가 소수이고 초기 서비스라 사용자가 적어 경합이 적을 것으로 판단</li>
-                    <li>경합 확률이 낮은 구조를 고려해 <strong>Optimistic Lock + Spring Retry</strong> 적용</li>
-                    <li><strong>version 컬럼을 추가</strong>하여 충돌 감지</li>
+                    <li>경합 확률이 낮은 구조를 고려해 <strong>Optimistic Lock + 재시도</strong> 적용</li>
                 </ul>
                 <p><strong>3) 재시도 전략</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>backoff, random, multiplier, maxDelay 설정 적용</li>
-                    <li>경합 상황에서 모든 트랜잭션이 즉시 재시도를 수행하면 재경합 가능성이 높아 대기시간 지정(backoff)</li>
-                    <li>재시도 시점을 랜덤하게 지정하여 동시 경합 가능성 완화(random)</li>
-                    <li>재시도 횟수 증가 시 대기 시간을 점진적으로 증가시켜 경합 완화(multiplier)</li>
-                    <li>임의로 재시도 설정 변경 시 지연이 무한정 길어지는 현상 방지(maxDelay)</li>
+                    <li>재충돌 방지를 위해 <strong>랜덤 backoff</strong> 설정 적용</li>
+                    <li>대기 시간 상한(maxDelay) 설정으로 지연 무한 증가 방지</li>
                 </ul>
-                <p><strong>4) 최종 실패 처리</strong></p>
+                <p><strong>4) 트랜잭션 설정</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>최종 재시도 실패 시 recover 메서드를 실행하여 실패 응답 반환 및 로그 적재</li>
-                    <li>비관적 락으로의 전환 시점 파악</li>
+                    <li>재시도 포함 하나의 트랜잭션으로 구성하여 <strong>원자성 보장</strong></li>
+                    <li><strong>noRollbackFor</strong> 속성을 사용하여 버전 충돌 시 롤백 방지</li>
+                    <li>재시도 시 커밋된 데이터를 읽을 수 있도록 <strong>격리레벨</strong> 검토</li>
                 </ul>
             </div>
         </div>
@@ -1033,46 +1030,6 @@
                 <ul>
                     <li>반복적인 API 명세 작성 작업이 <strong>자동화</strong>되어 낭비되는 비용을 줄임</li>
                     <li>주변 업무의 비효율성을 쉽게 개선할 수 있다는 영향 전파</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <div class="problem-solving">
-        <div class="ps-title">다국어 처리 자동화 도구 개발</div>
-
-        <div class="ps-section">
-            <span class="ps-label problem">상황</span>
-            <div class="ps-content">
-                <ul>
-                    <li>한국어·영어·일본어 3개 언어로 서비스를 제공하기 위해 클라이언트 코드 내 한국어를 다국어 도구(react-intl)가 읽을 수 있는 형태로 변환 작업의 필요</li>
-                    <li>매번 개발 시마다 수행해야 하는 단순 반복 작업으로 빠르게는 몇 분, 길게는 며칠이 소요</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="ps-section">
-            <span class="ps-label solution">행동</span>
-            <div class="ps-content">
-                <ul>
-                    <li><strong>babel parser</strong>를 활용해 React 컴포넌트를 <strong>AST(Abstract Syntax Tree)</strong>로 파싱</li>
-                    <li><strong>JSX Element</strong>와 <strong>StringLiteral</strong> 노드를 순회하며 한국어 패턴 <strong>정규식으로 탐지</strong></li>
-                    <li>하드코딩된 한국어 문자열을 <strong>react-intl의 FormattedMessage 컴포넌트로 자동 변환</strong></li>
-                    <li>탐지된 한국어 문자열을 <strong>JSON 형태의 메시지 파일에 자동 추가</strong></li>
-                    <li>기존 메시지 파일과 <strong>병합하여 키 중복 및 누락 방지</strong></li>
-                    <li><strong>Commander.js</strong>로 사용자 친화적인 <strong>CLI 인터페이스</strong> 구현</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="ps-section">
-            <span class="ps-label result">결과</span>
-            <div class="ps-content">
-                <ul>
-                    <li>다국어 작업 시간 <strong>5분 이내로 단축</strong></li>
-                    <li><strong>반복 업무가 감소</strong>하여 개발 효율 증가</li>
-                    <li>수동 작업을 코드 기반 자동화로 <strong>다국어 변환 실수 및 누락 감소</strong></li>
-                    <li><strong>오픈소스 공개</strong>로 개발 생태계에 기여</li>
                 </ul>
             </div>
         </div>
