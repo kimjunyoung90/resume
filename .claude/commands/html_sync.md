@@ -1,0 +1,1 @@
+resume.md 파일의 변경된 내용을 탐색하여 index.html에 반영해줘.
