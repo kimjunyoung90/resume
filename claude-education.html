@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code 활용 교육</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@300;400;500;600;700&family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===========================================
+           BOLD SIGNAL THEME — Claude Code Education
+           =========================================== */
+        :root {
+            --bg-primary: #0f0f0f;
+            --bg-gradient: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
+            --card-bg: #FF6D3A;
+            --card-bg-alt: #FF8A5C;
+            --text-primary: #f5f5f5;
+            --text-secondary: rgba(255,255,255,0.75);
+            --text-muted: rgba(255,255,255,0.4);
+            --text-on-card: #0f0f0f;
+            --accent: #FF6D3A;
+            --accent-glow: rgba(255, 109, 58, 0.2);
+            --code-bg: rgba(255,255,255,0.1);
+            --border-subtle: rgba(255,255,255,0.15);
+
+            --font-display: 'Archivo Black', sans-serif;
+            --font-body: 'Space Grotesk', sans-serif;
+            --font-ko: 'Nanum Gothic', sans-serif;
+
+            --title-size: clamp(2.2rem, 6.5vw, 5rem);
+            --h2-size: clamp(1.6rem, 4vw, 2.8rem);
+            --h3-size: clamp(1.1rem, 2.2vw, 1.5rem);
+            --body-size: clamp(0.8rem, 1.4vw, 1.1rem);
+            --small-size: clamp(0.7rem, 1vw, 0.9rem);
+            --label-size: clamp(0.6rem, 0.85vw, 0.75rem);
+
+            --slide-padding: clamp(2rem, 5vw, 5rem);
+            --content-gap: clamp(0.8rem, 2vw, 1.5rem);
+            --element-gap: clamp(0.3rem, 0.8vw, 0.6rem);
+
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --duration-normal: 0.6s;
+        }
+
+        /* ===========================================
+           VIEWPORT BASE STYLES (MANDATORY)
+           =========================================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow-x: hidden; }
+        html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            background: var(--bg-primary);
+        }
+
+        .slide {
+            width: 100vw; height: 100vh; height: 100dvh;
+            overflow: hidden; scroll-snap-align: start;
+            display: flex; flex-direction: column;
+            position: relative;
+            background: var(--bg-gradient);
+        }
+
+        .slide-content {
+            flex: 1; display: flex; flex-direction: column; justify-content: center;
+            max-height: 100%; overflow: hidden;
+            padding: var(--slide-padding);
+            padding-left: clamp(3rem, 8vw, 8rem);
+            position: relative; z-index: 1;
+        }
+
+        /* ===========================================
+           RESPONSIVE BREAKPOINTS
+           =========================================== */
+        @media (max-height: 700px) {
+            :root {
+                --slide-padding: clamp(0.75rem, 3vw, 2rem);
+                --content-gap: clamp(0.4rem, 1.5vw, 1rem);
+                --title-size: clamp(1.5rem, 5vw, 2.8rem);
+                --h2-size: clamp(1.2rem, 3vw, 2rem);
+            }
+            .slide-content { padding-left: clamp(2rem, 5vw, 4rem); }
+        }
+        @media (max-height: 600px) {
+            :root {
+                --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem);
+                --content-gap: clamp(0.3rem, 1vw, 0.75rem);
+                --title-size: clamp(1.2rem, 4vw, 2rem);
+                --body-size: clamp(0.6rem, 1vw, 0.85rem);
+            }
+            .nav-dots, .decorative, .slide-number { display: none; }
+        }
+        @media (max-height: 500px) {
+            :root {
+                --slide-padding: clamp(0.4rem, 2vw, 1rem);
+                --title-size: clamp(1rem, 3.5vw, 1.5rem);
+                --h2-size: clamp(0.9rem, 2.5vw, 1.25rem);
+                --body-size: clamp(0.55rem, 0.9vw, 0.75rem);
+            }
+        }
+        @media (max-width: 700px) {
+            :root { --title-size: clamp(1.5rem, 8vw, 2.5rem); }
+            .two-col { flex-direction: column !important; }
+            .slide-content { padding-left: var(--slide-padding); }
+            .icon-cards { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.2s !important;
+            }
+            html { scroll-behavior: auto; }
+        }
+
+        /* ===========================================
+           TYPOGRAPHY
+           =========================================== */
+        h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.03em; }
+        h1 { font-size: var(--title-size); line-height: 1.05; }
+        h2 { font-size: var(--h2-size); line-height: 1.15; }
+        h3 { font-size: var(--h3-size); line-height: 1.3; font-family: var(--font-body); font-weight: 600; }
+
+        /* ===========================================
+           SLIDE NUMBER & NAVIGATION
+           =========================================== */
+        .slide-number {
+            position: absolute;
+            top: clamp(1.5rem, 3vw, 3rem);
+            left: clamp(2rem, 5vw, 5rem);
+            font-family: var(--font-display);
+            font-size: clamp(0.8rem, 1.2vw, 1rem);
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            z-index: 2;
+        }
+
+        .slide-nav {
+            position: absolute;
+            top: clamp(1.5rem, 3vw, 3rem);
+            right: clamp(2rem, 5vw, 5rem);
+            display: flex; gap: clamp(0.8rem, 1.5vw, 1.5rem);
+            font-size: var(--label-size);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            z-index: 2;
+        }
+        .slide-nav span.active { color: var(--accent); }
+
+        /* ===========================================
+           CARD STYLES
+           =========================================== */
+        .accent-card {
+            background: var(--card-bg);
+            color: var(--text-on-card);
+            padding: clamp(1.5rem, 3vw, 3rem);
+            border-radius: clamp(0.5rem, 1vw, 1rem);
+        }
+        .accent-card h2 { color: var(--text-on-card); }
+        .accent-card p, .accent-card li { color: rgba(26,26,26,0.7); }
+
+        .dark-card {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: clamp(0.4rem, 0.8vw, 0.8rem);
+            padding: clamp(1rem, 2vw, 2rem);
+        }
+
+        /* ===========================================
+           CODE BLOCKS
+           =========================================== */
+        pre, code {
+            font-family: 'Space Grotesk', monospace;
+            font-size: var(--small-size);
+        }
+        pre {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: clamp(0.3rem, 0.6vw, 0.5rem);
+            padding: clamp(0.8rem, 1.4vw, 1.4rem);
+            overflow: hidden;
+            line-height: 1.7;
+        }
+        code {
+            background: var(--code-bg);
+            padding: 0.1em 0.4em;
+            border-radius: 3px;
+        }
+        pre code { background: none; padding: 0; }
+
+        .code-highlight { color: #FFB74D; font-weight: 600; }
+        .code-comment { color: rgba(255,255,255,0.45); }
+        .code-string { color: #81C784; }
+
+        /* ===========================================
+           TABLE STYLES
+           =========================================== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--small-size);
+        }
+        th {
+            text-align: left;
+            padding: clamp(0.4rem, 0.8vw, 0.8rem) clamp(0.6rem, 1vw, 1rem);
+            border-bottom: 2px solid var(--accent);
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: var(--label-size);
+        }
+        td {
+            padding: clamp(0.4rem, 0.7vw, 0.7rem) clamp(0.6rem, 1vw, 1rem);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.85);
+            line-height: 1.6;
+        }
+        td strong { color: #ffffff; font-weight: 600; }
+
+        /* ===========================================
+           LAYOUT UTILITIES
+           =========================================== */
+        .two-col {
+            display: flex;
+            gap: clamp(1.5rem, 3vw, 3rem);
+            align-items: flex-start;
+        }
+        .two-col > * { flex: 1; }
+
+        .icon-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+            gap: clamp(0.5rem, 1vw, 1rem);
+        }
+        .icon-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: clamp(0.3rem, 0.6vw, 0.6rem);
+            padding: clamp(0.8rem, 1.4vw, 1.4rem);
+            transition: border-color 0.3s, background 0.3s;
+        }
+        .icon-card:hover { border-color: var(--accent); background: rgba(255, 109, 58, 0.08); }
+        .icon-card .card-title {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: var(--body-size);
+            margin-bottom: clamp(0.2rem, 0.4vw, 0.4rem);
+        }
+        .icon-card .card-desc {
+            font-size: var(--small-size);
+            color: rgba(255,255,255,0.8);
+            line-height: 1.6;
+        }
+
+        .section-label {
+            font-size: var(--label-size);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: clamp(0.5rem, 1vw, 1rem);
+        }
+
+        .subtitle {
+            font-size: var(--body-size);
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 600px;
+            margin-top: clamp(0.5rem, 1vw, 1rem);
+        }
+
+        .callout {
+            border-left: 4px solid var(--accent);
+            padding-left: clamp(0.8rem, 1.5vw, 1.5rem);
+            color: rgba(255,255,255,0.9);
+            font-size: var(--body-size);
+            font-weight: 500;
+            line-height: 1.7;
+            margin-top: clamp(0.5rem, 1vw, 1rem);
+        }
+
+        .bullet-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.3rem, 0.6vw, 0.5rem);
+        }
+        .bullet-list li {
+            font-size: var(--body-size);
+            color: rgba(255,255,255,0.85);
+            padding-left: clamp(0.8rem, 1.2vw, 1.2rem);
+            position: relative;
+            line-height: 1.7;
+        }
+        .bullet-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: clamp(0.4rem, 0.7vw, 0.6rem);
+            width: clamp(4px, 0.4vw, 6px);
+            height: clamp(4px, 0.4vw, 6px);
+            background: var(--accent);
+            border-radius: 50%;
+        }
+        .bullet-list li strong { color: var(--text-primary); }
+
+        /* ===========================================
+           ANIMATIONS
+           =========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity var(--duration-normal) var(--ease-out-expo),
+                        transform var(--duration-normal) var(--ease-out-expo);
+        }
+        .slide.visible .reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .slide.visible .reveal:nth-child(1) { transition-delay: 0.05s; }
+        .slide.visible .reveal:nth-child(2) { transition-delay: 0.15s; }
+        .slide.visible .reveal:nth-child(3) { transition-delay: 0.25s; }
+        .slide.visible .reveal:nth-child(4) { transition-delay: 0.35s; }
+        .slide.visible .reveal:nth-child(5) { transition-delay: 0.45s; }
+
+        .reveal-card {
+            opacity: 0;
+            transform: translateY(20px) scale(0.97);
+            transition: opacity 0.7s var(--ease-out-expo),
+                        transform 0.7s var(--ease-out-expo);
+        }
+        .slide.visible .reveal-card {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* ===========================================
+           PROGRESS BAR
+           =========================================== */
+        .progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 4px;
+            background: var(--accent);
+            box-shadow: 0 0 10px rgba(255, 109, 58, 0.5);
+            z-index: 100;
+            transition: width 0.3s ease;
+        }
+
+        /* ===========================================
+           NAV DOTS
+           =========================================== */
+        .nav-dots {
+            position: fixed;
+            right: clamp(1rem, 2vw, 2rem);
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: clamp(6px, 0.8vh, 10px);
+            z-index: 100;
+        }
+        .nav-dot {
+            width: clamp(8px, 0.7vw, 10px);
+            height: clamp(8px, 0.7vw, 10px);
+            border-radius: 50%;
+            background: rgba(255,255,255,0.25);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            padding: 0;
+        }
+        .nav-dot:hover { background: rgba(255,255,255,0.5); }
+        .nav-dot.active {
+            background: var(--accent);
+            transform: scale(1.5);
+            box-shadow: 0 0 8px rgba(255, 109, 58, 0.4);
+        }
+
+        /* ===========================================
+           TITLE SLIDE SPECIAL
+           =========================================== */
+        .title-slide .slide-content {
+            flex-direction: row;
+            align-items: center;
+            gap: clamp(2rem, 4vw, 5rem);
+        }
+        .title-card {
+            background: var(--card-bg);
+            color: var(--text-on-card);
+            padding: clamp(2rem, 4vw, 4rem);
+            border-radius: clamp(0.5rem, 1vw, 1rem);
+            min-width: clamp(200px, 35vw, 420px);
+        }
+        .title-card h1 { color: var(--text-on-card); }
+        .title-card .tag {
+            font-size: var(--small-size);
+            opacity: 0.6;
+            margin-top: clamp(0.5rem, 1vw, 1rem);
+        }
+        .title-right {
+            font-size: var(--body-size);
+            line-height: 1.8;
+            color: var(--text-secondary);
+            max-width: 380px;
+        }
+        .title-right strong { color: var(--text-primary); }
+
+        @media (max-width: 700px) {
+            .title-slide .slide-content { flex-direction: column; }
+            .title-card { min-width: auto; width: 100%; }
+        }
+
+        /* ===========================================
+           COMPARE BLOCKS
+           =========================================== */
+        .compare-box {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.12);
+            border-radius: clamp(0.3rem, 0.6vw, 0.5rem);
+            padding: clamp(0.8rem, 1.4vw, 1.4rem);
+            font-size: var(--body-size);
+            font-family: 'Space Grotesk', monospace;
+            line-height: 1.7;
+        }
+        .compare-box.bad { border-color: rgba(239, 83, 80, 0.5); background: rgba(239, 83, 80, 0.06); }
+        .compare-box.good { border-color: rgba(102, 187, 106, 0.5); background: rgba(102, 187, 106, 0.06); }
+        .compare-label {
+            font-size: var(--label-size);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: clamp(0.3rem, 0.5vw, 0.5rem);
+        }
+        .compare-label.bad { color: #ef5350; }
+        .compare-label.good { color: #66bb6a; }
+    </style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Navigation Dots -->
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+
+<!-- ===========================================
+     SLIDE 01: TITLE
+     =========================================== -->
+<section class="slide title-slide" aria-label="Title">
+    <div class="slide-number">01</div>
+    <div class="slide-nav">
+        <span class="active">INTRO</span>
+        <span>CONCEPT</span>
+        <span>FEATURES</span>
+        <span>ADVANCED</span>
+        <span>TIPS</span>
+    </div>
+    <div class="slide-content">
+        <div class="title-card reveal-card">
+            <h1>Claude<br>Code</h1>
+            <div class="tag">AI 개발 도구 활용 교육</div>
+        </div>
+        <div class="title-right reveal">
+            <strong>프로젝트에서 바로 동작하는 AI.</strong><br><br>
+            코드 작성, 분석, 리팩토링부터<br>
+            문서 작성, 테스트 생성까지.<br><br>
+            개발 워크플로우를 자동화하는<br>
+            실전 활용법을 다룹니다.
+        </div>
+    </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 02: CLAUDE 제공 형태
+     =========================================== -->
+<section class="slide" aria-label="Claude 제공 형태">
+    <div class="slide-number">02</div>
+    <div class="slide-nav">
+        <span class="active">INTRO</span>
+        <span>CONCEPT</span>
+        <span>FEATURES</span>
+        <span>ADVANCED</span>
+        <span>TIPS</span>
+    </div>
+    <div class="slide-content">
+        <div class="section-label reveal">Claude란?</div>
+        <h2 class="reveal">Claude 제공 형태</h2>
+        <div class="subtitle reveal" style="margin-bottom: clamp(1rem, 2vw, 2rem);">코딩만이 아니라, 모든 업무에 활용 가능합니다.</div>
+        <table class="reveal">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>웹 Claude</th>
+                    <th>Claude Desktop</th>
+                    <th>Claude Code</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>어디서</strong></td>
+                    <td>브라우저</td>
+                    <td>데스크톱 앱</td>
+                    <td><strong style="color: var(--accent);">터미널</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>뭘 하냐</strong></td>
+                    <td>대화 / 질문</td>
+                    <td>대화 + 파일 연동</td>
+                    <td><strong style="color: var(--accent);">프로젝트 전체에서 직접 작업</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>핵심</strong></td>
+                    <td>범용</td>
+                    <td>편의성</td>
+                    <td><strong style="color: var(--accent);">자동화</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="callout reveal">오늘 볼 건 <strong style="color: var(--text-primary);">Claude Code</strong> — 여러분 프로젝트에서 바로 동작하는 AI 개발 도구입니다.</div>
+    </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 03: 토큰과 컨텍스트
+     =========================================== -->
+<section class="slide" aria-label="기본 개념">
+    <div class="slide-number">03</div>
+    <div class="slide-nav">
+        <span>INTRO</span>
+        <span class="active">CONCEPT</span>
+        <span>FEATURES</span>
+        <span>ADVANCED</span>
+        <span>TIPS</span>
+    </div>
+    <div class="slide-content">
+        <div class="section-label reveal">기본 개념</div>
+        <h2 class="reveal">토큰과 컨텍스트</h2>
+        <div class="two-col" style="margin-top: clamp(1rem, 2vw, 2rem);">
+            <div class="dark-card reveal">
+                <h3 style="color: var(--accent); margin-bottom: clamp(0.4rem, 0.8vw, 0.8rem);">토큰 (Token)</h3>
+                <ul class="bullet-list">
+                    <li>AI가 읽고 쓰는 단위</li>
+                    <li>영어는 짧은 단어 하나가 대략 1토큰</li>
+                    <li><strong>한글은 같은 의미라도 더 많은 토큰 소모</strong></li>
+                </ul>
+            </div>
+            <div class="dark-card reveal">
+                <h3 style="color: var(--accent); margin-bottom: clamp(0.4rem, 0.8vw, 0.8rem);">컨텍스트 (Context)</h3>
+                <ul class="bullet-list">
+                    <li>AI가 답변 생성 시 참고할 수 있는 텍스트의 양</li>
+                    <li>대화 + 파일 + 설정 = 전부 컨텍스트에 포함</li>
+                    <li><strong>가득 차면 대화 내용을 잊어버림</strong></li>
+                </ul>
+            </div>
+        </div>
+        <div class="callout reveal">불필요한 정보가 컨텍스트를 차지할수록, AI 성능이 떨어진다.</div>
+    </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 04: 컨텍스트가 길어지면
+     =========================================== -->
+<section class="slide" aria-label="Lost in the Middle">
+    <div class="slide-number">04</div>
+    <div class="slide-nav">
+        <span>INTRO</span>
+        <span class="active">CONCEPT</span>
+        <span>FEATURES</span>
+        <span>ADVANCED</span>
+        <span>TIPS</span>
+    </div>
+    <div class="slide-content">
+        <div class="section-label reveal">기본 개념</div>
+        <h2 class="reveal">컨텍스트가 길어지면?</h2>
+        <div class="two-col" style="margin-top: clamp(1rem, 2vw, 2rem);">
+            <div>
+                <div class="compare-label bad reveal">나쁜 예</div>
+                <div class="compare-box bad reveal">
+                    <span style="color: var(--text-muted);">배포 규칙 │ DB 설정 │</span> <span style="color: var(--accent);">★핵심★</span> <span style="color: var(--text-muted);">│ API 규칙 │ 로그 설정</span><br>
+                    <span style="color: #ef5350;">→ 핵심이 불필요한 정보에 묻힘</span>
+                </div>
+            </div>
+            <div>
+                <div class="compare-label good reveal">좋은 예</div>
+                <div class="compare-box good reveal">
+                    <span style="color: var(--accent);">★핵심★</span><br>
+                    <span style="color: #66bb6a;">→ 핵심만 있음 → AI가 바로 찾음</span>
+                </div>
+            </div>
+        </div>
+        <div class="dark-card reveal" style="margin-top: clamp(0.8rem, 1.5vw, 1.5rem);">
+            <h3 style="color: var(--accent); margin-bottom: clamp(0.2rem, 0.4vw, 0.4rem);">Lost in the Middle</h3>
+            <p style="font-size: var(--small-size); color: var(--text-secondary); line-height: 1.6;">
+                AI는 컨텍스트의 <strong style="color: var(--text-primary);">처음과 끝</strong>은 잘 잡지만, <strong style="color: var(--text-primary);">중간에 있는 정보는 놓친다</strong> (Stanford, 2023)
+            </p>
+        </div>
+        <div class="callout reveal">많이 넣는다고 좋은 게 아니라, 핵심만 넣어야 AI가 제대로 동작한다.</div>
+    </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 05: 핵심 기능 개요
+     =========================================== -->
+<section class="slide" aria-label="핵심 기능">
+    <div class="slide-number">05</div>
+    <div class="slide-nav">
+        <span>INTRO</span>
+        <span>CONCEPT</span>
+        <span class="active">FEATURES</span>
+        <span>ADVANCED</span>
+        <span>TIPS</span>
+    </div>
+    <div class="slide-content">
+        <div class="section-label reveal">Features</div>
+        <h2 class="reveal">핵심 기능들</h2>
+        <div class="icon-cards reveal" style="margin-top: clamp(0.8rem, 1.5vw, 1.5rem);">
+            <div class="icon-card">
+                <div class="card-title">CLAUDE.md</div>
+                <div class="card-desc">Claude가 자동으로 읽는 기본 지침서</div>
+            </div>
+            <div class="icon-card">
+                <div class="card-title">Skills</div>
+                <div class="card-desc">자주 쓰는 작업을 /명령어로 등록</div>
+            </div>
+            <div class="icon-card">
+                <div class="card-title">MCP</div>
+                <div class="card-desc">외부 서비스를 Claude에 연결하는 통로</div>
+            </div>
+            <div class="icon-card">
+                <div class="card-title">Subagents</div>
+                <div class="card-desc">별도 컨텍스트에서 탐색, 결과만 반환</div>
+            </div>
+            <div class="icon-card">
+                <div class="card-title">Agent Teams</div>
+                <div class="card-desc">여러 Claude가 팀을 이뤄 동시에 작업</div>
+            </div>
+            <div class="icon-card">
+                <div class="card-title">Hooks</div>
+                <div class="card-desc">특정 이벤트에 자동으로 실행되는 스크립트</div>
+            </div>
+        </div>
+        <pre class="reveal" style="margin-top: clamp(0.8rem, 1.5vw, 1.5rem);"><code><span class="code-comment">프로젝트/</span>
+├── .claude/
+│   ├── settings.json      <span class="code-comment">← 설정</span>
+│   ├── hooks/              <span class="code-comment">← Hook 스크립트</span>
+│   ├── skills/             <span class="code-comment">← Skills</span>
+│   ├── agents/             <span class="code-comment">← Subagents</span>
+│   └── rules/              <span class="code-comment">← 추가 규칙</span>
+├── .mcp.json               <span class="code-comment">← MCP 서버 설정</span>
+└── CLAUDE.md               <span class="code-comment">← 기본 지침서</span></code></pre>
+    </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 06: CLAUDE.md
+     =========================================== -->
+<section class="slide" aria-label="CLAUDE.md">
+    <div class="slide-number">06</div>
+    <div class="slide-nav">
+        <span>INTRO</span>
+        <span>CONCEPT</span>
+        <span class="active">FEATURES</span>
+        <span>ADVANCED</span>
+        <span>TIPS</span>
+    </div>
+    <div class="slide-content">
+        <div class="section-label reveal">Features</div>
+        <h2 class="reveal">CLAUDE.md</h2>
+        <div class="subtitle reveal">Claude가 자동으로 읽는 기본 지침서. 직접 작성하거나 <code>/init</code>으로 생성.</div>
+        <div class="two-col" style="margin-top: clamp(1rem, 2vw, 1.5rem);">
+            <div>
+                <h3 class="reveal" style="margin-bottom: clamp(0.4rem, 0.8vw, 0.8rem);">핵심 + 참조만 남기기</h3>
+                <pre class="reveal"><code><span class="code-comment"># CLAUDE.md</span>
+<span class="code-string">- ./gradlew test — 전체 테스트</span>
+<span class="code-string">- DTO: {동사}{도메인}Request</span>
+<span class="code-string">- System.out.println 금지</span>
+<span class="code-string">- 코드 스타일 @.claude/rules/code-style.md</span>
+<span class="code-string">- 테스트 규칙 @.claude/rules/testing.md</span></code></pre>
+            </div>
+            <div class="dark-card reveal">
+                <h3 style="color: var(--accent); margin-bottom: clamp(0.4rem, 0.8vw, 0.8rem);">작성 권고</h3>
+                <ul class="bullet-list">
+                    <li><strong>200줄을 넘기지 말 것</strong></li>
+                    <li>상세 지침은 rules로 분리</li>
+                    <li>CLAUDE.md에는 핵심 + 참조만</li>
+                </ul>
+            </div>
+        </div>
+        <div class="callout reveal">한번 적어두면, 매번 말 안 해도 Claude가 알아서 따른다.</div>
+    </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 07: Plan 모드
+     =========================================== -->
+<section class="slide" aria-label="Plan 모드">
+    <div class="slide-number">07</div>
+    <div class="slide-nav">
+        <span>INTRO</span>
+        <span>CONCEPT</span>
+        <span class="active">FEATURES</span>
+        <span>ADVANCED</span>
+        <span>TIPS</span>
+    </div>
+    <div class="slide-content">
+        <div class="section-label reveal">Features</div>
+        <h2 class="reveal">Plan 모드</h2>
+        <div class="subtitle reveal"><code>Shift + Tab</code>으로 전환하는 작업 모드</div>
+        <table class="reveal" style="margin-top: clamp(0.8rem, 1.5vw, 1.5rem);">
+            <thead>
+                <tr><th>모드</th><th>설명</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Ask permissions</strong> (기본)</td><td>모든 편집과 명령 실행 시 승인 요청</td></tr>
+                <tr><td><strong>Auto accept edits</strong></td><td>파일 편집만 자동 승인, 명령 실행은 승인 필요</td></tr>
+                <tr><td><strong>Plan</strong></td><td><strong style="color: var(--accent);">코드 작성 없이 계획만 수립</strong></td></tr>
+            </tbody>
+        </table>
+        <div class="two-col reveal" style="margin-top: clamp(0.8rem, 1.5vw, 1.5rem);">
+            <div>
+                <div class="compare-label bad">Plan 없이</div>
+                <div class="compare-box bad">요청 → 실패 → 원복 → 재요청 → 실패<br><span style="color: #ef5350;">→ 토큰 낭비</span></div>
+            </div>
+            <div>
+                <div class="compare-label good">Plan 먼저</div>
+                <div class="compare-box good">계획 → 리뷰 → 확정 → 구현<br><span style="color: #66bb6a;">→ 한번에 성공</span></div>
+            </div>
+        </div>
+        <div class="callout reveal">코드를 쓰기 전에 방향을 맞추면 재작업이 사라진다.</div>
+    </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 08: Skills — 구조
+     =========================================== -->
+<section class="slide" aria-label="Skills 구조">
+    <div class="slide-number">08</div>
+    <div class="slide-nav">
+        <span>INTRO</span>
+        <span>CONCEPT</span>
+        <span class="active">FEATURES</span>
+        <span>ADVANCED</span>
+        <span>TIPS</span>
+    </div>
+    <div class="slide-content">
+        <div class="section-label reveal">Features</div>
+        <h2 class="reveal">Skills — 구조와 파일 예시</h2>
+        <div class="subtitle reveal">반복되는 작업을 <code>/명령어</code>로 등록</div>
+        <div class="two-col" style="margin-top: clamp(1rem, 2vw, 1.5rem);">
+            <div>
+                <h3 class="reveal" style="margin-bottom: clamp(0.4rem, 0.8vw, 0.6rem);">폴더 구조</h3>
+                <pre class="reveal"><code>.claude/
+└── skills/
+    └── weekly-report/
+        ├── SKILL.md       <span class="code-comment">← 핵심 지침 (필수)</span>
+        ├── reference.md   <span class="code-comment">← 보조 문서 (선택)</span>
+        └── scripts/       <span class="code-comment">← 스크립트 (선택)</span></code></pre>
+            </div>
+            <div>
+                <h3 class="reveal" style="margin-bottom: clamp(0.4rem, 0.8vw, 0.6rem);">SKILL.md 예시</h3>
+                <pre class="reveal"><code><span class="code-comment">---</span>
+<span class="code-highlight">name:</span> <span class="code-string">weekly-report</span>
+<span class="code-highlight">description:</span> <span class="code-string">주간 보고서를 작성합니다</span>
+<span class="code-comment">---</span>
+
+<span class="code-string">1. 금주 처리 티켓 확인</span>
+<span class="code-string">2. 주간 보고서 초안 생성</span></code></pre>
+            </div>
+        </div>
+        <div class="callout reveal">SKILL.md는 <strong style="color: var(--text-primary);">500줄 이내</strong>로 간결하게. 상세 내용은 보조 문서로 분리.</div>
+    </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 09: Skills — 생성/호출
+     =========================================== -->
+<section class="slide" aria-label="Skills 호출">
+    <div class="slide-number">09</div>
+    <div class="slide-nav">
+        <span>INTRO</span>
+        <span>CONCEPT</span>
+        <span class="active">FEATURES</span>
+        <span>ADVANCED</span>
+        <span>TIPS</span>
+    </div>
+    <div class="slide-content">
+        <div class="section-label reveal">Features</div>
+        <h2 class="reveal">Skills — 생성과 호출</h2>
+        <div class="two-col" style="margin-top: clamp(1rem, 2vw, 1.5rem);">
+            <div>
+                <h3 class="reveal" style="margin-bottom: clamp(0.4rem, 0.8vw, 0.6rem);">생성 방법</h3>
+                <table class="reveal">
+                    <thead><tr><th>방법</th><th>설명</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>직접 생성</strong></td><td>SKILL.md 파일을 직접 작성</td></tr>
+                        <tr><td><strong style="color: var(--accent);">Skill Creator</strong></td><td>공식 플러그인. "스킬 생성해줘"로 실행 (권장)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <h3 class="reveal" style="margin-bottom: clamp(0.4rem, 0.8vw, 0.6rem);">호출 방법</h3>
+                <ul class="bullet-list reveal">
+                    <li><strong>직접 호출:</strong> <code>/weekly-report</code></li>
+                    <li><strong>자동 매칭:</strong> "이번 주 보고서 만들어줘"</li>
+                </ul>
+                <div style="margin-top: clamp(0.5rem, 1vw, 1rem);">
+                    <h3 class="reveal" style="margin-bottom: clamp(0.4rem, 0.8vw, 0.6rem);">활용 예시</h3>
+                    <ul class="bullet-list reveal">
+                        <li><code>/code-review</code> → git diff 기반 코드 리뷰</li>
+                        <li><code>/commit</code> → 커밋 메시지 자동 생성</li>
+                        <li><code>/tc-generator</code> → 테스트 케이스 도출</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="callout reveal">매번 같은 지시를 반복하지 않아도 된다.</div>
+    </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 10: MCP — 구조
+     =========================================== -->
+<section class="slide" aria-label="MCP">
+    <div class="slide-number">10</div>
+    <div class="slide-nav">
+        <span>INTRO</span>
+        <span>CONCEPT</span>
+        <span class="active">FEATURES</span>
+        <span>ADVANCED</span>
+        <span>TIPS</span>
+    </div>
+    <div class="slide-content">
+        <div class="section-label reveal">Features</div>
+        <h2 class="reveal">MCP — 외부 서비스 연결</h2>
+        <div class="subtitle reveal">Claude에 외부 프로그램을 연결해주는 도구</div>
+        <div class="dark-card reveal" style="margin-top: clamp(0.8rem, 1.5vw, 1.5rem); text-align: center;">
+            <p style="font-size: var(--body-size); color: var(--text-secondary);">
+                <strong style="color: var(--text-primary);">Claude Code</strong> <span style="color: var(--accent);">→</span>
+                <strong style="color: var(--text-primary);">MCP Server</strong> <span style="color: var(--accent);">→</span>
+                <strong style="color: var(--text-primary);">Jira / Confluence / DB ...</strong>
+            </p>
+        </div>
+        <table class="reveal" style="margin-top: clamp(0.8rem, 1.5vw, 1.5rem);">
+            <thead><tr><th>scope</th><th>범위</th><th>저장 위치</th></tr></thead>
+            <tbody>
+                <tr><td><strong>local</strong> (기본)</td><td>이 프로젝트, 나만</td><td><code>~/.claude.json</code></td></tr>
+                <tr><td><strong>project</strong></td><td>이 프로젝트, 팀 공유</td><td><code>.mcp.json</code></td></tr>
+                <tr><td><strong>user</strong></td><td>모든 프로젝트, 나만</td><td><code>~/.claude.json</code></td></tr>
+            </tbody>
+        </table>
+        <pre class="reveal" style="margin-top: clamp(0.8rem, 1.5vw, 1.5rem);"><code><span class="code-highlight">$</span> claude mcp add --scope project jira-server ...</code></pre>
+    </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 11: MCP — 주의사항
+     =========================================== -->
+<section class="slide" aria-label="MCP 주의사항">
+    <div class="slide-number">11</div>
+    <div class="slide-nav">
+        <span>INTRO</span>
+        <span>CONCEPT</span>
+        <span class="active">FEATURES</span>
+        <span>ADVANCED</span>
+        <span>TIPS</span>
+    </div>
+    <div class="slide-content">
+        <div class="section-label reveal">Features</div>
+        <h2 class="reveal">MCP — 주의사항</h2>
+        <div class="accent-card reveal" style="margin-top: clamp(1rem, 2vw, 1.5rem);">
+            <h3 style="margin-bottom: clamp(0.4rem, 0.8vw, 0.8rem);">활성화된 MCP = 컨텍스트 소모</h3>
+            <p style="font-size: var(--body-size); line-height: 1.7;">
+                모든 MCP가 제공하는 기능 목록과 사용법이 컨텍스트에 로드됩니다.<br>
+                예: Notion 15,076 토큰 + Slack 7,961 토큰 = <strong>MCP만으로 27,000+ 토큰</strong>
+            </p>
+        </div>
+        <div class="two-col reveal" style="margin-top: clamp(0.8rem, 1.5vw, 1.5rem);">
+            <div class="dark-card">
+                <h3 style="color: #ef5350; margin-bottom: clamp(0.2rem, 0.4vw, 0.4rem);">하지 말 것</h3>
+                <p style="font-size: var(--small-size); color: var(--text-secondary);">사용하지 않는 MCP를 켜둔 채 작업</p>
+            </div>
+            <div class="dark-card">
+                <h3 style="color: #66bb6a; margin-bottom: clamp(0.2rem, 0.4vw, 0.4rem);">해야 할 것</h3>
+                <p style="font-size: var(--small-size); color: var(--text-secondary);">미사용 MCP는 항상 꺼두기<br>필요한 기능만 담은 커스텀 MCP 사용</p>
+            </div>
+        </div>
+        <div class="callout reveal">MCP 목록 확인: <code>/mcp</code></div>
+    </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 12: Subagents — 구조
+     =========================================== -->
+<section class="slide" aria-label="Subagents">
+    <div class="slide-number">12</div>
+    <div class="slide-nav">
+        <span>INTRO</span>
+        <span>CONCEPT</span>
+        <span>FEATURES</span>
+        <span class="active">ADVANCED</span>
+        <span>TIPS</span>
+    </div>
+    <div class="slide-content">
+        <div class="section-label reveal">Advanced</div>
+        <h2 class="reveal">Subagents — 구조</h2>
+        <div class="subtitle reveal">직접 탐색 → 컨텍스트 낭비. Subagent 위임 → <strong style="color: var(--text-primary);">결과 요약만 반환</strong></div>
+        <div class="two-col" style="margin-top: clamp(1rem, 2vw, 1.5rem);">
+            <div>
+                <h3 class="reveal" style="margin-bottom: clamp(0.4rem, 0.8vw, 0.6rem);">폴더 구조</h3>
+                <pre class="reveal"><code>.claude/
+└── agents/
+    └── search-agent.md</code></pre>
+            </div>
+            <div>
+                <h3 class="reveal" style="margin-bottom: clamp(0.4rem, 0.8vw, 0.6rem);">파일 예시</h3>
+                <pre class="reveal"><code><span class="code-comment">---</span>
+<span class="code-highlight">name:</span> <span class="code-string">search-agent</span>
+<span class="code-highlight">description:</span> <span class="code-string">Confluence에서 문서 검색</span>
+<span class="code-highlight">tools:</span> <span class="code-string">Read, Grep, Glob</span>
+<span class="code-highlight">model:</span> <span class="code-string">haiku</span>
+<span class="code-comment">---</span>
+<span class="code-string">핵심 내용만 요약해서 보고합니다.</span></code></pre>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 13: Subagents — 생성/호출
+     =========================================== -->
+<section class="slide" aria-label="Subagents 호출">
+    <div class="slide-number">13</div>
+    <div class="slide-nav">
+        <span>INTRO</span>
+        <span>CONCEPT</span>
+        <span>FEATURES</span>
+        <span class="active">ADVANCED</span>
+        <span>TIPS</span>
+    </div>
+    <div class="slide-content">
+        <div class="section-label reveal">Advanced</div>
+        <h2 class="reveal">Subagents — 생성과 호출</h2>
+        <div class="two-col" style="margin-top: clamp(1rem, 2vw, 1.5rem);">
+            <div>
+                <h3 class="reveal" style="margin-bottom: clamp(0.4rem, 0.8vw, 0.6rem);">모델 선택 가이드</h3>
+                <table class="reveal">
+                    <thead><tr><th>작업 성격</th><th>추천 모델</th></tr></thead>
+                    <tbody>
+                        <tr><td>파일 탐색, 단순 검색</td><td><strong style="color: #66bb6a;">Haiku</strong> (빠르고 저렴)</td></tr>
+                        <tr><td>코드 리뷰, 요약</td><td><strong style="color: var(--accent);">Sonnet</strong> (균형)</td></tr>
+                        <tr><td>복잡한 설계</td><td><strong style="color: #ef5350;">Opus</strong> (높은 추론)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <h3 class="reveal" style="margin-bottom: clamp(0.4rem, 0.8vw, 0.6rem);">호출 방법</h3>
+                <ul class="bullet-list reveal">
+                    <li><strong>@멘션:</strong> <code>@search-agent 결제 정책 찾아줘</code></li>
+                    <li><strong>자연어:</strong> <code>search-agent 써서 찾아줘</code></li>
+                    <li><strong>자동:</strong> description 보고 알아서 위임</li>
+                </ul>
+            </div>
+        </div>
+        <div class="dark-card reveal" style="margin-top: clamp(0.8rem, 1.5vw, 1.5rem);">
+            <h3 style="color: var(--accent); margin-bottom: clamp(0.3rem, 0.5vw, 0.5rem);">병렬 실행</h3>
+            <div class="two-col" style="gap: clamp(1rem, 2vw, 2rem);">
+                <div>
+                    <div class="compare-label bad">순차</div>
+                    <p style="font-size: var(--small-size); color: var(--text-secondary);">보안(2분) → 성능(2분) → 테스트(2분) = <strong style="color: #ef5350;">총 6분</strong></p>
+                </div>
+                <div>
+                    <div class="compare-label good">병렬</div>
+                    <p style="font-size: var(--small-size); color: var(--text-secondary);">보안 + 성능 + 테스트 = <strong style="color: #66bb6a;">총 2분</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 14: Agent Teams
+     =========================================== -->
+<section class="slide" aria-label="Agent Teams">
+    <div class="slide-number">14</div>
+    <div class="slide-nav">
+        <span>INTRO</span>
+        <span>CONCEPT</span>
+        <span>FEATURES</span>
+        <span class="active">ADVANCED</span>
+        <span>TIPS</span>
+    </div>
+    <div class="slide-content">
+        <div class="section-label reveal">Advanced</div>
+        <h2 class="reveal">Agent Teams</h2>
+        <div class="subtitle reveal">여러 Claude가 동시에 협업하는 팀</div>
+        <div class="accent-card reveal" style="margin-top: clamp(1rem, 2vw, 1.5rem);">
+            <pre style="background: rgba(26,26,26,0.15); border: none; color: var(--text-on-card);"><code>결제 모듈을 리팩토링할 에이전트 팀을 만들어줘.
+- API 담당: 결제 API 엔드포인트와 DTO 리팩토링
+- DB 담당: 결제 테이블 마이그레이션 스크립트 작성
+- 테스트 담당: 결제 관련 통합 테스트 작성
+서로 발견한 내용을 공유하면서 진행해.</code></pre>
+        </div>
+        <div class="callout reveal">혼자 다 안 해도 된다. 팀을 꾸려서 시키면 된다.</div>
+    </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 15: Hooks
+     =========================================== -->
+<section class="slide" aria-label="Hooks">
+    <div class="slide-number">15</div>
+    <div class="slide-nav">
+        <span>INTRO</span>
+        <span>CONCEPT</span>
+        <span>FEATURES</span>
+        <span class="active">ADVANCED</span>
+        <span>TIPS</span>
+    </div>
+    <div class="slide-content">
+        <div class="section-label reveal">Advanced</div>
+        <h2 class="reveal">Hooks</h2>
+        <div class="subtitle reveal">특정 이벤트가 발생할 때 자동으로 실행할 동작을 정의</div>
+        <div class="two-col" style="margin-top: clamp(1rem, 2vw, 1.5rem);">
+            <div>
+                <table class="reveal">
+                    <thead><tr><th>이벤트</th><th>시점</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>PreToolUse</strong></td><td>도구 실행 전</td></tr>
+                        <tr><td><strong>PostToolUse</strong></td><td>도구 실행 후</td></tr>
+                        <tr><td><strong>Stop</strong></td><td>응답 완료 시</td></tr>
+                        <tr><td><strong>SessionStart</strong></td><td>세션 시작 시</td></tr>
+                        <tr><td><strong>UserPromptSubmit</strong></td><td>사용자 입력 시</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <h3 class="reveal" style="margin-bottom: clamp(0.4rem, 0.8vw, 0.6rem);">응답 완료 시 알림 예시</h3>
+                <pre class="reveal"><code>{
+  <span class="code-highlight">"hooks"</span>: {
+    <span class="code-string">"Stop"</span>: [{
+      <span class="code-string">"hooks"</span>: [{
+        <span class="code-string">"type"</span>: <span class="code-string">"command"</span>,
+        <span class="code-string">"command"</span>: <span class="code-string">"osascript -e '...'"</span>
+      }]
+    }]
+  }
+}</code></pre>
+            </div>
+        </div>
+        <div class="callout reveal">생성 방법: 프롬프트로 요청하거나 <code>settings.json</code>에 직접 작성</div>
+    </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 16: Plugins
+     =========================================== -->
+<section class="slide" aria-label="Plugins">
+    <div class="slide-number">16</div>
+    <div class="slide-nav">
+        <span>INTRO</span>
+        <span>CONCEPT</span>
+        <span>FEATURES</span>
+        <span class="active">ADVANCED</span>
+        <span>TIPS</span>
+    </div>
+    <div class="slide-content">
+        <div class="section-label reveal">Advanced</div>
+        <h2 class="reveal">Plugins</h2>
+        <div class="subtitle reveal">Skills + Hooks + MCP + Agents를 하나로 묶어 배포하는 패키지</div>
+        <div class="two-col" style="margin-top: clamp(1rem, 2vw, 1.5rem);">
+            <div>
+                <h3 class="reveal" style="margin-bottom: clamp(0.4rem, 0.8vw, 0.6rem);">구조</h3>
+                <pre class="reveal"><code>my-plugin/
+├── .claude-plugin/
+│   └── plugin.json   <span class="code-comment">← 매니페스트</span>
+├── skills/            <span class="code-comment">← 스킬들</span>
+├── agents/            <span class="code-comment">← 에이전트들</span>
+├── hooks/             <span class="code-comment">← 훅 설정</span>
+└── settings.json      <span class="code-comment">← 기본 설정</span></code></pre>
+            </div>
+            <div>
+                <h3 class="reveal" style="margin-bottom: clamp(0.4rem, 0.8vw, 0.6rem);">plugin.json</h3>
+                <pre class="reveal"><code>{
+  <span class="code-highlight">"name"</span>: <span class="code-string">"my-plugin"</span>,
+  <span class="code-highlight">"description"</span>: <span class="code-string">"팀 공통 개발 도구"</span>,
+  <span class="code-highlight">"version"</span>: <span class="code-string">"1.0.0"</span>,
+  <span class="code-highlight">"author"</span>: {
+    <span class="code-string">"name"</span>: <span class="code-string">"Your Name"</span>
+  }
+}</code></pre>
+            </div>
+        </div>
+        <div class="callout reveal">배포: Git repo → 마켓플레이스 등록 → <code>/plugin install</code>로 설치</div>
+    </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 17: 유용한 팁
+     =========================================== -->
+<section class="slide" aria-label="유용한 팁">
+    <div class="slide-number">17</div>
+    <div class="slide-nav">
+        <span>INTRO</span>
+        <span>CONCEPT</span>
+        <span>FEATURES</span>
+        <span>ADVANCED</span>
+        <span class="active">TIPS</span>
+    </div>
+    <div class="slide-content">
+        <div class="section-label reveal">Tips</div>
+        <h2 class="reveal">유용한 팁</h2>
+        <table class="reveal" style="margin-top: clamp(0.8rem, 1.5vw, 1.5rem);">
+            <thead><tr><th>기능</th><th>설명</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Escape 1번</strong></td><td>현재 작업 중지</td></tr>
+                <tr><td><strong>Escape 2번</strong></td><td>입력 삭제 / 없으면 rewind</td></tr>
+                <tr><td><strong><code>/voice</code></strong></td><td>음성 입력 모드 (한국어 지원)</td></tr>
+                <tr><td><strong>이미지 붙여넣기</strong></td><td>터미널에 스크린샷 직접 붙여넣기</td></tr>
+                <tr><td><strong><code>@파일경로</code></strong></td><td>파일을 컨텍스트에 참조</td></tr>
+                <tr><td><strong><code>!명령어</code></strong></td><td>셸 명령어 실행</td></tr>
+                <tr><td><strong><code>/resume</code></strong></td><td>이전 세션 복귀 (30일간 보관)</td></tr>
+                <tr><td><strong>"기억해줘"</strong></td><td>Auto Memory — 자동 학습/저장</td></tr>
+                <tr><td><strong>멀티 인스턴스</strong></td><td>터미널 여러 개로 동시 작업</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 18: 데모
+     =========================================== -->
+<section class="slide" aria-label="데모">
+    <div class="slide-number">18</div>
+    <div class="slide-nav">
+        <span>INTRO</span>
+        <span>CONCEPT</span>
+        <span>FEATURES</span>
+        <span>ADVANCED</span>
+        <span class="active">TIPS</span>
+    </div>
+    <div class="slide-content" style="flex-direction: row; align-items: center; gap: clamp(2rem, 4vw, 5rem);">
+        <div class="accent-card reveal-card" style="min-width: clamp(200px, 30vw, 380px);">
+            <h2>DEMO</h2>
+            <p style="margin-top: clamp(0.5rem, 1vw, 1rem);">실제 워크플로우 시연</p>
+        </div>
+        <div class="reveal">
+            <ol style="list-style: none; counter-reset: step; display: flex; flex-direction: column; gap: clamp(0.4rem, 0.8vw, 0.8rem);">
+                <li style="counter-increment: step; font-size: var(--body-size); color: var(--text-secondary); display: flex; align-items: center; gap: clamp(0.5rem, 1vw, 1rem);">
+                    <span style="font-family: var(--font-display); font-size: var(--h3-size); color: var(--accent); min-width: 2em;">01</span> Jira 티켓 전달
+                </li>
+                <li style="counter-increment: step; font-size: var(--body-size); color: var(--text-secondary); display: flex; align-items: center; gap: clamp(0.5rem, 1vw, 1rem);">
+                    <span style="font-family: var(--font-display); font-size: var(--h3-size); color: var(--accent); min-width: 2em;">02</span> 관련 프로젝트 탐색
+                </li>
+                <li style="counter-increment: step; font-size: var(--body-size); color: var(--text-secondary); display: flex; align-items: center; gap: clamp(0.5rem, 1vw, 1rem);">
+                    <span style="font-family: var(--font-display); font-size: var(--h3-size); color: var(--accent); min-width: 2em;">03</span> 코드 레벨 분석
+                </li>
+                <li style="counter-increment: step; font-size: var(--body-size); color: var(--text-secondary); display: flex; align-items: center; gap: clamp(0.5rem, 1vw, 1rem);">
+                    <span style="font-family: var(--font-display); font-size: var(--h3-size); color: var(--accent); min-width: 2em;">04</span> 코드 수정
+                </li>
+                <li style="counter-increment: step; font-size: var(--body-size); color: var(--text-secondary); display: flex; align-items: center; gap: clamp(0.5rem, 1vw, 1rem);">
+                    <span style="font-family: var(--font-display); font-size: var(--h3-size); color: var(--accent); min-width: 2em;">05</span> PR 생성
+                </li>
+            </ol>
+        </div>
+    </div>
+</section>
+
+<!-- ===========================================
+     JAVASCRIPT: Slide Controller
+     =========================================== -->
+<script>
+    class SlidePresentation {
+        constructor() {
+            this.slides = document.querySelectorAll('.slide');
+            this.currentSlide = 0;
+            this.isScrolling = false;
+            this.setupIntersectionObserver();
+            this.setupKeyboardNav();
+            this.setupTouchNav();
+            this.setupWheelNav();
+            this.setupProgressBar();
+            this.setupNavDots();
+        }
+
+        /* --- Intersection Observer: triggers .visible class --- */
+        setupIntersectionObserver() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        const idx = Array.from(this.slides).indexOf(entry.target);
+                        if (idx !== -1) {
+                            this.currentSlide = idx;
+                            this.updateProgressBar();
+                            this.updateNavDots();
+                        }
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            this.slides.forEach(slide => observer.observe(slide));
+        }
+
+        /* --- Keyboard: arrows, space, page up/down --- */
+        setupKeyboardNav() {
+            document.addEventListener('keydown', (e) => {
+                switch (e.key) {
+                    case 'ArrowDown': case 'ArrowRight': case ' ': case 'PageDown':
+                        e.preventDefault();
+                        this.goToSlide(this.currentSlide + 1);
+                        break;
+                    case 'ArrowUp': case 'ArrowLeft': case 'PageUp':
+                        e.preventDefault();
+                        this.goToSlide(this.currentSlide - 1);
+                        break;
+                    case 'Home':
+                        e.preventDefault();
+                        this.goToSlide(0);
+                        break;
+                    case 'End':
+                        e.preventDefault();
+                        this.goToSlide(this.slides.length - 1);
+                        break;
+                }
+            });
+        }
+
+        /* --- Touch/swipe support --- */
+        setupTouchNav() {
+            let startY = 0;
+            document.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; }, { passive: true });
+            document.addEventListener('touchend', (e) => {
+                const diff = startY - e.changedTouches[0].clientY;
+                if (Math.abs(diff) > 50) {
+                    this.goToSlide(this.currentSlide + (diff > 0 ? 1 : -1));
+                }
+            }, { passive: true });
+        }
+
+        /* --- Mouse wheel with debounce --- */
+        setupWheelNav() {
+            let lastWheel = 0;
+            document.addEventListener('wheel', (e) => {
+                const now = Date.now();
+                if (now - lastWheel < 800) return;
+                lastWheel = now;
+                if (e.deltaY > 0) this.goToSlide(this.currentSlide + 1);
+                else if (e.deltaY < 0) this.goToSlide(this.currentSlide - 1);
+            }, { passive: true });
+        }
+
+        /* --- Progress bar --- */
+        setupProgressBar() {
+            this.progressBar = document.getElementById('progressBar');
+            this.updateProgressBar();
+        }
+        updateProgressBar() {
+            if (!this.progressBar) return;
+            const pct = ((this.currentSlide + 1) / this.slides.length) * 100;
+            this.progressBar.style.width = pct + '%';
+        }
+
+        /* --- Nav dots --- */
+        setupNavDots() {
+            const container = document.getElementById('navDots');
+            if (!container) return;
+            this.slides.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+                dot.setAttribute('aria-label', `Slide ${i + 1}`);
+                dot.addEventListener('click', () => this.goToSlide(i));
+                container.appendChild(dot);
+            });
+            this.dots = container.querySelectorAll('.nav-dot');
+        }
+        updateNavDots() {
+            if (!this.dots) return;
+            this.dots.forEach((d, i) => d.classList.toggle('active', i === this.currentSlide));
+        }
+
+        /* --- Navigate to slide --- */
+        goToSlide(index) {
+            if (index < 0 || index >= this.slides.length) return;
+            this.currentSlide = index;
+            this.slides[index].scrollIntoView({ behavior: 'smooth' });
+            this.updateProgressBar();
+            this.updateNavDots();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => new SlidePresentation());
+</script>
+
+</body>
+</html>
