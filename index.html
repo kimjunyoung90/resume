@@ -740,7 +740,7 @@
         <div class="ps-title">API 대량 지연 개선</div>
 
         <div class="ps-section">
-            <span class="ps-label problem">상황</span>
+            <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>트래픽 집중 기간(월 1~10일) 요청량 급증으로 문서 발행 API 지연 발생</li>
@@ -751,7 +751,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">행동</span>
+            <span class="ps-label solution">해결</span>
             <div class="ps-content">
                 <p><strong>1) Thread 상태 분석을 통한 원인 특정</strong></p>
                 <ul style="margin-left: 20px;">
@@ -775,7 +775,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">결과</span>
+            <span class="ps-label result">성과</span>
             <div class="ps-content">
                 <ul>
                     <li>latency <strong>2.4초 → 1.8초(약 24% 개선)</strong></li>
@@ -790,7 +790,7 @@
         <div class="ps-title">API 멱등성 개선</div>
 
         <div class="ps-section">
-            <span class="ps-label problem">상황</span>
+            <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>고객사의 비정상 요청(중복 요청·응답 미수신)으로 동일 세금계산서가 간헐적으로 <strong>중복 발행</strong></li>
@@ -801,7 +801,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">행동</span>
+            <span class="ps-label solution">해결</span>
             <div class="ps-content">
                 <p><strong>1) 멱등키 전용 테이블 신규 설계</strong></p>
                 <ul style="margin-left: 20px;">
@@ -818,7 +818,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">결과</span>
+            <span class="ps-label result">성과</span>
             <div class="ps-content">
                 <ul>
                     <li>도입 후 <strong>중복 발행 0건</strong></li>
@@ -832,7 +832,7 @@
         <div class="ps-title">분산 시스템간 트랜잭션 정합성 개선</div>
 
         <div class="ps-section">
-            <span class="ps-label problem">상황</span>
+            <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>세금계산서 발행 프로세스는 포인트 시스템과 연계되어 <strong>포인트 차감 → 세금계산서 발행 → (실패 시) 포인트 환불</strong> 순으로 진행</li>
@@ -843,7 +843,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">행동</span>
+            <span class="ps-label solution">해결</span>
             <div class="ps-content">
                 <p><strong>1) 보상 결과 영속화</strong></p>
                 <ul style="margin-left: 20px;">
@@ -862,7 +862,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">결과</span>
+            <span class="ps-label result">성과</span>
             <div class="ps-content">
                 <ul>
                     <li>도입 후 포인트·문서 데이터 불일치 <strong>0건</strong></li>
@@ -876,7 +876,7 @@
         <div class="ps-title">동시성 문제 해결 (Optimistic Lock)</div>
         
         <div class="ps-section">
-            <span class="ps-label problem">상황</span>
+            <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>신규 채권 발행 서비스 출시 프로모션으로 고객별 무료 발행 100건 이벤트 진행</li>
@@ -886,7 +886,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">행동</span>
+            <span class="ps-label solution">해결</span>
             <div class="ps-content">
                 <p><strong>1) 동시성 문제 재현 및 분석</strong></p>
                 <ul style="margin-left: 20px;">
@@ -913,7 +913,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">결과</span>
+            <span class="ps-label result">성과</span>
             <div class="ps-content">
                 <ul>
                     <li>발행 동시 요청 상황에서도 <strong>중복 차감 이슈 없이 안정적으로 처리</strong></li>
@@ -937,7 +937,7 @@
         <div class="ps-title">DB 구조 재설계 및 확장성 개선</div>
 
         <div class="ps-section">
-            <span class="ps-label problem">상황</span>
+            <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>기존 뉴스 서비스는 단일 언론사만을 고려해 설계되어 <code>categories</code>에 언론사 고유 카테고리를 그대로 저장하고 UI에 노출하는 구조였음</li>
@@ -947,7 +947,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">행동</span>
+            <span class="ps-label solution">해결</span>
             <div class="ps-content">
                 <p><strong>1) N:M 매핑 구조의 데이터베이스 재설계</strong></p>
                 <ul style="margin-left: 20px;">
@@ -970,7 +970,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">결과</span>
+            <span class="ps-label result">성과</span>
             <div class="ps-content">
                 <ul>
                     <li><strong>N:M 매핑 구조</strong>로 <strong>DB 구조 변경 없이 매핑 데이터만 추가</strong>하여 <strong>비즈워치 외 2개 언론사 확장</strong></li>
@@ -994,7 +994,7 @@
         <div class="ps-title">API 명세서 작성 자동화</div>
 
         <div class="ps-section">
-            <span class="ps-label problem">상황</span>
+            <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>신규 API 개발 시 Confluence Wiki에 명세서를 작성해서 공유해야하는 시스템</li>
@@ -1004,7 +1004,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">행동</span>
+            <span class="ps-label solution">해결</span>
             <div class="ps-content">
                 <ul>
                     <li><strong>AI Agent(Claude Code, Codex)</strong>를 사내 Wiki에 연동하는 방법 탐색</li>
@@ -1017,7 +1017,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label result">결과</span>
+            <span class="ps-label result">성과</span>
             <div class="ps-content">
                 <ul>
                     <li>반복적인 API 명세 작성 작업이 <strong>자동화</strong>되어 낭비되는 비용을 줄임</li>
