@@ -821,7 +821,7 @@
             <span class="ps-label result">결과</span>
             <div class="ps-content">
                 <ul>
-                    <li>도입 후 <strong>중복 발행 0건</strong> (고객 문의 없음으로 확인)</li>
+                    <li>도입 후 <strong>중복 발행 0건</strong></li>
                     <li>서비스 중단 없이 <strong>멱등성 보장 구조 개선</strong></li>
                 </ul>
             </div>
@@ -908,7 +908,6 @@
                 <ul style="margin-left: 20px;">
                     <li>재시도 포함 하나의 트랜잭션으로 구성하여 <strong>원자성 보장</strong></li>
                     <li><strong>noRollbackFor</strong> 속성을 사용하여 버전 충돌 시 롤백 방지</li>
-                    <li>재시도 시 커밋된 데이터를 읽을 수 있도록 <strong>격리레벨</strong> 검토</li>
                 </ul>
             </div>
         </div>
@@ -961,13 +960,7 @@
                     <li>DB 구조 변경으로 기존 단순 쿼리 → JOIN으로 복잡도 증가</li>
                     <li><strong>MyBatis SQL 스니펫</strong>을 활용하여 공통 JOIN 로직 재사용</li>
                 </ul>
-                <p><strong>3) 기존 API 호환성 유지</strong></p>
-                <ul style="margin-left: 20px;">
-                    <li>platform 추가 및 응답값 변경으로 기존 클라이언트 영향 발생</li>
-                    <li><strong>API 버전 관리(v1, v2)</strong>로 점진적 마이그레이션 지원</li>
-                    <li><strong>3개월 병행 운영</strong> 후 v1 단계적 제거</li>
-                </ul>
-                <p><strong>4) 전략 패턴 기반 수집 로직 공통화</strong></p>
+                <p><strong>3) 전략 패턴 기반 수집 로직 공통화</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>언론사마다 수집 Endpoint와 응답 데이터 구조가 상이함</li>
                     <li>전체 수집 흐름은 유지하면서 데이터 수집 및 가공 부분을 <strong>전략 클래스로 분리</strong></li>
