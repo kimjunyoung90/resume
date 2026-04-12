@@ -744,8 +744,8 @@
             <div class="ps-content">
                 <ul>
                     <li>트래픽 집중 기간(월 1~10일) 요청량 급증으로 문서 발행 API 지연 발생</li>
-                    <li>APM에서 <strong>latency 증가(p95 25초)</strong>, <strong>throughput 감소</strong> 현상 관측</li>
-                    <li>DB 및 외부 호출 구간은 정상 응답 → <strong>애플리케이션 내부 처리 병목</strong>으로 판단</li>
+                    <li>APM 상 애플리케이션 내부에서 소모되는 시간의 비중이 컸음</li>
+                    <li>시스템의 CPU·메모리는 정상 범주 → <strong>애플리케이션 내부 스레드 비정상 의심</strong></li>
                 </ul>
             </div>
         </div>
@@ -755,18 +755,23 @@
             <div class="ps-content">
                 <p><strong>1) Thread 상태 분석을 통한 원인 특정</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>jstack 기반 Thread Dump 분석 과정에서 BLOCKED 스레드 대량 포착</li>
+                    <li><strong>jstack 기반 Thread Dump 분석</strong> 과정에서 <strong>BLOCKED 스레드 대량 포착</strong></li>
                     <li>Stack Trace를 통해 Blocking이 발생하는 메서드 확인</li>
-                    <li>특정 메서드가 <code>synchronized</code>에 의해 직렬 처리되고 있음을 발견</li>
+                    <li>특정 메서드가 <strong><code>synchronized</code>에 의해 직렬 처리</strong>되고 있음을 발견</li>
                     <li>코드 확인 시 synchronized가 보호하려던 공유 자원이 없고 멀티 인스턴스 환경에서는 실효성이 없어 키워드 제거</li>
                 </ul>
-                <p><strong>2) 부하 테스트를 통한 개선 효과 검증</strong></p>
+                <p><strong>2) synchronized 제거에 따른 영향 분석</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>staging 환경 부재로 개발 환경에서 부하 테스트 수행(JMeter)</li>
-                    <li>Stepping Thread Group을 사용하여 동시 요청 수를 단계적으로 증가(20→60)</li>
+                    <li>synchronized 제거 시 직렬 처리되던 요청이 병렬로 실행되어 <strong>DB 부하 증가</strong> 우려</li>
+                    <li>DB Connection Pool 설정과 현재 사용량을 확인하여 여유분이 충분한지 검증</li>
+                </ul>
+                <p><strong>3) 부하 테스트를 통한 개선 효과 검증</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>staging 환경 부재로 개발 환경에서 <strong>부하 테스트 수행(JMeter)</strong></li>
+                    <li><strong>Stepping Thread Group</strong>을 사용하여 동시 요청 수를 단계적으로 증가(20→60)</li>
                     <li>제거 전·후 latency와 TPS를 동일 조건에서 비교</li>
                 </ul>
-                <p><strong>3) 운영 적용 및 모니터링</strong></p>
+                <p><strong>4) 운영 적용 및 모니터링</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>개선사항 적용 후 Elastic APM과 Thread 상태를 지속 관찰</li>
                     <li>월초 피크 구간에서도 병목이 재발하지 않음</li>
