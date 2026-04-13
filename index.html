@@ -743,7 +743,8 @@
             <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
-                    <li>트래픽 집중 기간(월 1~10일) 요청량 급증으로 문서 발행 API 지연 발생</li>
+                    <li>트래픽 집중 기간(월 1~10일)에 요청량이 급증하면서 API 응답시간 p95가 <strong>3초 이상</strong>으로 치솟는 지연 발생</li>
+                    <li>요청 급증 시 트래픽이 <strong>800 tpm</strong>까지 순간적으로 치솟으며, 이 시점에 latency 스파이크가 동반</li>
                     <li>APM 상 애플리케이션 내부에서 소모되는 시간의 비중이 컸음</li>
                     <li>시스템의 CPU·메모리는 정상 범주 → <strong>애플리케이션 내부 스레드 비정상 의심</strong></li>
                 </ul>
@@ -755,25 +756,26 @@
             <div class="ps-content">
                 <p><strong>1) Thread 상태 분석을 통한 원인 특정</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li><strong>jstack 기반 Thread Dump 분석</strong> 과정에서 <strong>BLOCKED 스레드 대량 포착</strong></li>
-                    <li>Stack Trace를 통해 Blocking이 발생하는 메서드 확인</li>
+                    <li><strong>Thread Dump 분석</strong> 과정에서 <strong>BLOCKED 스레드 대량 포착</strong></li>
                     <li>특정 메서드가 <strong><code>synchronized</code>에 의해 직렬 처리</strong>되고 있음을 발견</li>
-                    <li>코드 확인 시 synchronized가 보호하려던 공유 자원이 없고 멀티 인스턴스 환경에서는 실효성이 없어 키워드 제거</li>
+                    <li>코드 확인 시 synchronized가 보호하려던 공유 자원이 없고, 멀티 인스턴스 환경에서는 <strong>동일 JVM 내에서만 직렬화를 보장</strong>하므로 실효성이 없어 키워드 제거</li>
                 </ul>
-                <p><strong>2) synchronized 제거에 따른 영향 분석</strong></p>
+                <p><strong>2) synchronized 제거에 따른 영향도 분석</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>synchronized 제거 시 직렬 처리되던 요청이 병렬로 실행되어 <strong>DB 부하 증가</strong> 우려</li>
-                    <li>DB Connection Pool 설정과 현재 사용량을 확인하여 여유분이 충분한지 검증</li>
+                    <li>synchronized 제거 시 직렬 처리되던 요청이 병렬로 실행되면서 <strong>DB 부하 증가</strong> 우려</li>
+                    <li><strong>DB CPU</strong>: 평균 17~20%, 최대 67% — 경계선(80%) 이내이나 여유가 크지 않아 운영 반영 후 모니터링으로 확인</li>
+                    <li><strong>DB 커넥션</strong>: 현재 커넥션 풀 크기(max 40 × 8대 = 320) 대비 DB 세션 한도 2,205로 여유가 있어, 필요시 풀 크기 증가 고려</li>
                 </ul>
                 <p><strong>3) 부하 테스트를 통한 개선 효과 검증</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>staging 환경 부재로 개발 환경에서 <strong>부하 테스트 수행(JMeter)</strong></li>
                     <li><strong>Stepping Thread Group</strong>을 사용하여 동시 요청 수를 단계적으로 증가(20→60)</li>
                     <li>제거 전·후 latency와 TPS를 동일 조건에서 비교</li>
+                    <li>TPS <strong>13.5 → 19.8(약 47% 증가)</strong></li>
                 </ul>
                 <p><strong>4) 운영 적용 및 모니터링</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>개선사항 적용 후 Elastic APM과 Thread 상태를 지속 관찰</li>
+                    <li>개선사항 적용 후 APM과 DB 상태를 지속 관찰</li>
                     <li>월초 피크 구간에서도 병목이 재발하지 않음</li>
                 </ul>
             </div>
@@ -783,9 +785,7 @@
             <span class="ps-label result">성과</span>
             <div class="ps-content">
                 <ul>
-                    <li>latency <strong>2.4초 → 1.8초(약 24% 개선)</strong></li>
-                    <li>TPS <strong>13.5 → 19.8(약 47% 증가)</strong></li>
-                    <li>APM 상 월초 피크 구간에서도 latency 지표가 안정적으로 유지</li>
+                    <li>월초 피크 구간 latency p95 <strong>3초 이상 → 600ms</strong>로 개선</li>
                 </ul>
             </div>
         </div>
@@ -799,7 +799,7 @@
             <div class="ps-content">
                 <ul>
                     <li>고객사의 비정상 요청(중복 요청·응답 미수신)으로 동일 세금계산서가 간헐적으로 <strong>중복 발행</strong></li>
-                    <li>기존 구조: 고객 제공 멱등키를 세금계산서 테이블에 멱등키 컬럼을 두어 관리했으나, <strong>NULL 허용·UNIQUE 제약 없음</strong></li>
+                    <li>멱등키를 세금계산서 테이블에 저장하고 있었으나, <strong>UNIQUE 제약조건 부재</strong>로 중복된 멱등키 가능</li>
                     <li>중복 방지 로직이 <strong>애플리케이션 레벨 SELECT 체크</strong>에만 의존 → 동시 요청 시 둘 다 "없음"으로 판단해 <strong>중복 발행 가능</strong></li>
                 </ul>
             </div>
@@ -808,15 +808,19 @@
         <div class="ps-section">
             <span class="ps-label solution">해결</span>
             <div class="ps-content">
-                <p><strong>1) 멱등키 전용 테이블 신규 설계</strong></p>
+                <p><strong>1) 선택지 검토</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li><strong>멱등키만 관리하는 테이블을 신규 구축</strong></li>
-                    <li>기존 500GB 세금계산서 테이블에 UNIQUE 인덱스 추가 시 테이블 락으로 인한 서비스 중단 위험 고려</li>
-                    <li>신규 건부터 멱등키를 새 테이블에 함께 적재, 기존 세금계산서 테이블은 그대로 유지</li>
+                    <li>Unique 제약조건 추가를 먼저 검토했으나, 해당 컬럼에 이미 일반 인덱스가 존재하여 <strong>DROP 후 재생성 필요</strong> → 삭제 시점부터 재생성 완료까지 인덱스 부재로 <strong>서비스 장애 우려</strong></li>
+                    <li>서비스 무중단 + 최소 변경이 요구되는 상황에서 <strong>멱등키 전용 테이블 신규 생성</strong>이 가장 현실적인 판단</li>
                 </ul>
-                <p><strong>2) 복합 Primary Key로 DB 레벨 중복 차단</strong></p>
+                <p><strong>2) 멱등키 전용 테이블 신규 설계</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>PK 구성: <code>(고객 고유번호, 멱등키 값)</code>으로 <strong>고객 단위 멱등키 고유성 보장</strong></li>
+                    <li><strong>멱등키만 별도로 관리하는 신규 테이블 도입</strong></li>
+                    <li>신규 건부터 멱등키를 새 테이블에 함께 적재</li>
+                </ul>
+                <p><strong>3) 복합 Primary Key로 DB 레벨 중복 차단</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>PK 구성: <code>(고객 고유번호, 멱등키 값)</code> — 고객사마다 멱등키 중복이 가능하기 때문에 <strong>고객번호를 포함한 복합 PK</strong>로 고객 단위 멱등성 보장</li>
                     <li>동시 요청이 들어와도 먼저 INSERT된 요청만 성공하고, 나머지는 <strong>PK 충돌로 즉시 차단</strong></li>
                 </ul>
             </div>
