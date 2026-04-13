@@ -267,6 +267,7 @@
             left: 0;
             color: #cbd5e0;
         }
+
         
         /* 일반 리스트 */
         ul {
@@ -857,14 +858,20 @@
                 <p><strong>1) 보상 결과 영속화</strong></p>
                 <ul style="margin-left: 20px;">
                     <li><strong>보상 트랜잭션 실패 이력</strong>을 저장하는 전용 테이블 생성</li>
-                    <li>문서 번호, 포인트 코드, 상태(READY, RETRY, SUCCESS, FAIL), 재처리 횟수, 사용자 고유 번호로 구성</li>
+                    <li>문서 번호, 포인트 코드, 상태(READY, SUCCESS, FAIL), 재처리 횟수, 사용자 고유 번호로 구성</li>
                     <li>보상 트랜잭션 실패 시 실패 이력 적재</li>
                 </ul>
 
                 <p><strong>2) 보상 트랜잭션 재처리 프로세스 구축</strong></p>
                 <ul style="margin-left: 20px;">
                     <li><strong>Jenkins 스케줄을 활용</strong>한 API 호출 방식으로 구현</li>
-                    <li>처리 순서: 미처리(<code>READY</code>) 보상 트랜잭션 조회 → 상태를 <code>RETRY</code>로 업데이트 → 환불 API 호출 → 성공 시 <code>SUCCESS</code>, 실패 시 재시도 횟수 증가 후 <code>READY</code>로 복구</li>
+                    <li>처리 순서
+                        <ul style="margin-top: 4px;">
+                            <li>미처리(<code>READY</code>) 실패건 조회</li>
+                            <li>환불 API 호출</li>
+                            <li>성공 시 <code>SUCCESS</code>, 실패 시 재시도 횟수 증가 후 <code>READY</code>로 복구</li>
+                        </ul>
+                    </li>
                     <li>최대 재시도 횟수(5회) 초과 시 <code>FAIL</code>로 업데이트, <strong>자사 메신저 알림 발송</strong> 및 백오피스 수동 복구 기능 구현</li>
                 </ul>
             </div>
