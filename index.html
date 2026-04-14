@@ -770,7 +770,6 @@
                 <p><strong>3) 부하 테스트를 통한 개선 효과 검증</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>staging 환경 부재로 개발 환경에서 <strong>부하 테스트 수행(JMeter)</strong></li>
-                    <li><strong>Stepping Thread Group</strong>을 사용하여 동시 요청 수를 단계적으로 증가(20→60)</li>
                     <li>제거 전·후 latency와 TPS를 동일 조건에서 비교</li>
                     <li>TPS <strong>13.5 → 19.8(약 47% 증가)</strong></li>
                 </ul>
@@ -801,7 +800,7 @@
                 <ul>
                     <li>고객사의 비정상 요청(중복 요청·응답 미수신)으로 동일 세금계산서가 간헐적으로 <strong>중복 발행</strong></li>
                     <li>멱등키를 세금계산서 테이블에 저장하고 있었으나, <strong>UNIQUE 제약조건 부재</strong>로 중복된 멱등키 가능</li>
-                    <li>중복 방지 로직이 <strong>애플리케이션 레벨 SELECT 체크</strong>에만 의존 → 동시 요청 시 둘 다 "없음"으로 판단해 <strong>중복 발행 가능</strong></li>
+                    <li>중복 방지 로직이 <strong>애플리케이션 레벨 데이터 조회 후 유무 체크</strong>에 의존 → 동시 요청 시 둘 다 "없음"으로 판단해 <strong>중복 발행 가능</strong></li>
                 </ul>
             </div>
         </div>
