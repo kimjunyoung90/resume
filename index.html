@@ -765,7 +765,7 @@
                 <ul style="margin-left: 20px;">
                     <li>synchronized 제거 시 직렬 처리되던 요청이 병렬로 실행되면서 <strong>DB 부하 증가</strong> 우려</li>
                     <li><strong>DB CPU</strong>: 평균 10~20%, 최대 60%로 높아서 운영 반영 후 모니터링 필요</li>
-                    <li><strong>DB 커넥션 증가 고려</strong>: 현재 커넥션 풀 크기(max 40 × 8대 = 320)는 대비 DB 최대 한도(2,205)에 비해 여유가 있어, 동시 요청량 증가 시 풀 크기 증가 고려</li>
+                    <li><strong>DB 커넥션 증가 고려</strong>: 현재 커넥션 풀 크기(max 40 × 8대 = 320) 대비 DB 최대 한도(2,205)는 여유가 있어, 동시 요청량 증가 시 풀 크기 증가 고려</li>
                 </ul>
                 <p><strong>3) 부하 테스트를 통한 개선 효과 검증</strong></p>
                 <ul style="margin-left: 20px;">
