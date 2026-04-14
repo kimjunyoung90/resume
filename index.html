@@ -873,6 +873,11 @@
                     </li>
                     <li>최대 재시도 횟수(5회) 초과 시 <code>FAIL</code>로 업데이트, <strong>자사 메신저 알림 발송</strong> 및 백오피스 수동 복구 기능 구현</li>
                 </ul>
+
+                <p><strong>3) <code>ReentrantLock</code>을 활용한 스케줄 중복 실행 방지</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>이전 스케줄이 완료되기 전에 다음 스케줄이 실행되는 중복 실행 문제를 <code>ReentrantLock.tryLock()</code>으로 방지</li>
+                </ul>
             </div>
         </div>
 
