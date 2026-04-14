@@ -11,7 +11,7 @@
 			✉️ wnsdud1900427@gmail.com<br>
 			<img src="https://kimjunyoung90.github.io/resume/images/github-mark.png" width="16" style="vertical-align: middle;"/> <a href="https://github.com/kimjunyoung90">https://github.com/kimjunyoung90</a><br>
 			📝 <a href="https://snvlqkq.tistory.com">https://snvlqkq.tistory.com</a><br><br>
-			<strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/saga-examples/blob/main/choreography">MSA 이벤트 기반 분산 트랜잭션 처리</a><br>
+			<strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/saga-examples/blob/main/choreography">Kafka를 사용한 이벤트 기반 아키텍처(EDA)</a><br>
 			<strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/54">동시성 처리 전략</a> 및  <a href="https://snvlqkq.tistory.com/57">캐싱 처리 전략</a>
 		</p>
 	</div>
