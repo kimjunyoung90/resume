@@ -1,5 +1,6 @@
 
 # 김준영 경력기술서
+**5년차 백엔드 개발자**
 
 <div style="display: flex; align-items: flex-start; gap: 30px; margin-top: 20px;">
 	<div style="flex: 1;">
