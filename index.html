@@ -902,41 +902,40 @@
     </div>
 
     <div class="problem-solving">
-        <div class="ps-title">동시성 문제 해결</div>
-        
+        <div class="ps-title">사내 금전적 손실 방지</div>
+
         <div class="ps-section">
             <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
-                    <li>신규 채권 발행 서비스 출시 프로모션으로 고객별 무료 발행 100건 이벤트 진행</li>
-                    <li>무료 발행 건수 차감 시 SELECT 후 UPDATE로 인한 동시성 문제 발생</li>
+                    <li>신규 채권 발행 서비스 출시 프로모션으로 고객별 무료 채권 100건 발행 이벤트 진행</li>
+                    <li>카운트 기반 쿠폰으로 무료 발행 건수 차감 시 SELECT 후 UPDATE로 인한 동시성 문제 발생</li>
                 </ul>
             </div>
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">해결</span>
+            <span class="ps-label solution">해결 과정</span>
             <div class="ps-content">
                 <p><strong>1) 동시성 문제 재현 및 분석</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li><strong>ExecutorService 기반 동시성 테스트 코드</strong> 작성하여 이슈 재현</li>
-                    <li>10개 스레드풀 생성만으로도 동시성 이슈 발생 확인</li>
-                    <li>단일 쿼리로 개선 검토했으나, 히스토리를 쌓아야 해서 로직 개선 불가</li>
+                    <li><strong>ExecutorService, CountDownLatch 기반 동시성 테스트 코드</strong> 작성</li>
+                    <li>Race Condition에 따른 동시성 이슈 발생 확인</li>
                 </ul>
-                <p><strong>2) Optimistic Lock 적용</strong></p>
+                <p><strong>2) 구조 개선 검토</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>단일 쿼리로의 수정 검토</li>
+                    <li>무료 건수 이력 적재로 인해 불가</li>
+                </ul>
+                <p><strong>3) 낙관적 락 적용</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>한 회사당 100건, 회사에 일반적으로 채권 발행 담당자가 소수이고 초기 서비스라 사용자가 적어 경합이 적을 것으로 판단</li>
-                    <li>경합 확률이 낮은 구조를 고려해 <strong>Optimistic Lock + 재시도</strong> 적용</li>
+                    <li>경합이 낮은 상황을 고려해 <strong>Optimistic Lock + 재시도</strong> 적용</li>
                 </ul>
-                <p><strong>3) 재시도 전략</strong></p>
-                <ul style="margin-left: 20px;">
-                    <li>재충돌 방지를 위해 <strong>랜덤 backoff</strong> 설정 적용</li>
-                    <li>대기 시간 상한(maxDelay) 설정으로 지연 무한 증가 방지</li>
-                </ul>
-                <p><strong>4) 트랜잭션 설정</strong></p>
+                <p><strong>4) 트랜잭션 조정</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>재시도 포함 하나의 트랜잭션으로 구성하여 <strong>원자성 보장</strong></li>
-                    <li><strong>noRollbackFor</strong> 속성을 사용하여 버전 충돌 시 롤백 방지</li>
+                    <li><strong>noRollbackFor</strong> 속성을 사용하여 버전 충돌 시 롤백 방지 구현</li>
                 </ul>
             </div>
         </div>
@@ -976,7 +975,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">해결</span>
+            <span class="ps-label solution">해결 과정</span>
             <div class="ps-content">
                 <p><strong>1) N:M 매핑 구조의 데이터베이스 재설계</strong></p>
                 <ul style="margin-left: 20px;">
@@ -1034,7 +1033,7 @@
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">해결</span>
+            <span class="ps-label solution">해결 과정</span>
             <div class="ps-content">
                 <ul>
                     <li><strong>AI Agent(Claude Code, Codex)</strong>를 사내 Wiki에 연동하는 방법 탐색</li>
