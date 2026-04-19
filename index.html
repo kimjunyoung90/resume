@@ -740,7 +740,7 @@
     </div>
 
     <div class="problem-solving first-detail">
-        <div class="ps-title">Latency 9초 → 350ms, 처리량 N배 개선</div>
+        <div class="ps-title">Latency 9초 → 350ms, 처리량 47% 향상</div>
 
         <div class="ps-section">
             <span class="ps-label problem">문제</span>
@@ -758,7 +758,7 @@
                 <p><strong>1) 모니터링 확인</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>모니터링 분석 시 애플리케이션 내부에서 소모되는 시간의 비중이 전체 소요 시간의 90% 이상으로 컸음</li>
-                    <li>시스템의 CPU·메모리 확인 결과 CPU 5%, 메모리 30%로 정상 범주로 판단</li>
+                    <li>시스템의 CPU·메모리 확인 결과 CPU 5%, 메모리 30%로 정상 범위로 판단</li>
                     <li>애플리케이션 내부 스레드 비정상 동작 의심</li>
                 </ul>
                 <p><strong>2) Thread 분석</strong></p>
@@ -767,13 +767,13 @@
                     <li>Stack Trace 확인 결과 특정 메서드가 <strong><code>synchronized</code>에 의해 직렬 처리</strong>되고 있음을 발견</li>
                     <li>코드 레벨 분석 후 synchronized 제거</li>
                 </ul>
-                <p><strong>2) synchronized 제거에 따른 영향도 분석</strong></p>
+                <p><strong>3) synchronized 제거에 따른 영향도 분석</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>synchronized 제거 시 직렬 처리되던 요청이 병렬로 실행되면서 <strong>DB 부하 증가</strong> 우려</li>
-                    <li><strong>DB CPU</strong>: 평균 10~20%, 최대 60%로 트래픽 병렬 처리시 안전한다고 판단</li>
+                    <li><strong>DB CPU</strong>: 평균 10~20%, 최대 60%로 트래픽 병렬 처리시 안전하다고 판단</li>
                     <li><strong>DB 커넥션</strong>: 현재 커넥션 풀 크기(max 40 × 8대 = 320) 대비 DB 최대 한도(2,205)는 여유가 있어, 커넥션 부족 시 풀 크기 증가 고려</li>
                 </ul>
-                <p><strong>3) 부하 테스트를 통한 개선 효과 검증</strong></p>
+                <p><strong>4) 부하 테스트를 통한 개선 효과 검증</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>staging 환경 부재로 개발 환경에서 <strong>부하 테스트 수행(JMeter)</strong></li>
                     <li>제거 전·후 latency와 TPS를 동일 조건에서 비교</li>
@@ -787,7 +787,7 @@
             <div class="ps-content">
                 <ul>
                     <li>월초 피크 구간 병목 현상 제거</li>
-                    <li>latency 최대 <strong>9초 이상 → 350ms</strong> 안정적 유지</li>
+                    <li>운영 기준 latency 최대 <strong>9초 이상 → 350ms</strong> 안정적 유지</li>
                 </ul>
             </div>
         </div>
@@ -883,8 +883,8 @@
 
                 <p><strong>3) <code>Lock</code>을 활용한 스케줄 중복 실행 방지</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>현재 스케쥴 방식에서 이전 스케줄이 완료되기 전에 다음 스케줄이 실행될 수 있는 구조</li>
-                    <li>단일 스케쥴 작업 서버라 <code>ReentrantLock</code>으로 방지</li>
+                    <li>현재 스케줄 방식에서 이전 스케줄이 완료되기 전에 다음 스케줄이 실행될 수 있는 구조</li>
+                    <li>단일 스케줄 작업 서버라 <code>ReentrantLock</code>으로 방지</li>
                 </ul>
             </div>
         </div>
@@ -999,7 +999,7 @@
             <span class="ps-label result">성과</span>
             <div class="ps-content">
                 <ul>
-                    <li><strong>N:M 매핑 구조</strong>로 <strong>데이터만 추가만으로</strong> <strong>기존 외 2개 언론사 추가 확장</strong></li>
+                    <li><strong>N:M 매핑 구조</strong>로 <strong>데이터 추가만으로</strong> <strong>기존 외 2개 언론사 추가 확장</strong></li>
                     <li><strong>전략 패턴</strong> 적용으로 신규 언론사 추가 시 <strong>개발 공수 절감</strong></li>
                 </ul>
             </div>
