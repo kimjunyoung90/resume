@@ -986,13 +986,13 @@
                 <p><strong>2) 쿼리 복잡도 증가 문제 해결</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>DB 구조 변경으로 기존 단순 쿼리 → JOIN으로 복잡도 증가</li>
-                    <li><strong>MyBatis SQL</strong>을 활용하여 공통 JOIN 로직 재사용</li>
+                    <li>MyBatis SQL 재사용 문법을 활용하여 공통 JOIN 로직 재사용</li>
                 </ul>
                 <p><strong>3) 전략 패턴 기반 수집 로직 공통화</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>언론사마다 수집 Endpoint와 응답 데이터 구조가 상이함</li>
-                    <li>전체 수집 흐름은 유지하면서 데이터 수집 및 가공 부분을 <strong>전략 클래스로 분리</strong></li>
-                    <li>신규 언론사 연동 시 전략 클래스만 추가하면 되어 기존 비즈니스 로직을 수정하지 않고 확장 가능한 구조로 설계(<strong>개방 폐쇄 원칙</strong> 준수)</li>
+                    <li>언론사마다 수집 API와 응답 데이터 구조가 상이한 문제 발생</li>
+                    <li>전략 패턴을 도입하여 전체 수집 흐름은 유지하면서 데이터 수집 및 가공 부분을 <strong>전략 클래스로 분리</strong></li>
+                    <li>신규 언론사 추가 시 전략 클래스만 추가하여 확장 가능한 구조로 설계(<strong>개방 폐쇄 원칙</strong> 준수)</li>
                 </ul>
             </div>
         </div>
@@ -1001,7 +1001,7 @@
             <span class="ps-label result">성과</span>
             <div class="ps-content">
                 <ul>
-                    <li><strong>N:M 매핑 구조</strong>로 <strong>DB 구조 변경 없이 매핑 데이터만 추가</strong>하여 <strong>비즈워치 외 2개 언론사 확장</strong></li>
+                    <li><strong>N:M 매핑 구조</strong>로 <strong>데이터만 추가만으로</strong> <strong>기존 외 2개 언론사 추가 확장</strong></li>
                     <li><strong>전략 패턴</strong> 적용으로 신규 언론사 추가 시 <strong>개발 공수 절감</strong></li>
                 </ul>
             </div>
