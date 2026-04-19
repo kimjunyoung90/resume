@@ -687,22 +687,22 @@
         <li>
             <strong>데이터 기반으로 문제를 분석하고 해결합니다.</strong>
             <div style="margin-top: 8px; color: #718096; line-height: 1.7;">
-                API 지연 시, APM 지표에서 latency 급증과 throughput 감소를 관측했으나 CPU·메모리·DB 등 리소스 지표는 정상이었습니다. 이를 통해 애플리케이션 레벨의 병목으로 판단하고 Thread Dump 분석을 통해 원인을 추적했습니다.<br>
-                synchronized 키워드 제거 후 개선 효과를 검증하였고 TPS를 47% 향상시켰습니다.
+                APM 에서 latency 급증과 throughput 감소 관측 후 서버의 CPU·메모리·DB 등 리소스 지표를 기반으로 문제를 추적하여 병목을 추적했습니다.<br>
+                latency의 원인을 해결하여 TPS를 47% 향상시켰습니다.
             </div>
         </li>
         <li>
             <strong>AI 도구를 활용하여 개발 생산성을 높이고 있습니다.</strong>
             <div style="margin-top: 8px; color: #718096; line-height: 1.7;">
                 팀 리드·프론트엔드·백엔드·코드 리뷰어·QA·보안 전문가로 구성된 AI 에이전트 팀을 구성하여, Jira 티켓을 전달하면 버그 수정을 자동화하는 개발 워크플로우를 구축하여 운영 중입니다.<br>
-                또한 사내 개발팀, QA, 퍼블리셔를 대상으로 Claude 교육을 진행했습니다.
+                또한 Claude 활용 선두주자로서 사내 Claude 교육을 진행했습니다.
             </div>
         </li>
         <li>
             <strong>정보를 문서로 정리해 공유합니다.</strong>
             <div style="margin-top: 8px; color: #718096; line-height: 1.7;">
-                시스템 운영 온보딩 비용을 줄이기 위해 모니터링 지표 의미, 시스템 구성요소, 동작 방식, 트랜잭션 분석 과정 등을 정리한 모니터링 가이드 문서를 작성하여 교육 자료로 활용했습니다.<br>
-                이를 통해 장애 발생 시 팀원들이 가이드를 기반으로 기본적 분석을 스스로 수행할 수 있게 되었습니다.
+                시스템 운영 온보딩 비용을 줄이기 위해 모니터링 지표 의미, 구성요소, 동작 방식, 트랜잭션 분석 과정 등을 정리한 모니터링 가이드 문서를 작성했습니다.<br>
+                신규 입사자 및 주니어들이 기본적 모니터링을 스스로 수행할 수 있게 되었습니다.
             </div>
         </li>
     </ul>
@@ -741,45 +741,44 @@
     </div>
 
     <div class="problem-solving first-detail">
-        <div class="ps-title">API 대량 지연 개선</div>
+        <div class="ps-title">Latency 9초 → 300ms, 처리량 N배 개선</div>
 
         <div class="ps-section">
             <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
-                    <li>트래픽 집중 기간(월 1~10일)에 요청량이 급증하면서 API 응답시간 최대 <strong>9초 이상</strong>으로 치솟는 지연 발생</li>
-                    <li>요청 급증 시 트래픽이 <strong>800 tpm</strong>까지 순간적으로 치솟으며, 이 시점에 latency 스파이크가 동반</li>
-                    <li>APM 상 애플리케이션 내부에서 소모되는 시간의 비중이 컸음</li>
-                    <li>시스템의 CPU·메모리는 정상 범주 → <strong>애플리케이션 내부 스레드 비정상 의심</strong></li>
+                    <li>월 초(1~10일) 전체 트래픽의 40%가 집중되는 패턴</li>
+                    <li>해당 시기 특정 API 응답시간이 최대 <strong>9초 이상</strong>으로 치솟는 현상 발생</li>
                 </ul>
             </div>
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">해결</span>
+            <span class="ps-label solution">해결 과정</span>
             <div class="ps-content">
-                <p><strong>1) Thread 상태 분석을 통한 원인 특정</strong></p>
+                <p><strong>1) 모니터링 확인</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>모니터링 분석 시 애플리케이션 내부에서 소모되는 시간의 비중이 전체 소요 시간의 90% 이상으로 컸음</li>
+                    <li>시스템의 CPU·메모리 확인 결과 CPU 5%, 메모리 30%로 정상 범주로 판단</li>
+                    <li>애플리케이션 내부 스레드 비정상 동작 의심</li>
+                </ul>
+                <p><strong>2) Thread 분석</strong></p>
                 <ul style="margin-left: 20px;">
                     <li><strong>Thread Dump 분석</strong> 과정에서 <strong>BLOCKED 스레드 대량 포착</strong></li>
-                    <li>특정 메서드가 <strong><code>synchronized</code>에 의해 직렬 처리</strong>되고 있음을 발견</li>
+                    <li>Stack Trace 확인 결과 특정 메서드가 <strong><code>synchronized</code>에 의해 직렬 처리</strong>되고 있음을 발견</li>
                     <li>코드 확인 시 synchronized가 보호하려던 공유 자원이 없고, 멀티 인스턴스 환경에서는 <strong>동일 JVM 내에서만 직렬화를 보장</strong>하므로 실효성이 없어 키워드 제거</li>
                 </ul>
                 <p><strong>2) synchronized 제거에 따른 영향도 분석</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>synchronized 제거 시 직렬 처리되던 요청이 병렬로 실행되면서 <strong>DB 부하 증가</strong> 우려</li>
-                    <li><strong>DB CPU</strong>: 평균 10~20%, 최대 60%. 운영 반영 후 모니터링 필요</li>
-                    <li><strong>DB 커넥션 증가 고려</strong>: 현재 커넥션 풀 크기(max 40 × 8대 = 320) 대비 DB 최대 한도(2,205)는 여유가 있어, 동시 요청량 증가 시 풀 크기 증가 고려</li>
+                    <li><strong>DB CPU</strong>: 평균 10~20%, 최대 60%로 트래픽 병렬 처리시 안전한다고 판단</li>
+                    <li><strong>DB 커넥션</strong>: 현재 커넥션 풀 크기(max 40 × 8대 = 320) 대비 DB 최대 한도(2,205)는 여유가 있어, 커넥션 부족 시 풀 크기 증가 고려</li>
                 </ul>
                 <p><strong>3) 부하 테스트를 통한 개선 효과 검증</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>staging 환경 부재로 개발 환경에서 <strong>부하 테스트 수행(JMeter)</strong></li>
                     <li>제거 전·후 latency와 TPS를 동일 조건에서 비교</li>
                     <li>TPS <strong>13.5 → 19.8(약 47% 증가)</strong></li>
-                </ul>
-                <p><strong>4) 운영 적용 및 모니터링</strong></p>
-                <ul style="margin-left: 20px;">
-                    <li>개선사항 적용 후 APM과 DB 상태를 지속 관찰</li>
-                    <li>월초 피크 구간에서도 병목이 재발하지 않음</li>
                 </ul>
             </div>
         </div>
@@ -788,42 +787,47 @@
             <span class="ps-label result">성과</span>
             <div class="ps-content">
                 <ul>
-                    <li>월초 피크 구간 latency 최대 <strong>9초 이상 → 350ms</strong> 안정적 유지</li>
+                    <li>월초 피크 구간 병목 현상 제거</li>
+                    <li>latency 최대 <strong>9초 이상 → 350ms</strong> 안정적 유지</li>
                 </ul>
             </div>
         </div>
     </div>
 
     <div class="problem-solving">
-        <div class="ps-title">API 멱등성 개선</div>
+        <div class="ps-title">데이터 중복 적재 문제 해결</div>
 
         <div class="ps-section">
             <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>고객사의 비정상 요청(중복 요청·응답 미수신)으로 동일 세금계산서가 간헐적으로 <strong>중복 발행</strong></li>
-                    <li>멱등키를 세금계산서 테이블에 저장하고 있었으나, <strong>UNIQUE 제약조건 부재</strong>로 중복된 멱등키 가능</li>
-                    <li>중복 방지 로직이 <strong>애플리케이션 레벨 데이터 조회 후 유무 체크</strong>에 의존 → 동시 요청 시 둘 다 "없음"으로 판단해 <strong>중복 발행 가능</strong></li>
                 </ul>
             </div>
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">해결</span>
+            <span class="ps-label solution">해결 과정</span>
             <div class="ps-content">
-                <p><strong>1) 선택지 검토</strong></p>
+                <p><strong>1) 원인 분석</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>멱등키를 세금계산서 테이블에 저장하고 있었으나, <strong>UNIQUE 제약조건 부재</strong>로 중복된 멱등키 가능</li>
+                    <li>중복 방지 로직이 <strong>데이터 조회 후 유무 체크</strong>에 의존하여 동시 요청 시 <strong>중복 발행 가능</strong></li>
+                </ul>
+                <p><strong>2) 제약조건 검토</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>Unique 제약조건 추가를 먼저 검토했으나, 해당 컬럼에 이미 일반 인덱스가 존재하여 <strong>DROP 후 재생성 필요</strong> → 삭제 시점부터 재생성 완료까지 인덱스 부재로 <strong>서비스 장애 우려</strong></li>
-                    <li>서비스 무중단 + 최소 변경이 요구되는 상황에서 <strong>멱등키 전용 테이블 신규 생성</strong>이 가장 현실적인 판단</li>
+                    <li>서비스 무중단 + 최소 변경이 요구되는 상황이라 <strong>멱등키 전용 테이블 신규 생성</strong> 선택</li>
                 </ul>
-                <p><strong>2) 멱등키 전용 테이블 신규 설계</strong></p>
+                <p><strong>3) 멱등키 전용 테이블 신규 설계</strong></p>
                 <ul style="margin-left: 20px;">
                     <li><strong>멱등키만 별도로 관리하는 신규 테이블 도입</strong></li>
                     <li>신규 건부터 멱등키를 새 테이블에 함께 적재</li>
                 </ul>
-                <p><strong>3) 복합 Primary Key로 DB 레벨 중복 차단</strong></p>
+                <p><strong>4) 복합 PK로 DB 레벨 중복 차단</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>PK 구성: <code>(고객 고유번호, 멱등키 값)</code> — 고객사마다 멱등키 중복이 가능하기 때문에 <strong>고객번호를 포함한 복합 PK</strong>로 고객 단위 멱등성 보장</li>
+                    <li>PK 구성: <code>(고객 고유번호, 멱등키 값)</code></li>
+                    <li>고객사마다 멱등키 중복이 가능하기 때문에 <strong>고객번호를 포함한 복합 PK</strong>로 고객 단위 멱등성 보장</li>
                     <li>동시 요청이 들어와도 먼저 INSERT된 요청만 성공하고, 나머지는 <strong>PK 충돌로 즉시 차단</strong></li>
                 </ul>
             </div>
@@ -841,26 +845,27 @@
     </div>
 
     <div class="problem-solving">
-        <div class="ps-title">분산 시스템간 트랜잭션 정합성 개선</div>
+        <div class="ps-title">MSA 데이터 정합성 개선</div>
 
         <div class="ps-section">
             <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
-                    <li>세금계산서 발행 프로세스는 포인트 시스템과 연계되어 <strong>포인트 차감 → 세금계산서 발행 → (실패 시) 포인트 환불</strong> 순으로 진행</li>
-                    <li>보상 트랜잭션(포인트 환불) 실패 시 데이터 정합성을 회복할 메커니즘이 부재</li>
-                    <li>문서 발행 실패 시 포인트가 환불되지 않는 문제가 발생하여 고객 금전적 손실 야기</li>
+                    <li>담당 서비스는 Orchestration 방식의 MSA 환경</li>
+                    <li>세금계산서 생성 프로세스는 포인트 시스템과 연계되어 <strong>포인트 차감 → 세금계산서 생성 → (실패 시) 포인트 환불</strong> 순으로 진행</li>
+                    <li>문서 생성 실패 시 포인트가 환불되지 않는 사례가 발생 → 고객 금전적 손실 야기</li>
+                    <li>보상 트랜잭션(포인트 환불) 실패 시 발생한 문제. 데이터 정합성을 회복할 메커니즘이 부재</li>
                 </ul>
             </div>
         </div>
 
         <div class="ps-section">
-            <span class="ps-label solution">해결</span>
+            <span class="ps-label solution">해결 과정</span>
             <div class="ps-content">
                 <p><strong>1) 보상 결과 영속화</strong></p>
                 <ul style="margin-left: 20px;">
                     <li><strong>보상 트랜잭션 실패 이력</strong>을 저장하는 전용 테이블 생성</li>
-                    <li>문서 번호, 포인트 코드, 상태(READY, SUCCESS, FAIL), 재처리 횟수, 사용자 고유 번호로 구성</li>
+                    <li>문서 번호, 재처리 상태, 재처리 횟수, 사용자 고유 번호로 구성</li>
                     <li>보상 트랜잭션 실패 시 실패 이력 적재</li>
                 </ul>
 
@@ -869,7 +874,7 @@
                     <li><strong>Jenkins 스케줄을 활용</strong>한 API 호출 방식으로 구현</li>
                     <li>처리 순서
                         <ul style="margin-top: 4px;">
-                            <li>미처리(<code>READY</code>) 실패건 조회</li>
+                            <li>미처리 실패건 조회</li>
                             <li>환불 API 호출</li>
                             <li>성공 시 <code>SUCCESS</code>, 실패 시 재시도 횟수 증가 후 <code>READY</code>로 복구</li>
                         </ul>
@@ -877,9 +882,10 @@
                     <li>최대 재시도 횟수(5회) 초과 시 <code>FAIL</code>로 업데이트, <strong>자사 메신저 알림 발송</strong> 및 백오피스 수동 복구 기능 구현</li>
                 </ul>
 
-                <p><strong>3) <code>ReentrantLock</code>을 활용한 스케줄 중복 실행 방지</strong></p>
+                <p><strong>3) <code>Lock</code>을 활용한 스케줄 중복 실행 방지</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>이전 스케줄이 완료되기 전에 다음 스케줄이 실행되는 중복 실행 문제를 <code>ReentrantLock.tryLock()</code>으로 방지</li>
+                    <li>현재 스케쥴 방식에서 이전 스케줄이 완료되기 전에 다음 스케줄이 실행되는 구조</li>
+                    <li>단일 스케쥴 작업 서버라 <code>ReentrantLock</code>으로 방지</li>
                 </ul>
             </div>
         </div>
@@ -896,7 +902,7 @@
     </div>
 
     <div class="problem-solving">
-        <div class="ps-title">동시성 문제 해결 (Optimistic Lock)</div>
+        <div class="ps-title">동시성 문제 해결</div>
         
         <div class="ps-section">
             <span class="ps-label problem">문제</span>
