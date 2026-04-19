@@ -968,8 +968,8 @@
             <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
-                    <li>기존 뉴스 서비스는 단일 언론사만을 고려해 설계되어 <code>categories</code>에 언론사 고유 카테고리를 그대로 저장하고 UI에 노출하는 구조였음</li>
-                    <li>이후 서비스 고도화 과정에서 다수 언론사의 데이터를 수집하고, 각 언론사가 제공하는 카테고리를 플랫폼 서비스 기준(예: 정치·IT 등)에 맞게 통합하여 제공해야 한다는 요구사항이 전달되었음</li>
+                    <li>기존 뉴스 서비스는 단일 언론사만을 고려해 설계되었고, 신문사에서 제공하는 카테고리 정보를 <code>paper_categories</code>에 저장하고 뉴스 데이터는 카테고리에 매핑되는 1:N 구조였음</li>
+                    <li>이후 서비스 고도화 과정에서 다수 언론사의 데이터를 수집하고, 각 언론사가 제공하는 뉴스 데이터를 플랫폼 서비스 기준(예: 정치·IT 등)에 맞게 통합하여 제공해야 한다는 요구사항이 전달되었음</li>
                 </ul>
             </div>
         </div>
@@ -979,8 +979,7 @@
             <div class="ps-content">
                 <p><strong>1) N:M 매핑 구조의 데이터베이스 재설계</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li><code>platform_categories</code> 테이블 신설: 플랫폼(WEHAGO, NAHAGO)별 표준 카테고리 관리</li>
-                    <li><code>categories</code> 테이블 재정의: 언론사별 원본 카테고리를 서브 카테고리로 활용</li>
+                    <li><code>platform_categories</code> 테이블 신설: 자사 서비스 플랫폼(WEHAGO, NAHAGO)별 표준 카테고리 관리</li>
                     <li><code>categories_mapping</code> 테이블 추가: <strong>N:M 관계 구현</strong>으로 하나의 언론사 카테고리가 여러 플랫폼 카테고리에 매핑 가능하도록 설계</li>
                 </ul>
                 <p><strong>2) 쿼리 복잡도 증가 문제 해결</strong></p>
