@@ -85,7 +85,7 @@
 **2) Thread 분석**
 - **Thread Dump 분석** 과정에서 **BLOCKED 스레드 대량 포착**
 - Stack Trace 확인 결과 특정 메서드가 **`synchronized`에 의해 직렬 처리**되고 있음을 발견
-- 코드 확인 시 synchronized가 보호하려던 공유 자원이 없고, 멀티 인스턴스 환경에서는 **동일 JVM 내에서만 직렬화를 보장**하므로 실효성이 없어 키워드 제거
+- 코드 레벨 분석 후 synchronized 제거
 
 **2) synchronized 제거에 따른 영향도 분석**
 - synchronized 제거 시 직렬 처리되던 요청이 병렬로 실행되면서 **DB 부하 증가** 우려
