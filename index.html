@@ -823,20 +823,25 @@
                     </li>
                     <li><strong>② 멱등키 전용 테이블 신규 생성</strong>
                         <ul style="margin-top: 4px;">
-                            <li>멱등키 항목만 추가로 관리하는 신규 테이블 생성</li>
+                            <li>멱등키 추가로 관리하는 신규 테이블 생성</li>
                             <li>기존 테이블 DDL 변경 없이 즉시 적용</li>
                         </ul>
                     </li>
                     <li><strong>③ Redis 분산 락</strong>
                         <ul style="margin-top: 4px;">
                             <li>멱등키를 활용해 분산락을 적용하여 동일 멱등키 동시 발행 차단</li>
-                            <li>Redis 장애 시 동시 발행 가능</li>
                         </ul>
                     </li>
                 </ul>
-                <p><strong>3) 멱등키 전용 테이블 설계</strong></p>
+                <p><strong>3) 멱등키 전용 테이블 방식 선택</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li><code>(id, 고객 고유번호, 멱등키, 세금계산서 번호)</code>, <strong>(고객 고유번호, 멱등키)</strong> Unique 제약 조건</li>
+                    <li>선택 이유 (운영 영향도 최소화 + 강한 보장):
+                        <ul style="margin-top: 4px;">
+                            <li>Redis 분산 락은 <strong>신규 인프라 의존성 추가</strong>, <strong>Redis 장애 시 멱등성 보장 방법의 부재</strong></li>
+                            <li>신규 테이블 방식은 기존 테이블 영향 없이 <strong>즉시 적용 가능</strong>, Unique 제약조건 충돌로 DB 레벨에서 <strong>우회 불가능한 강한 보장</strong></li>
+                        </ul>
+                    </li>
+                    <li>테이블 설계: <code>(id, 고객 고유번호, 멱등키, 세금계산서 번호)</code>, <strong>(고객 고유번호, 멱등키)</strong> Unique 제약 조건</li>
                     <li>동시 요청 시 먼저 INSERT된 요청만 성공, 나머지는 <strong>제약조건 충돌로 즉시 차단</strong></li>
                 </ul>
             </div>
@@ -911,7 +916,7 @@
     </div>
 
     <div class="problem-solving">
-        <div class="ps-title">사내 금전적 손실 방지</div>
+        <div class="ps-title">사내 금전 손실 방지</div>
 
         <div class="ps-section">
             <span class="ps-label problem">문제</span>
