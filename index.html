@@ -754,7 +754,7 @@
         <div class="ps-section">
             <span class="ps-label solution">해결 과정</span>
             <div class="ps-content">
-                <p><strong>1) 모니터링 확인</strong></p>
+                <p><strong>1) APM 분석</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>모니터링 분석 시 애플리케이션 내부에서 소모되는 시간의 비중이 전체 소요 시간의 90% 이상으로 컸음</li>
                     <li>시스템의 CPU·메모리 확인 결과 CPU 5%, 메모리 30%로 정상 범위로 판단</li>
@@ -814,7 +814,7 @@
                 </ul>
                 <p><strong>2) 선택지 비교</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li><strong>① Function-Based Unique 제약 조건 추가</strong>
+                    <li><strong>① Function-Based Unique Index 추가</strong>
                         <ul style="margin-top: 4px;">
                             <li>고객 별로 멱등키가 중복될 수 있어 고객 번호 + 멱등키 조합으로 제약 조건이 불가피</li>
                             <li>멱등키가 필수 값이 아니어서 NULL이 가능해 단순 UNIQUE 불가</li>
