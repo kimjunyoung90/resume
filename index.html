@@ -835,7 +835,7 @@
                 </ul>
                 <p><strong>3) 멱등키 전용 테이블 방식 선택</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>선택 이유 (운영 영향도 최소화 + 강한 보장):
+                    <li>선택 이유 (운영 영향도 최소화 + 강한 보장)
                         <ul style="margin-top: 4px;">
                             <li>Redis 분산 락은 <strong>신규 인프라 의존성 추가</strong>, <strong>Redis 장애 시 멱등성 보장 방법의 부재</strong></li>
                             <li>신규 테이블 방식은 기존 테이블 영향 없이 <strong>즉시 적용 가능</strong>, Unique 제약조건 충돌로 DB 레벨에서 <strong>우회 불가능한 강한 보장</strong></li>
