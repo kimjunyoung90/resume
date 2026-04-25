@@ -24,10 +24,9 @@
 
     APM 에서 latency 급증과 throughput 감소 관측 후 서버의 CPU·메모리·Thread를 분석하여 병목 원인을 추적하고 해결했습니다. TPS 47%를 향상시켰습니다.
 
-- **AI 도구를 활용하여 개발 생산성을 높이고 있습니다.**
+- **AI 도구를 활용하여 개발 생산성을 높입니다.**
 
-    팀 리드·프론트엔드·백엔드·코드 리뷰어·QA·보안 전문가로 구성된 AI 에이전트 팀을 구성하여, Jira 티켓을 전달하면 버그 수정을 자동화하는 개발 워크플로우를 구축하여 운영 중입니다.
-	또한 개발·QA·퍼블리셔를 대상으로 사내 Claude 교육을 맡아 진행했습니다.[교육자료|https://kimjunyoung90.github.io/resume/claude-education.html]
+    개발·QA·퍼블리셔 대상으로 사내 Claude 교육을 진행하고[교육자료|https://kimjunyoung90.github.io/resume/claude-education.html], MCP 연동을 통해 반복 업무인 API 명세서 작성을 자동화하는 등 팀 전반의 AI 활용 확산에 기여하고 있습니다.
 
 - **정보를 문서로 정리해 공유합니다.**
     
@@ -111,7 +110,7 @@
 - 중복 방지 로직이 **데이터 SELECT 후 유무 체크**에 의존하여 동시 요청 시 **중복 발행 가능**
 
 **2) 선택지 비교** 
-- **① Function-Based Unique Index 추가**
+- **① 함수형 Unique Index 추가**
 	- 고객 별로 멱등키가 중복될 수 있어 고객 번호 + 멱등키 조합으로 제약 조건이 불가피 
 	- 멱등키가 필수 값이 아니어서 NULL이 가능해 단순 UNIQUE 불가
 	- NULL 항목 제외 후 인덱스 생성하는 함수형 인덱스 생성 고려
