@@ -676,7 +676,7 @@
                 <a href="https://snvlqkq.tistory.com/" target="_blank">📝 https://snvlqkq.tistory.com</a>
             </div>
             <div class="contact-description">
-                <strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/saga-examples/blob/main/choreography" target="_blank">Kafka를 사용한 이벤트 기반 아키텍처(EDA)</a><br>
+                <strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/saga-examples/blob/main/choreography/README.md" target="_blank">Kafka를 사용한 이벤트 기반 아키텍처(EDA)</a><br>
                 <strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/54" target="_blank">동시성 처리 전략</a> 및 <a href="https://snvlqkq.tistory.com/57" target="_blank">캐싱 처리 전략</a>
             </div>
         </div>
@@ -866,7 +866,7 @@
                 <ul>
                     <li>담당 서비스는 Orchestration 방식의 MSA 환경</li>
                     <li>클라이언트 요청 → 세금계산서(Orchestration) → 포인트 차감 → 세금계산서 발행 → 포인트 차감 취소 순으로 진행</li>
-                    <li>문서 생성 실패 시 포인트가 취소되지 않는 문제 발생 → 고객 금전적 손실 야기</li>
+                    <li>문서 생성 실패 시 포인트가 취소 되지 않는 문제 발생 → 고객 금전적 손실 야기</li>
                     <li>보상 트랜잭션(포인트 환불) 실패 시 데이터 정합성을 회복할 메커니즘이 부재</li>
                 </ul>
             </div>
@@ -1060,6 +1060,64 @@
                 <ul>
                     <li>반복적인 API 명세 작성 작업이 <strong>자동화</strong>되어 낭비되는 비용을 줄임</li>
                     <li>주변 업무의 비효율성을 쉽게 개선할 수 있다는 영향 전파</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <h3>이벤트 기반 분산 트랜잭션 토이 프로젝트</h3>
+
+    <div class="project-overview">
+        <ul>
+            <li>MSA saga 분산 트랜잭션과 Kafka 메시지 신뢰성 확보 방식을 직접 구현한 개인 학습 프로젝트</li>
+            <li>주문/재고/결제 도메인을 Kafka 이벤트로 연결한 <strong>Choreography 방식 saga</strong>로 구현</li>
+            <li>GitHub: <a href="https://github.com/kimjunyoung90/saga-examples/blob/main/choreography/README.md" target="_blank">kimjunyoung90/saga-examples</a></li>
+        </ul>
+    </div>
+
+    <div class="problem-solving">
+        <div class="ps-section">
+            <span class="ps-label problem">문제</span>
+            <div class="ps-content">
+                <ul>
+                    <li>데이터 저장과 Kafka 메시지 발행이 <strong>하나의 트랜잭션으로 묶이지 않아</strong> 유령 이벤트·이벤트 유실 발생 가능</li>
+                    <li>메시지 발행 시 <strong>at-least-once 전달 특성</strong>으로 컨슈머가 같은 메시지를 두 번 이상 수신해 <strong>중복 처리</strong> 발생 가능</li>
+                    <li>메시지 발행 또는 소비 실패 시 무한 재시도로 인해 <strong>시스템 자원 낭비 및 후속 메시지 처리 정체</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label solution">해결 과정</span>
+            <div class="ps-content">
+                <p><strong>1) 발행 At-least-once 보장 (Transactional Outbox 패턴)</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>비즈니스 흐름과 발행할 메시지를 <code>outbox_messages</code> 테이블에 적재하는 흐름을 <strong>같은 DB 트랜잭션 묶어 메시지 발행 유실 방지</strong></li>
+                    <li>스케줄러를 통해 <code>outbox_messages</code>을 읽어 Kafka로 발행(at-least-once 보장)</li>
+                    <li>Kafka 장애시에도 메시지 유실이 방지되고 비즈니스의 연속성 보장</li>
+                </ul>
+                <p><strong>2) 컨슈머 멱등 처리</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>컨슈머는 처리한 메시지를 <code>processed_events</code> 테이블에 기록</li>
+                    <li>메시지 중복 수신 시 테이블(<code>processed_events</code>) 조회 및 Unique 제약조건으로 즉시 차단 → <strong>메시지 중복 발행의 멱등성 보장</strong></li>
+                </ul>
+                <p><strong>3) 실패 격리 — DLQ / DLT</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>발행 재시도 최대 횟수 초과 시 <strong>DLQ로 격리</strong></li>
+                    <li>소비 재시도 최대 횟수 초과 시 <strong>DLT로 분리</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label result">성과</span>
+            <div class="ps-content">
+                <ul>
+                    <li>Outbox Pattern으로 at-least-once를 보장하여 이벤트 유실 방지, 인프라 장애가 사용자 요청 실패로 전파되지 않는 구조 마련</li>
+                    <li><strong>at-least-once로 인한 중복 발행된 메시지를</strong>을 멱등성 보장 구조로 차단해 exactly-once 달성</li>
+                    <li>발행/소비 실패 메시지를 <strong>DLQ/DLT로 격리</strong>해 정상 메시지 처리 흐름 유지, 격리 메시지는 운영자가 분석·수동 복구</li>
                 </ul>
             </div>
         </div>
