@@ -43,7 +43,7 @@
 |DB|`Oracle`, `PostgreSQL`, `Redis`|
 |Frontend|`JavaScript`, `React`, `Redux`, `Redux-Saga`|
 |DevOps|`Linux`, `Jenkins`, `Git`, `ELK`, `APM`|
-|Messaging|`Kafka`(개인 학습)|
+|Messaging|`Kafka(개인 학습)`|
 |협업|`Jira`, `Confluence`|
 
 ---
