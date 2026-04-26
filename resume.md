@@ -12,7 +12,7 @@
 			✉️ wnsdud1900427@gmail.com<br>
 			<img src="https://kimjunyoung90.github.io/resume/images/github-mark.png" width="16" style="vertical-align: middle;"/> <a href="https://github.com/kimjunyoung90">https://github.com/kimjunyoung90</a><br>
 			📝 <a href="https://snvlqkq.tistory.com">https://snvlqkq.tistory.com</a><br><br>
-			<strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/saga-examples/blob/main/choreography">Kafka를 사용한 이벤트 기반 아키텍처(EDA)</a><br>
+			<strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/saga-examples/blob/main/choreography/README.md">Kafka를 사용한 이벤트 기반 아키텍처(EDA)</a><br>
 			<strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/54">동시성 처리 전략</a> 및  <a href="https://snvlqkq.tistory.com/57">캐싱 처리 전략</a>
 		</p>
 	</div>
@@ -43,6 +43,7 @@
 |DB|`Oracle`, `PostgreSQL`, `Redis`|
 |Frontend|`JavaScript`, `React`, `Redux`, `Redux-Saga`|
 |DevOps|`Linux`, `Jenkins`, `Git`, `ELK`, `APM`|
+|Messaging|`Kafka`(개인 학습)|
 |협업|`Jira`, `Confluence`|
 
 ---
@@ -238,6 +239,38 @@
 #### 성과
 - 반복적인 API 명세 작성 작업이 **자동화**되어 낭비되는 비용을 줄임
 - 주변 업무의 비효율성을 쉽게 개선할 수 있다는 영향 전파
+
+---
+
+## 이벤트 기반 분산 트랜잭션 토이 프로젝트
+
+- MSA saga 분산 트랜잭션과 Kafka 메시지 신뢰성 확보 방식을 직접 구현한 개인 학습 프로젝트
+- 주문/재고/결제 도메인을 Kafka 이벤트로 연결한 **Choreography 방식 saga**로 구현
+- GitHub: [kimjunyoung90/saga-examples](https://github.com/kimjunyoung90/saga-examples/blob/main/choreography/README.md)
+
+#### 문제
+- 데이터 저장과 Kafka 메시지 발행이 **하나의 트랜잭션으로 묶이지 않아** 유령 이벤트·이벤트 유실 발생 가능
+- 메시지 발행 시 **at-least-once 전달 특성**으로 컨슈머가 같은 메시지를 두 번 이상 수신해 **중복 처리** 발생 가능
+- 메시지 발행 또는 소비 실패 시 무한 재시도로 인해 **시스템 자원 낭비 및 후속 메시지 처리 정체**
+
+#### 해결 과정
+**1) 발행 At-least-once 보장 (Transactional Outbox 패턴)**
+- 비즈니스 흐름과 발행할 메시지를 `outbox_messages` 테이블에 적재하는 흐름을 **같은 DB 트랜잭션 묶어 메시지 발행 유실 방지**
+- 스케줄러를 통해 `outbox_messages`을 읽어 Kafka로 발행(at-least-once 보장)
+- Kafka 장애시에도 메시지 유실이 방지되고 비즈니스의 연속성 보장
+
+**2) 컨슈머 멱등 처리**
+- 컨슈머는 처리한 메시지를 `processed_events` 테이블에 기록
+- 메시지 중복 수신 시 테이블(`processed_events`) 조회 및 Unique 제약조건으로 즉시 차단 → **메시지 중복 발행의 멱등성 보장**
+
+**3) 실패 격리 — DLQ / DLT**
+- 발행 재시도 최대 횟수 초과 시 **DLQ로 격리**
+- 소비 재시도 최대 횟수 초과 시 **DLT로 분리**
+
+#### 성과
+- Outbox Pattern으로 at-least-once를 보장하여 이벤트 유실 방지, 인프라 장애가 사용자 요청 실패로 전파되지 않는 구조 마련
+- **at-least-once로 인한 중복 발행된 메시지를**을 멱등성 보장 구조로 차단해 exactly-once 달성
+- 발행/소비 실패 메시지를 **DLQ/DLT로 격리**해 정상 메시지 처리 흐름 유지, 격리 메시지는 운영자가 분석·수동 복구
 
 ---
 
