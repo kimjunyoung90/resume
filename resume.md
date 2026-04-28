@@ -244,8 +244,8 @@
 
 ## 이벤트 기반 분산 트랜잭션 토이 프로젝트
 
-- MSA saga 분산 트랜잭션과 Kafka 메시지 신뢰성 확보 방식을 직접 구현한 개인 학습 프로젝트
-- 주문/재고/결제 도메인을 Kafka 이벤트로 연결한 **Choreography 방식 saga**로 구현
+- MSA 환경의 데이터 흐름을 이벤트 기반(Kafka)으로 구현한 개인 프로젝트
+- 주문/재고/결제 도메인을 Kafka 이벤트로 연결한 **Choreography 방식 Saga 패턴**
 - GitHub: [kimjunyoung90/saga-examples](https://github.com/kimjunyoung90/saga-examples/blob/main/choreography/README.md)
 
 #### 문제
