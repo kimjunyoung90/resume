@@ -13,7 +13,7 @@
 			<img src="https://kimjunyoung90.github.io/resume/images/github-mark.png" width="16" style="vertical-align: middle;"/> <a href="https://github.com/kimjunyoung90">https://github.com/kimjunyoung90</a><br>
 			📝 <a href="https://snvlqkq.tistory.com">https://snvlqkq.tistory.com</a><br><br>
 			<strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/saga-examples/blob/main/choreography/README.md">Kafka를 사용한 이벤트 기반 아키텍처(EDA)</a><br>
-			<strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/54">동시성 처리 전략</a> 및  <a href="https://snvlqkq.tistory.com/57">캐싱 처리 전략</a>
+			<strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/54">동시성 처리 전략</a> 및 <a href="https://snvlqkq.tistory.com/57">캐싱 처리 전략</a>
 		</p>
 	</div>
 </div>
@@ -92,8 +92,7 @@
 - **DB 커넥션**: 현재 커넥션 풀 크기(max 40 × 8대 = 320) 대비 DB 최대 한도(2,205)는 여유가 있어, 커넥션 부족 시 풀 크기 증가 고려
 
 **4) 부하 테스트를 통한 개선 효과 검증**
-- staging 환경 부재로 개발 환경에서 **부하 테스트 수행(JMeter)**
-- 제거 전·후 latency와 TPS를 동일 조건에서 비교
+- 제거 전·후 latency와 TPS를 동일 조건에서 비교(개발 환경)
 - TPS **13.5 → 19.8(약 47% 증가)**
 
 #### 성과
@@ -255,7 +254,7 @@
 
 #### 해결 과정
 **1) 발행 At-least-once 보장 (Transactional Outbox 패턴)**
-- 비즈니스 흐름과 발행할 메시지를 `outbox_messages` 테이블에 적재하는 흐름을 **같은 DB 트랜잭션 묶어 메시지 발행 유실 방지**
+- 비즈니스 흐름과 발행할 메시지를 `outbox_messages` 테이블에 적재하는 흐름을 **같은 DB 트랜잭션으로 묶어 메시지 발행 유실 방지**
 - 스케줄러를 통해 `outbox_messages`을 읽어 Kafka로 발행(at-least-once 보장)
 - Kafka 장애시에도 메시지 유실이 방지되고 비즈니스의 연속성 보장
 
@@ -269,7 +268,7 @@
 
 #### 성과
 - Outbox Pattern으로 at-least-once를 보장하여 이벤트 유실 방지, 인프라 장애가 사용자 요청 실패로 전파되지 않는 구조 마련
-- **at-least-once로 인한 중복 발행된 메시지를**을 멱등성 보장 구조로 차단해 exactly-once 달성
+- **at-least-once로 인한 중복 발행된 메시지**를 멱등성 보장 구조로 차단해 exactly-once 달성
 - 발행/소비 실패 메시지를 **DLQ/DLT로 격리**해 정상 메시지 처리 흐름 유지, 격리 메시지는 운영자가 분석·수동 복구
 
 ---
