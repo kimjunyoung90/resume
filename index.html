@@ -995,12 +995,7 @@
                     <li><code>platform_categories</code> 테이블 신설: 자사 서비스 플랫폼(WEHAGO, NAHAGO)별 표준 카테고리 관리</li>
                     <li><code>categories_mapping</code> 테이블 추가: <strong>N:M 관계 구현</strong>으로 하나의 언론사 카테고리가 여러 플랫폼 카테고리에 매핑 가능하도록 설계</li>
                 </ul>
-                <p><strong>2) 쿼리 복잡도 증가 문제 해결</strong></p>
-                <ul style="margin-left: 20px;">
-                    <li>DB 구조 변경으로 기존 단순 쿼리 → JOIN으로 복잡도 증가</li>
-                    <li>MyBatis SQL 재사용 문법을 활용하여 공통 JOIN 로직 재사용</li>
-                </ul>
-                <p><strong>3) 전략 패턴 기반 수집 로직 공통화</strong></p>
+                <p><strong>2) 전략 패턴 기반 수집 로직 공통화</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>언론사마다 수집 API와 응답 데이터 구조가 상이한 문제 발생</li>
                     <li>전략 패턴을 도입하여 전체 수집 흐름은 유지하면서 데이터 수집 및 가공 부분을 <strong>전략 클래스로 분리</strong></li>
@@ -1014,7 +1009,7 @@
             <div class="ps-content">
                 <ul>
                     <li><strong>N:M 매핑 구조</strong>로 <strong>데이터 추가만으로</strong> <strong>기존 외 2개 언론사 추가 확장</strong></li>
-                    <li><strong>전략 패턴</strong> 적용으로 신규 언론사 추가 시 <strong>개발 공수 절감</strong></li>
+                    <li><strong>전략 패턴</strong> 적용으로 신규 언론사 추가 시 <strong>확장 구조 설계</strong></li>
                 </ul>
             </div>
         </div>
