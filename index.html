@@ -811,7 +811,7 @@
                     <li>멱등키를 세금계산서 관리 테이블에 저장하고 있었으나, <strong>UNIQUE 제약조건 부재</strong>로 중복된 멱등키 가능</li>
                     <li>중복 방지 로직이 <strong>데이터 SELECT 후 유무 체크</strong>에 의존하여 동시 요청 시 <strong>중복 발행 가능</strong></li>
                 </ul>
-                <p><strong>2) 선택지 비교</strong></p>
+                <p><strong>2) 멱등 구조 비교</strong></p>
                 <ul style="margin-left: 20px;">
                     <li><strong>① 함수형 Unique Index 추가</strong>
                         <ul style="margin-top: 4px;">
@@ -828,18 +828,17 @@
                     </li>
                     <li><strong>③ Redis 분산 락</strong>
                         <ul style="margin-top: 4px;">
-                            <li>멱등키를 활용해 분산락을 적용하여 동일 멱등키 동시 발행 차단</li>
+                            <li>멱등키를 활용한 분산락을 적용하여 동일 멱등키 동시 발행 차단</li>
                         </ul>
                     </li>
                 </ul>
-                <p><strong>3) 멱등키 전용 테이블 방식 선택</strong></p>
+                <p><strong>3) 멱등키 전용 테이블 적용</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>선택 이유 (운영 영향도 최소화 + 강한 보장)
-                        <ul style="margin-top: 4px;">
-                            <li>Redis 분산 락은 <strong>신규 인프라 의존성 추가</strong>, <strong>Redis 장애 시 멱등성 보장 방법의 부재</strong></li>
-                            <li>신규 테이블 방식은 기존 테이블 영향 없이 <strong>즉시 적용 가능</strong>, Unique 제약조건 충돌로 DB 레벨에서 <strong>우회 불가능한 강한 보장</strong></li>
-                        </ul>
-                    </li>
+                    <li>운영 영향도 최소화 고려</li>
+                    <li>Redis 분산 락은 <strong>신규 인프라 구축 필요</strong> + <strong>Redis 장애 시 멱등성 보장 방법의 부재</strong></li>
+                    <li>함수형 인덱스는 500GB 테이블에 인덱스를 생성해야하는 부담 + 기존 다른 테이블에 인덱스 생성 시 장애로 이어진 경험으로 혹시 발생할 장애 우려</li>
+                    <li>신규 테이블 방식은 기존 테이블 영향 없이 <strong>즉시 적용 가능</strong></li>
+                    <li>INSERT 추가되지만 발행 트래픽이 최대 100tpm 수준이라 비용이 크지 않다고 판단</li>
                     <li>테이블 설계: <code>(id, 고객 고유번호, 멱등키, 세금계산서 번호)</code>, <strong>(고객 고유번호, 멱등키)</strong> Unique 제약 조건</li>
                     <li>동시 요청 시 먼저 INSERT된 요청만 성공, 나머지는 <strong>제약조건 충돌로 즉시 차단</strong></li>
                 </ul>
@@ -932,20 +931,16 @@
             <div class="ps-content">
                 <p><strong>1) 동시성 문제 재현 및 분석</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li><strong>ExecutorService, CountDownLatch 기반 동시성 테스트 코드</strong> 작성</li>
+                    <li><strong>ExecutorService, CountDownLatch 기반 동시성 이슈</strong> 재현</li>
                     <li>Race Condition에 따른 동시성 이슈 발생 확인</li>
                 </ul>
-                <p><strong>2) 구조 개선 검토</strong></p>
+                <p><strong>2) 락 전략 검토</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>단일 쿼리로의 수정 검토</li>
-                    <li>무료 건수 이력 적재로 인해 불가</li>
-                </ul>
-                <p><strong>3) 낙관적 락 적용</strong></p>
-                <ul style="margin-left: 20px;">
+                    <li>낙관 락, 비관 락 검토</li>
                     <li>한 회사당 100건, 회사에 일반적으로 채권 발행 담당자가 소수이고 초기 서비스라 사용자가 적어 경합이 적을 것으로 판단</li>
                     <li>경합이 낮은 상황을 고려해 <strong>Optimistic Lock + 재시도</strong> 적용</li>
                 </ul>
-                <p><strong>4) 트랜잭션 조정</strong></p>
+                <p><strong>3) 트랜잭션 조정</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>재시도 포함 하나의 트랜잭션으로 구성하여 <strong>원자성 보장</strong></li>
                     <li><strong>noRollbackFor</strong> 속성을 사용하여 버전 충돌 시 롤백 방지 구현</li>
@@ -958,7 +953,7 @@
             <div class="ps-content">
                 <ul>
                     <li>발행 동시 요청 상황에서도 <strong>중복 차감 이슈 없이 안정적으로 처리</strong></li>
-                    <li><strong>Optimistic Lock 기반</strong>의 효율적 동시성 제어 구조 구현</li>
+                    <li><strong>Optimistic Lock 기반</strong>의 효율적 동시성 제어 적용</li>
                 </ul>
             </div>
         </div>
