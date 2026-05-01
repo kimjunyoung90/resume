@@ -811,7 +811,7 @@
                     <li>멱등키를 세금계산서 관리 테이블에 저장하고 있었으나, <strong>UNIQUE 제약조건 부재</strong>로 중복된 멱등키 가능</li>
                     <li>중복 방지 로직이 <strong>데이터 SELECT 후 유무 체크</strong>에 의존하여 동시 요청 시 <strong>중복 발행 가능</strong></li>
                 </ul>
-                <p><strong>2) 멱등 구조 비교</strong></p>
+                <p><strong>2) 멱등성 보장 선택지 비교</strong></p>
                 <ul style="margin-left: 20px;">
                     <li><strong>① 함수형 Unique Index 추가</strong>
                         <ul style="margin-top: 4px;">
@@ -832,13 +832,13 @@
                         </ul>
                     </li>
                 </ul>
-                <p><strong>3) 멱등키 전용 테이블 적용</strong></p>
+                <p><strong>3) 채택안 결정 및 근거</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>운영 영향도 최소화 고려</li>
-                    <li>Redis 분산 락은 <strong>신규 인프라 구축 필요</strong> + <strong>Redis 장애 시 멱등성 보장 방법의 부재</strong></li>
-                    <li>함수형 인덱스는 500GB 테이블에 인덱스를 생성해야하는 부담 + 기존 다른 테이블에 인덱스 생성 시 장애로 이어진 경험으로 혹시 발생할 장애 우려</li>
-                    <li>신규 테이블 방식은 기존 테이블 영향 없이 <strong>즉시 적용 가능</strong></li>
-                    <li>INSERT 추가되지만 발행 트래픽이 최대 100tpm 수준이라 비용이 크지 않다고 판단</li>
+                    <li>운영 영향도 최소화를 기준으로 선택</li>
+                    <li>Redis 분산 락: <strong>신규 인프라 도입 부담</strong> 및 <strong>Redis 장애 시 멱등성 보장 메커니즘 부재</strong></li>
+                    <li>함수형 인덱스: 500GB 테이블에 인덱스 생성 부담, 과거 유사 작업에서 장애 발생 이력 존재</li>
+                    <li>신규 테이블 방식: 기존 테이블 영향 없이 <strong>즉시 적용 가능</strong></li>
+                    <li>멱등키 INSERT 1회가 추가되나 발행 트래픽이 최대 100 TPM 수준으로 부하 영향 미미</li>
                     <li>테이블 설계: <code>(id, 고객 고유번호, 멱등키, 세금계산서 번호)</code>, <strong>(고객 고유번호, 멱등키)</strong> Unique 제약 조건</li>
                     <li>동시 요청 시 먼저 INSERT된 요청만 성공, 나머지는 <strong>제약조건 충돌로 즉시 차단</strong></li>
                 </ul>
