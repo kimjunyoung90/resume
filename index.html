@@ -919,18 +919,18 @@
                 <p><strong>1) 동시성 문제 재현 및 분석</strong></p>
                 <ul style="margin-left: 20px;">
                     <li><strong>ExecutorService, CountDownLatch 기반 동시성 이슈</strong> 재현</li>
-                    <li>Race Condition에 따른 동시성 이슈 발생 확인</li>
+                    <li>Race Condition에 따른 중복 차감 발생 확인</li>
                 </ul>
-                <p><strong>2) 락 전략 검토</strong></p>
+                <p><strong>2) Optimistic Lock 적용</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>낙관 락, 비관 락 검토</li>
-                    <li>한 회사당 100건, 회사에 일반적으로 채권 발행 담당자가 소수이고 초기 서비스라 사용자가 적어 경합이 적을 것으로 판단</li>
-                    <li>경합이 낮은 상황을 고려해 <strong>Optimistic Lock + 재시도</strong> 적용</li>
+                    <li>회사당 무료 발행 한도가 100건이고, 채권 발행 담당자가 회사별 소수이며 초기 서비스로 사용자가 적어 <strong>경합 빈도가 낮은 환경</strong>으로 판단</li>
+                    <li>경합이 낮은 환경에서는 락을 잡지 않고 충돌 시 재시도하는 <strong>Optimistic Lock</strong>이 적합하다고 판단</li>
                 </ul>
-                <p><strong>3) 트랜잭션 조정</strong></p>
+                <p><strong>3) 재시도 + 트랜잭션 설계</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>재시도 포함 하나의 트랜잭션으로 구성하여 <strong>원자성 보장</strong></li>
-                    <li><strong>noRollbackFor</strong> 속성을 사용하여 버전 충돌 시 롤백 방지 구현</li>
+                    <li>재시도 포함 <strong>하나의 트랜잭션</strong>으로 구성하여 원자성 보장</li>
+                    <li>트랜잭션 내부에서 버전 충돌 예외 발생 시 트랜잭션이 롤백되어 재시도 자체가 무의미해지는 문제 존재</li>
+                    <li><strong>noRollbackFor</strong> 속성으로 버전 충돌 예외 시 롤백을 방지하여 재시도가 정상 동작하도록 구현</li>
                 </ul>
             </div>
         </div>
