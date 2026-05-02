@@ -820,11 +820,10 @@
                 <p><strong>3) 제약 조건 및 컬럼 설계</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>동일 멱등키가 <strong>고객 간에는 중복 가능</strong>한 비즈니스 특성을 고려해 단일 UNIQUE 제약은 부적합</li>
-                    <li><code>(고객 고유번호, 멱등키)</code> <strong>복합 UNIQUE 제약</strong>으로 설계</li>
-                    <li>컬럼 구성: <code>(id, 고객 고유번호, 멱등키, 세금계산서 번호)</code></li>
+                    <li><code>(고객 고유번호, 멱등키)</code> <strong>UNIQUE 제약</strong>으로 설계</li>
                     <li>동시 요청 시 먼저 INSERT된 요청만 성공, 나머지는 <strong>제약조건 충돌로 즉시 차단</strong></li>
                 </ul>
-                <p><strong>4) 부하 영향 검토</strong></p>
+                <p><strong>4) 영향 검토</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>발행 흐름에 멱등키 INSERT 1회가 추가되는 부담</li>
                     <li>발행 트래픽이 최대 <strong>100 TPM 수준</strong>으로 부하 영향 미미하다고 판단</li>
@@ -907,7 +906,7 @@
             <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
-                    <li>신규 채권 발행 서비스 출시 프로모션으로 고객별 무료 채권 100건 발행 이벤트 진행</li>
+                    <li>신규 채권 발행 서비스 출시 프로모션으로 회사별 무료 채권 100건 발행 이벤트 진행</li>
                     <li>카운트 기반 쿠폰으로 무료 발행 건수 차감 시 SELECT 후 UPDATE로 인한 동시성 문제 발생</li>
                 </ul>
             </div>
@@ -923,8 +922,8 @@
                 </ul>
                 <p><strong>2) Optimistic Lock 적용</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>회사당 무료 발행 한도가 100건이고, 채권 발행 담당자가 회사별 소수이며 초기 서비스로 사용자가 적어 <strong>경합 빈도가 낮은 환경</strong>으로 판단</li>
-                    <li>경합이 낮은 환경에서는 락을 잡지 않고 충돌 시 재시도하는 <strong>Optimistic Lock</strong>이 적합하다고 판단</li>
+                    <li>회사별 채권 발행 담당자가 소수이며 초기 서비스로 사용자가 적어 <strong>경합 빈도가 낮은 환경</strong>으로 판단</li>
+                    <li>락을 잡지 않고 충돌 시 재시도하는 <strong>Optimistic Lock</strong>을 선택</li>
                 </ul>
                 <p><strong>3) 재시도 + 트랜잭션 설계</strong></p>
                 <ul style="margin-left: 20px;">
