@@ -43,7 +43,7 @@
 |DB|`Oracle`, `PostgreSQL`, `Redis`|
 |Frontend|`JavaScript`, `React`, `Redux`, `Redux-Saga`|
 |DevOps|`Linux`, `Jenkins`, `Git`, `ELK`, `APM`|
-|Messaging|`Kafka(개인 학습)`|
+|Messaging|`Kafka`|
 |협업|`Jira`, `Confluence`|
 
 ---
@@ -230,35 +230,71 @@
 
 ---
 
-## 이벤트 기반 분산 트랜잭션 토이 프로젝트
+## Loopers — 커머스 백엔드 멀티 모듈 토이 프로젝트
 
-- MSA 환경의 데이터 흐름을 이벤트 기반(Kafka)으로 구현한 개인 프로젝트
-- 주문/재고/결제 도메인을 Kafka 이벤트로 연결한 **Choreography 방식 Saga 패턴**
-- GitHub: [kimjunyoung90/saga-examples](https://github.com/kimjunyoung90/saga-examples/blob/main/choreography/README.md)
+- 트래픽이 몰리는 커머스 도메인을 가정하고 **Redis·Kafka 기반 비동기·캐시 구조**를 설계한 개인 프로젝트
+- `commerce-api`(요청 처리) / `commerce-streamer`(Kafka 컨슈머) / `commerce-batch`(메트릭 집계) 멀티 모듈 구조
+- 도메인: 상품·브랜드, 좋아요·랭킹, 주문·결제, 선착순 쿠폰, 진입 대기열
+- GitHub: [kimjunyoung90/loop-pack-be-l2-vol3-java](https://github.com/kimjunyoung90/loop-pack-be-l2-vol3-java)
+
+### 읽기 트래픽을 흡수하는 Redis 다층 캐싱 + 운영 안전망
 
 #### 문제
-- 데이터 저장과 Kafka 메시지 발행이 **하나의 트랜잭션으로 묶이지 않아** 유령 이벤트·이벤트 유실 발생 가능
-- 메시지 발행 시 **at-least-once 전달 특성**으로 컨슈머가 같은 메시지를 두 번 이상 수신해 **중복 처리** 발생 가능
-- 메시지 발행 또는 소비 실패 시 무한 재시도로 인해 **시스템 자원 낭비 및 후속 메시지 처리 정체**
+- 상품·브랜드 조회는 전체 트래픽의 대부분을 차지하지만 변동 빈도는 낮음 → 매번 DB 조회는 자원 낭비
+- 단순 캐싱은 (a) **동일 TTL 만료 시점에 부하 폭주(Cache Stampede)**, (b) **Redis 장애가 비즈니스 흐름 차단으로 전파**, (c) 목록·단건 캐시 사이 **정합성 깨짐** 위험
 
 #### 해결 과정
-**1) 발행 At-least-once 보장 (Transactional Outbox 패턴)**
-- 비즈니스 흐름과 발행할 메시지를 `outbox_messages` 테이블에 적재하는 흐름을 **같은 DB 트랜잭션으로 묶어 메시지 발행 유실 방지**
-- 스케줄러를 통해 `outbox_messages`을 읽어 Kafka로 발행(at-least-once 보장)
-- Kafka 장애시에도 메시지 유실이 방지되고 비즈니스의 연속성 보장
+**1) 단건/목록 차등 TTL**
+- 상품 단건 5분, 상품 목록 1분 — 변동 빈도와 stale 허용도의 차이를 TTL로 반영
+- 목록은 트래픽이 더 많지만 정확성 요구도 높아 짧은 TTL로 stale 위험 축소
 
-**2) 컨슈머 멱등 처리**
-- 컨슈머는 처리한 메시지를 `processed_events` 테이블에 기록
-- 메시지 중복 수신 시 테이블(`processed_events`) 조회 및 Unique 제약조건으로 즉시 차단 → **메시지 중복 발행의 멱등성 보장**
+**2) 목록은 ID 리스트만 + 단건 multiGet 조합**
+- 목록 응답을 통째로 캐싱하면 (a) 단건 갱신 시 모든 목록 캐시 무효화 필요, (b) 동일 데이터가 단건/목록에 중복 캐싱
+- 목록은 `(productIds, totalElements)`만 저장 → 응답 시 단건 캐시를 `multiGet`으로 조립 → **단건 갱신이 목록 응답에 즉시 반영**, 캐시 적중률↑, 메모리 절약
 
-**3) 실패 격리 — DLQ / DLT**
-- 발행 재시도 최대 횟수 초과 시 **DLQ로 격리**
-- 소비 재시도 최대 횟수 초과 시 **DLT로 분리**
+**3) Cache Stampede 방지 — TTL 지터**
+- 동일 시각 만료된 캐시들이 일제히 DB로 쏟아지지 않도록 **TTL에 ±10% 랜덤 지터** 적용(`applyJitter`)
+- 만료 시점을 흩뿌려 thundering herd 회피
+
+**4) Fail-Silent — Redis 장애 격리**
+- 모든 캐시 연산을 try/catch로 감싸 실패 시 로그만 남기고 **DB fallback** — Redis 장애가 사용자 요청 실패로 전파되지 않음
+- 역직렬화 실패 캐시는 `safeDelete`로 자가 회복 → 깨진 캐시가 영구 오류로 남지 않음
+
+**5) Master/Slave 읽기 분산**
+- Lettuce `RedisStaticMasterReplicaConfiguration` + `ReadFrom.REPLICA_PREFERRED`를 기본 적용해 read 트래픽을 레플리카로 분산
+- 강한 일관성이 필요한 쿠폰 발급·대기열 토큰 등은 별도 `REDIS_TEMPLATE_MASTER` 빈을 분리해 마스터에서만 읽기/쓰기 → **읽기 분산과 일관성을 같은 인프라에서 동시에 충족**
 
 #### 성과
-- Outbox Pattern으로 at-least-once를 보장하여 이벤트 유실 방지, 인프라 장애가 사용자 요청 실패로 전파되지 않는 구조 마련
-- **at-least-once로 인한 중복 발행된 메시지**를 멱등성 보장 구조로 차단해 exactly-once 달성
-- 발행/소비 실패 메시지를 **DLQ/DLT로 격리**해 정상 메시지 처리 흐름 유지, 격리 메시지는 운영자가 분석·수동 복구
+- 상품·브랜드 조회 부하를 캐시 레이어로 흡수, 단건 갱신만으로 목록 응답까지 갱신되는 구조 확보
+- TTL 지터로 동시 만료 폭주 차단, Fail-Silent로 Redis 장애의 사용자 요청 전파 차단
+- 일관성 요구가 다른 워크로드를 Master/Slave 빈 분리로 같은 인프라에서 안전하게 공존
+
+### 이벤트 유실·중복 없는 Kafka 발행/소비 정합성
+
+#### 문제
+- 비즈니스 로직과 Kafka 발행이 같은 트랜잭션이 아니라 (a) DB 커밋 후 발행 실패 시 **이벤트 유실**, (b) 발행 후 DB 롤백 시 **유령 이벤트** 발생 가능
+- Kafka의 **at-least-once** 특성상 컨슈머가 같은 메시지를 여러 번 수신
+- 무한 재시도 시 후속 메시지 처리 정체 + 자원 낭비
+
+#### 해결 과정
+**1) Transactional Outbox — 발행 At-least-once 보장**
+- 비즈니스 흐름과 outbox 적재를 **같은 DB 트랜잭션**으로 묶어 발행 유실 방지
+- `OutboxEventPublisher`가 PENDING 이벤트를 읽어 Kafka로 발행, 성공 시 PUBLISHED 마킹
+- 발행 실패 시 retryCount 증가 → 최대 초과 시 **DLE(Dead Letter Event) 별도 저장** → 운영자가 수동 분석·복구
+
+**2) 컨슈머 멱등 — eventId + DB 유니크 이중 보장**
+- 발행 시 메시지 헤더에 `eventId(UUID)` 포함, 컨슈머는 처리 전 `event_handled` 테이블 조회로 중복 차단
+- DB 레벨에서도 `(userId, couponId)` 유니크 제약으로 한 번 더 멱등 보장 → `DataIntegrityViolationException`은 정상 중복으로 간주
+
+**3) 배치 컨슈머 + 부분 실패 격리 (DLT)**
+- `BATCH_LISTENER`(`MAX_POLL_RECORDS=3000`, manual ack)로 처리량 확보
+- 배치 중 특정 레코드 실패 시 `BatchListenerFailedException(idx)`로 **해당 위치만 재처리** → 정상 메시지가 같이 막히지 않음
+- `DefaultErrorHandler` + `FixedBackOff(1s, 2회)` 후 `{topic}.DLT`로 격리
+
+#### 성과
+- DB ↔ Kafka 정합성: Outbox로 발행 유실·유령 이벤트 제거
+- 멱등성 이중 안전망(eventId + DB 유니크)으로 중복을 사실상 1회 처리로 수렴
+- 배치 단위 부분 실패 격리로 정상 메시지 흐름 유지, 비정상 메시지는 DLT로 분리해 분석·복구
 
 ---
 
