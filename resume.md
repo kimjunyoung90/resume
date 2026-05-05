@@ -278,17 +278,16 @@
 **1) Outbox 패턴 적용**
 - 비즈니스 로직과 발행할 이벤트를 동일한 트랜잭션으로 묶고 발행할 메시지를 outbox 테이블에 적재
 - 스케쥴러로 outbox를 읽어 메시지 발행, 발행 완료시 완료 처리
-- 발행 실패 시 retryCount 증가 → 최대 재시도 횟 수 초과 시 **DLQ로 관리** → 운영자가 수동 분석·복구
+- 발행 실패 시 retryCount 증가 → 최대 재시도 횟 수 초과 시 DLQ로 관리 → 운영자가 수동 분석·복구
 
 **2) 메시지 소비 멱등 구조 설계**
 - 메시지 소비 시 비즈니스 로직과 동일한 트랜잭션으로 묶어 소비된 메시지를 `event_handled`에 저장(`eventId`)
 - 중복 메시지 수신 시 `eventId`를 DB 레벨에서 유니크 제약으로 멱등성 보장
-- 소비 불가능한 메시지 DLT로 관리
+- 지속된 소비 실패 시 소비 불가능한 메시지 DLT로 관리
 
-**3) 배치 컨슈머 + 부분 실패 격리 (DLT)**
-- `BATCH_LISTENER`(`MAX_POLL_RECORDS=3000`, manual ack)로 처리량 확보
-- 배치 중 특정 레코드 실패 시 `BatchListenerFailedException(idx)`로 **해당 위치만 재처리** → 정상 메시지가 같이 막히지 않음
-- `DefaultErrorHandler` + `FixedBackOff(1s, 2회)` 후 `{topic}.DLT`로 격리
+**3) 적용 설정**
+- acks 설정으로 partition의 replica로 메시지 복제 보장을 통한 Kafka level 메시지 유실 방지
+- enable.idempotence 설정을 통한 
 
 #### 성과
 - DB ↔ Kafka 정합성: Outbox로 발행 유실·유령 이벤트 제거
