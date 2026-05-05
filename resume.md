@@ -230,11 +230,10 @@
 
 ---
 
-## Loopers — 커머스 백엔드 멀티 모듈 토이 프로젝트
+## 이커머스 토이 프로젝트
 
 - 트래픽이 몰리는 커머스 도메인을 가정하고 **Redis·Kafka 기반 비동기·캐시 구조**를 설계한 개인 프로젝트
-- `commerce-api`(요청 처리) / `commerce-streamer`(Kafka 컨슈머) / `commerce-batch`(메트릭 집계) 멀티 모듈 구조
-- 도메인: 상품·브랜드, 좋아요·랭킹, 주문·결제, 선착순 쿠폰, 진입 대기열
+- 도메인: 상품·브랜드, 좋아요, 주문·결제, 쿠폰
 - GitHub: [kimjunyoung90/loop-pack-be-l2-vol3-java](https://github.com/kimjunyoung90/loop-pack-be-l2-vol3-java)
 
 ### 읽기 트래픽을 흡수하는 Redis 다층 캐싱 + 운영 안전망
