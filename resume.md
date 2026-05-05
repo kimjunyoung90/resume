@@ -232,36 +232,29 @@
 
 ## 이커머스 토이 프로젝트
 
-- 트래픽이 몰리는 커머스 도메인을 가정하고 **Redis·Kafka 기반 비동기·캐시 구조**를 설계한 개인 프로젝트
+- **Redis·Kafka**를 활용한 이커머스 토이 프로젝트
 - 도메인: 상품·브랜드, 좋아요, 주문·결제, 쿠폰
 - GitHub: [kimjunyoung90/loop-pack-be-l2-vol3-java](https://github.com/kimjunyoung90/loop-pack-be-l2-vol3-java)
 
-### 읽기 트래픽을 흡수하는 Redis 다층 캐싱 + 운영 안전망
+### 읽기 트래픽을 흡수하는 Redis 캐싱
 
 #### 문제
-- 상품·브랜드 조회는 전체 트래픽의 대부분을 차지하지만 변동 빈도는 낮음 → 매번 DB 조회는 자원 낭비
-- 단순 캐싱은 (a) **동일 TTL 만료 시점에 부하 폭주(Cache Stampede)**, (b) **Redis 장애가 비즈니스 흐름 차단으로 전파**, (c) 목록·단건 캐시 사이 **정합성 깨짐** 위험
+- 상품 조회는 커머스에서 전체 트래픽의 대부분을 차지하지만 상품 정보의 변경 빈도는 낮음 → 매번 DB 조회는 자원 낭비
+- Redis 기반 캐싱 적용으로 DB 부하를 감소시키고 응답 속도를 개선
 
 #### 해결 과정
-**1) 단건/목록 차등 TTL**
-- 상품 단건 5분, 상품 목록 1분 — 변동 빈도와 stale 허용도의 차이를 TTL로 반영
-- 목록은 트래픽이 더 많지만 정확성 요구도 높아 짧은 TTL로 stale 위험 축소
+**1) 캐싱 및 캐시 갱신 전략**
+- 캐시 Hit: 캐싱 데이터 반환, 캐시 Miss: DB 조회 후 데이터 캐싱 후 반환
+- 캐시 갱신 전략: Lost Update 방지를 위한 수정 트랜잭션 commit 완료 후 TransactionEventListener로 삭제
+- 삭제 실패 시 TTL 기간 동안 stale data 노출 허용
 
-**2) 목록은 ID 리스트만 + 단건 multiGet 조합**
-- 목록 응답을 통째로 캐싱하면 (a) 단건 갱신 시 모든 목록 캐시 무효화 필요, (b) 동일 데이터가 단건/목록에 중복 캐싱
-- 목록은 `(productIds, totalElements)`만 저장 → 응답 시 단건 캐시를 `multiGet`으로 조립 → **단건 갱신이 목록 응답에 즉시 반영**, 캐시 적중률↑, 메모리 절약
+**2) Cache Stampede 방지**
+- 만료된 캐시 조회가 집중적으로 발생할 때 트래픽이 DB로 한번에 몰리지 않도록 분산 락 기반 stampede 현상 방지
+- 미스 -> 락대기 -> 캐시 재조회 -> DB 조회 흐름
 
-**3) Cache Stampede 방지 — TTL 지터**
-- 동일 시각 만료된 캐시들이 일제히 DB로 쏟아지지 않도록 **TTL에 ±10% 랜덤 지터** 적용(`applyJitter`)
-- 만료 시점을 흩뿌려 thundering herd 회피
+**3) Redis 장애 격리**
+- Redis 장애가 사용자 요청 실패로 전파되지 않도록 예외 처리를 통해 시스템 장애 격리
 
-**4) Fail-Silent — Redis 장애 격리**
-- 모든 캐시 연산을 try/catch로 감싸 실패 시 로그만 남기고 **DB fallback** — Redis 장애가 사용자 요청 실패로 전파되지 않음
-- 역직렬화 실패 캐시는 `safeDelete`로 자가 회복 → 깨진 캐시가 영구 오류로 남지 않음
-
-**5) Master/Slave 읽기 분산**
-- Lettuce `RedisStaticMasterReplicaConfiguration` + `ReadFrom.REPLICA_PREFERRED`를 기본 적용해 read 트래픽을 레플리카로 분산
-- 강한 일관성이 필요한 쿠폰 발급·대기열 토큰 등은 별도 `REDIS_TEMPLATE_MASTER` 빈을 분리해 마스터에서만 읽기/쓰기 → **읽기 분산과 일관성을 같은 인프라에서 동시에 충족**
 
 #### 성과
 - 상품·브랜드 조회 부하를 캐시 레이어로 흡수, 단건 갱신만으로 목록 응답까지 갱신되는 구조 확보
