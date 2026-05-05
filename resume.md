@@ -285,10 +285,6 @@
 - 중복 메시지 수신 시 `eventId`를 DB 레벨에서 유니크 제약으로 멱등성 보장
 - 지속된 소비 실패 시 소비 불가능한 메시지 DLT로 관리
 
-**3) 적용 설정**
-- acks 설정으로 partition의 replica로 메시지 복제 보장을 통한 Kafka level 메시지 유실 방지
-- enable.idempotence 설정을 통한 
-
 #### 성과
 - DB ↔ Kafka 정합성: Outbox로 발행 유실·유령 이벤트 제거
 - 멱등성 이중 안전망(eventId + DB 유니크)으로 중복을 사실상 1회 처리로 수렴
