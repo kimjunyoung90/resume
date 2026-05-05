@@ -269,19 +269,21 @@
 ### Kafka 기반 이벤트 처리
 
 #### 문제
-- 비즈니스 로직과 Kafka 발행이 같은 트랜잭션이 아니라 (a) DB 커밋 후 발행 실패 시 **이벤트 유실**, (b) 발행 후 DB 롤백 시 **유령 이벤트** 발생 가능
-- Kafka의 **at-least-once** 특성상 컨슈머가 같은 메시지를 여러 번 수신
-- 무한 재시도 시 후속 메시지 처리 정체 + 자원 낭비
+- 사용자 구매 상품 정보 집계의 필요로 인한 Kafka 적용
+- 메시지 발행은 외부 시스템이라 트랜잭션으로 묶이지 않아 이벤트 유실 및 유령 이벤트 발생 가능
+- 메시지 중복 발행 시 컨슈머의 중복처리로 인한 데이터 신뢰성 저하
+- 메시지 발행・소비 실패 시 재시도 프로세스로 인해 후속 메시지 처리 정체의 위험성
 
 #### 해결 과정
-**1) Transactional Outbox — 발행 At-least-once 보장**
-- 비즈니스 흐름과 outbox 적재를 **같은 DB 트랜잭션**으로 묶어 발행 유실 방지
-- `OutboxEventPublisher`가 PENDING 이벤트를 읽어 Kafka로 발행, 성공 시 PUBLISHED 마킹
-- 발행 실패 시 retryCount 증가 → 최대 초과 시 **DLE(Dead Letter Event) 별도 저장** → 운영자가 수동 분석·복구
+**1) Outbox 패턴 적용**
+- 비즈니스 로직과 발행할 이벤트를 동일한 트랜잭션으로 묶고 발행할 메시지를 outbox 테이블에 적재
+- 스케쥴러로 outbox를 읽어 메시지 발행, 발행 완료시 완료 처리
+- 발행 실패 시 retryCount 증가 → 최대 재시도 횟 수 초과 시 **DLQ로 관리** → 운영자가 수동 분석·복구
 
-**2) 컨슈머 멱등 — eventId + DB 유니크 이중 보장**
-- 발행 시 메시지 헤더에 `eventId(UUID)` 포함, 컨슈머는 처리 전 `event_handled` 테이블 조회로 중복 차단
-- DB 레벨에서도 `(userId, couponId)` 유니크 제약으로 한 번 더 멱등 보장 → `DataIntegrityViolationException`은 정상 중복으로 간주
+**2) 메시지 소비 멱등 구조 설계**
+- 메시지 소비 시 비즈니스 로직과 동일한 트랜잭션으로 묶어 소비된 메시지를 `event_handled`에 저장(`eventId`)
+- 중복 메시지 수신 시 `eventId`를 DB 레벨에서 유니크 제약으로 멱등성 보장
+- 소비 불가능한 메시지 DLT로 관리
 
 **3) 배치 컨슈머 + 부분 실패 격리 (DLT)**
 - `BATCH_LISTENER`(`MAX_POLL_RECORDS=3000`, manual ack)로 처리량 확보
