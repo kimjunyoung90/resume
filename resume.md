@@ -236,7 +236,7 @@
 - 도메인: 상품·브랜드, 좋아요, 주문·결제, 쿠폰
 - GitHub: [kimjunyoung90/loop-pack-be-l2-vol3-java](https://github.com/kimjunyoung90/loop-pack-be-l2-vol3-java)
 
-### 읽기 트래픽을 흡수하는 Redis 캐싱
+### 상품 조회 Redis 캐싱
 
 #### 문제
 - 상품 조회는 커머스에서 전체 트래픽의 대부분을 차지하지만 상품 정보의 변경 빈도는 낮음 → 매번 DB 조회는 자원 낭비
