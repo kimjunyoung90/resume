@@ -265,7 +265,7 @@
 #### 성과
 - 상품 조회 트래픽을 캐시 레이어로 흡수해 DB 부하 감소 및 응답 속도 개선
 - 단건 + 목록 ID 이중 캐시 구조로 **단건 갱신만으로 목록 응답까지 반영**, 캐시 메모리 사용량 절감
-- 분산 락 + TTL Jitter로 Cache Stampede 사전 차단, Redis 장애 시 DB fallback으로 사용자 요청 전파 방지
+- 분산 락 + TTL Jitter로 Cache Stampede 방지, Redis 장애 시 DB 응답으로 서비스 연속성 확보
 
 ### Kafka 기반 이벤트 처리
 
