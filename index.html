@@ -822,8 +822,7 @@
                 <p><strong>3) 인덱스 분석</strong></p>
                 <ul style="margin-left: 20px;">
                     <li><strong>인덱스 확인 결과 작성일자 포함된 인덱스 자체가 부재</strong>(함수 제거만으로는 해결 불가, 복합 인덱스 신설도 함께 필요함을 확인)</li>
-                    <li>사업자번호는 <strong>특정 복합 인덱스의 4번째(비선행) 위치</strong>였음</li>
-                    <li>PostgreSQL이 <strong>인덱스 전체를 순회하는 형태로 동작</strong></li>
+                    <li>사업자번호는 <strong>특정 복합 인덱스의 4번째(비선행) 위치</strong>였음(PostgreSQL이 <strong>인덱스 전체를 순회하는 형태로 동작</strong>)</li>
                     <li>두 조건을 효율적으로 탐색할 <strong>복합 인덱스 부재 확인</strong></li>
                 </ul>
                 <p><strong>4) 쿼리 튜닝 및 인덱스 생성</strong></p>
