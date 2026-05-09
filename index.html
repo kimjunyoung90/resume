@@ -823,20 +823,19 @@
                 <ul style="margin-left: 20px;">
                     <li>테이블에 생성된 인덱스 확인 결과 모두 <strong>작성일자는 미포함</strong></li>
                     <li>매입자 사업자번호는 <strong>복합 인덱스의 4번째(비선행) 위치</strong>였음</li>
-                    <li>PostgreSQL이 비선행 컬럼으로 Index Full Scan을 수행하여 실행 계획상 Index Scan으로 표시되었지만 실제로는 비효율</li>
+                    <li>비선행 컬럼은 B-tree seek 불가 → PostgreSQL이 Index Cond로 표시하지만 실제로는 <strong>인덱스 전체를 순회하는 형태로 동작</strong></li>
                     <li>두 조건을 효율적으로 탐색할 <strong>복합 인덱스 부재</strong> → <strong>두 번째 원인으로 식별</strong></li>
                 </ul>
-                <p><strong>4) 복합 인덱스 설계</strong></p>
+                <p><strong>4) 통합 해결책 적용</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li><strong>(매입자 사업자번호, 작성일자)</strong> 복합 인덱스 생성</li>
-                    <li><strong>컬럼 순서</strong>: 등치 조건(매입자 사업자번호)을 선행, 범위 조건(작성일자)을 후행으로 배치</li>
-                    <li>본 케이스에서는 등치 조건으로 데이터 범위를 먼저 좁힌 후 범위 탐색하는 것이 효율적이라고 판단</li>
-                    <li>국세청 스크래핑 데이터는 <strong>적재 빈도 대비 조회 빈도가 훨씬 높은 읽기 우세 테이블</strong>이라 인덱스 추가에 따른 쓰기 비용 영향 미미하다고 판단</li>
-                </ul>
-                <p><strong>5) 쿼리 + 인덱스 동시 적용</strong></p>
-                <ul style="margin-left: 20px;">
-                    <li><code>to_timestamp</code> 제거: YYYYMMDD 포맷은 사전순과 날짜순이 동일해 문자열 비교로 동일 결과 보장</li>
-                    <li>(매입자 사업자번호, 작성일자) 복합 인덱스 생성</li>
+                    <li><strong><code>to_timestamp</code> 함수 제거</strong>: YYYYMMDD 포맷은 사전순과 날짜순이 동일해 문자열 비교로 동일 결과 보장</li>
+                    <li><strong>(매입자 사업자번호, 작성일자) 복합 인덱스 생성</strong>
+                        <ul>
+                            <li>컬럼 순서: 등치 조건(매입자 사업자번호) 선행, 범위 조건(작성일자) 후행 — 등치 조건으로 데이터 범위를 먼저 좁힌 후 범위 탐색하는 것이 효율적이라고 판단</li>
+                            <li>국세청 수집 데이터는 <strong>적재 빈도 대비 조회 빈도가 훨씬 높은 읽기 우세 테이블</strong>이라 인덱스 추가에 따른 쓰기 비용 영향 미미하다고 판단</li>
+                        </ul>
+                    </li>
+                    <li><strong>두 변경 모두 필요한 이유</strong>: 인덱스만 추가했다면 함수 적용으로 인덱스 활용 불가, 함수만 제거했다면 적합한 인덱스 부재로 효과 제한적</li>
                 </ul>
             </div>
         </div>
@@ -845,10 +844,10 @@
             <span class="ps-label result">성과</span>
             <div class="ps-content">
                 <ul>
-                    <li>옵티마이저 추정 cost <strong>2,513,296 → 8.59</strong> (약 29만 배 감소)</li>
-                    <li>실측 실행시간 <strong>6,800ms → 0.121ms</strong> (약 56,000배 감소)</li>
+                    <li>옵티마이저 추정 cost <strong>2,513,296 → 8.59</strong></li>
+                    <li>실측 실행시간 <strong>6,800ms → 0.121ms</strong></li>
                     <li>작성일자 처리: <strong>Filter → Index Cond</strong></li>
-                    <li>인덱스 크기 701MB로 합리적 수준</li>
+                    <li>인덱스 크기 701MB로 운영 부담 미미한 수준</li>
                 </ul>
             </div>
         </div>
