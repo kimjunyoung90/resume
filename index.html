@@ -823,7 +823,7 @@
                 <ul style="margin-left: 20px;">
                     <li>테이블에 생성된 인덱스 확인 결과 모두 <strong>작성일자는 미포함</strong></li>
                     <li>매입자 사업자번호는 <strong>복합 인덱스의 4번째(비선행) 위치</strong>였음</li>
-                    <li>비선행 컬럼은 B-tree seek 불가 → PostgreSQL이 Index Cond로 표시하지만 실제로는 <strong>인덱스 전체를 순회하는 형태로 동작</strong></li>
+                    <li>PostgreSQL이 <strong>인덱스 전체를 순회하는 형태로 동작</strong></li>
                     <li>두 조건을 효율적으로 탐색할 <strong>복합 인덱스 부재</strong> → <strong>두 번째 원인으로 식별</strong></li>
                 </ul>
                 <p><strong>4) 통합 해결책 적용</strong></p>
