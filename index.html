@@ -817,7 +817,7 @@
                 <ul style="margin-left: 20px;">
                     <li>쿼리 조건 중 <strong>매입자 사업자번호</strong>: 등치 조건</li>
                     <li>쿼리 조건 중 <strong>작성일자(YYYYMMDD 문자열)</strong>: 범위 조건, 단 <code>to_timestamp</code> 함수로 감싸여 있음</li>
-                    <li>컬럼에 함수 적용 시 인덱스 원본 값과 달라져 인덱스 활용 불가 → <strong>첫 번째 원인으로 식별</strong></li>
+                    <li>컬럼에 함수 적용 시 인덱스 원본 값과 달라져 <strong>인덱스가 있더라도 활용 불가</strong> → <strong>첫 번째 원인으로 식별</strong></li>
                 </ul>
                 <p><strong>3) 인덱스 분석</strong></p>
                 <ul style="margin-left: 20px;">
@@ -835,7 +835,6 @@
                             <li>국세청 수집 데이터는 <strong>적재 빈도 대비 조회 빈도가 훨씬 높은 읽기 우세 테이블</strong>이라 인덱스 추가에 따른 쓰기 비용 영향 미미하다고 판단</li>
                         </ul>
                     </li>
-                    <li><strong>두 변경 모두 필요한 이유</strong>: 인덱스만 추가했다면 함수 적용으로 인덱스 활용 불가, 함수만 제거했다면 적합한 인덱스 부재로 효과 제한적</li>
                 </ul>
             </div>
         </div>
