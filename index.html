@@ -815,18 +815,18 @@
                 </ul>
                 <p><strong>2) 쿼리 분석</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>쿼리 조건 중 <strong>매입자 사업자번호</strong>: 등치 조건</li>
+                    <li>쿼리 조건 중 <strong>사업자번호</strong>: 등치 조건</li>
                     <li>쿼리 조건 중 <strong>작성일자(YYYYMMDD 문자열)</strong>: 범위 조건, 단 <code>to_timestamp</code> 함수로 감싸여 있음</li>
                     <li>컬럼에 함수 적용 시 인덱스 원본 값과 달라져 인덱스가 있더라도 활용 불가 → <strong>함수가 인덱스 활용을 막고 있는지 인덱스 점검 필요</strong></li>
                 </ul>
                 <p><strong>3) 인덱스 분석</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li><strong>인덱스 확인 결과 작성일자 포함된 인덱스 자체가 부재</strong> — 함수 제거만으로는 해결 불가, 복합 인덱스 신설도 함께 필요함을 확인</li>
-                    <li>매입자 사업자번호는 <strong>특정 복합 인덱스의 4번째(비선행) 위치</strong>였음</li>
+                    <li><strong>인덱스 확인 결과 작성일자 포함된 인덱스 자체가 부재</strong>(함수 제거만으로는 해결 불가, 복합 인덱스 신설도 함께 필요함을 확인)</li>
+                    <li>사업자번호는 <strong>특정 복합 인덱스의 4번째(비선행) 위치</strong>였음</li>
                     <li>PostgreSQL이 <strong>인덱스 전체를 순회하는 형태로 동작</strong></li>
                     <li>두 조건을 효율적으로 탐색할 <strong>복합 인덱스 부재 확인</strong></li>
                 </ul>
-                <p><strong>4) 통합 해결책 적용</strong></p>
+                <p><strong>4) 쿼리 튜닝 및 인덱스 생성</strong></p>
                 <ul style="margin-left: 20px;">
                     <li><strong><code>to_timestamp</code> 함수 제거</strong>: YYYYMMDD 포맷은 사전순과 날짜순이 동일해 문자열 비교로 동일 결과 보장</li>
                     <li><strong>(매입자 사업자번호, 작성일자) 복합 인덱스 생성</strong>
