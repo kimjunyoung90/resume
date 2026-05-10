@@ -237,7 +237,6 @@
 
 - **Redis·Kafka**를 활용한 이커머스 토이 프로젝트
 - 도메인: 상품·브랜드, 좋아요, 주문·결제, 쿠폰
-- GitHub: [kimjunyoung90/loop-pack-be-l2-vol3-java](https://github.com/kimjunyoung90/loop-pack-be-l2-vol3-java)
 
 ### 상품 조회 Redis 캐싱
 
