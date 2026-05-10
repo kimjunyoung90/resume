@@ -956,62 +956,10 @@
         <ul>
             <li>사내 여러 React 기반 서비스의 화면 개발 및 유지보수</li>
             <li><strong>Redux/Redux-Saga</strong> 기반 상태 관리 및 비동기 흐름 제어</li>
-            <li>작업 범위: <strong>공통 컴포넌트 개발</strong>, <strong>신규 화면 개발</strong>, <strong>버그 수정</strong></li>
+            <li>반복되는 컴포넌트 코드를 공통화하여 수정 시 유지보수 비용 절감</li>
+            <li>분리된 여러 프론트 서비스에서 install해 사용할 수 있도록 <strong>이용가이드 공통 컴포넌트</strong>를 <strong>Nexus npm registry</strong>에 배포</li>
+            <li>신규 화면 개발 및 버그 수정 등 다양한 작업 수행</li>
         </ul>
-    </div>
-
-    <div class="problem-solving first-detail">
-        <div class="ps-title">React 15~19 다버전 지원 공통 컴포넌트 모노레포 구축</div>
-
-        <div class="ps-section">
-            <span class="ps-label problem">문제</span>
-            <div class="ps-content">
-                <ul>
-                    <li>사내 서비스가 <strong>React 15부터 17까지</strong> 다양한 버전이 공존하는 환경</li>
-                    <li>공통 이용가이드 UI를 각 서비스별로 중복 구현하거나 버전마다 별도 유지보수하면서 <strong>유지비용 증가</strong></li>
-                    <li>일부 서비스는 React 15에 묶여 있고 신규 서비스는 Hooks 기반으로 진행되어 <strong>공통 UI 자산이 분리되어 생산성 저하</strong></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="ps-section">
-            <span class="ps-label solution">해결 과정</span>
-            <div class="ps-content">
-                <p><strong>1) 모노레포 설계 및 구조화</strong></p>
-                <ul style="margin-left: 20px;">
-                    <li><code>packages/legacy</code>, <code>packages/modern</code>으로 분리해 단일 Git 리포에서 관리</li>
-                    <li>공통 lint/build/test/CI 스크립트를 루트에서 제공하여 패키지 간 일관성 유지</li>
-                </ul>
-                <p><strong>2) React 버전별 번들 전략 구현</strong></p>
-                <ul style="margin-left: 20px;">
-                    <li>legacy: React 15 API 중심 구성으로 기존 서비스 호환성 보장</li>
-                    <li>modern: React 16.8+(Hooks) 기반으로 신규 서비스 대응</li>
-                    <li>React 18/19는 SSR/Concurrent 기능만 제한적으로 대응하여 범위 통제</li>
-                </ul>
-                <p><strong>3) Storybook 독립 운영</strong></p>
-                <ul style="margin-left: 20px;">
-                    <li>패키지별 Storybook 구성으로 UI 컴포넌트 품질을 개발 단계에서 확인</li>
-                    <li>modern 환경은 Webpack 5 기반으로 구축</li>
-                </ul>
-                <p><strong>4) 점진적 마이그레이션 전략 수립</strong></p>
-                <ul style="margin-left: 20px;">
-                    <li>한 번에 모든 서비스를 전환하기엔 리스크가 컸으므로 <strong>legacy 유지 → modern 전환</strong> 구조로 서비스 단위 점진 전환을 지원</li>
-                    <li>React 중·장기 업그레이드 로드맵에 맞춰 modern 패키지 사용 비중을 확대</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="ps-section">
-            <span class="ps-label result">성과</span>
-            <div class="ps-content">
-                <ul>
-                    <li>단일 저장소에서 legacy/modern 공존이 가능해져 <strong>중복 개발 없이 공통 UI 재사용률 증가</strong></li>
-                    <li>서비스별 React 버전에 따른 UI 유지보수 비용 감소</li>
-                    <li>신규 서비스는 modern, 기존 서비스는 legacy 기반으로 <strong>리스크 없이 대응</strong> 가능</li>
-                    <li>공통 UI 지침 + Storybook 문서를 기반으로 개발 생산성 향상</li>
-                </ul>
-            </div>
-        </div>
     </div>
 
     <hr>
