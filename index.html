@@ -1084,8 +1084,16 @@
 
     <div class="project-overview">
         <ul>
-            <li>AI 도구를 직접 개발·활용하여 개발·운영 비효율을 개선하고 있습니다.</li>
-            <li><strong>APM 모니터링 MCP 도구 개발</strong>: Elastic APM 연동 MCP 서버 개발. 자연어 기반으로 latency·트래픽·CPU/메모리 등 서비스 지표 조회와 기간 비교가 가능한 모니터링 환경 구축</li>
+            <li>AI 도구를 활용하여 개발·운영 생산성 향상에 기여하고 있습니다.</li>
+        </ul>
+    </div>
+
+    <div class="problem-solving">
+        <div class="ps-title">APM 모니터링 MCP 도구 개발</div>
+        <ul style="margin-top: 12px;">
+            <li>Elastic APM 연동 MCP 서버 개발</li>
+            <li>자연어 기반으로 latency·트래픽·CPU/메모리 등 서비스 지표 조회</li>
+            <li>기간 비교 지원 (예: 지난주 대비 현재 트래픽)</li>
         </ul>
     </div>
 
@@ -1117,22 +1125,22 @@
                     </li>
                     <li>SendMessage 기반 에이전트 간 통신, CLAUDE.md로 프로젝트 컨텍스트 세팅</li>
                 </ul>
-                <p><strong>2) Phase 기반 자동화 플로우 설계</strong></p>
+                <p><strong>2) 자동화 플로우 설계</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>Phase 1: 티켓 정보 수집 (Jira MCP)</li>
-                    <li>Phase 2: 현상 재현 (Playwright MCP / DB 조회)</li>
+                    <li>Phase 2: 현상 재현 (Playwright MCP / 테스트 코드 실행)</li>
                     <li>Phase 3: 원인 분석·코드 수정 (backend/front-developer 병렬 실행) + 회귀 테스트</li>
                     <li>Phase 4: MR 생성 (commit → push → MR → Jira 상태 전환)</li>
                     <li>Phase 5: 정리 & 보고 (평가 에이전트로 이벤트 로그·통계 갱신)</li>
                 </ul>
                 <p><strong>3) 평가 시스템 설계</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>이벤트 로그(<code>events.jsonl</code>)에 모든 Phase·에이전트 결과·토큰 사용량 누적</li>
-                    <li>3-Axis 측정
+                    <li>행위 마다 이벤트 로그 적재(처리 시간·토큰 사용량 누적)</li>
+                    <li>3가지 비용 측정
                         <ul>
-                            <li><strong>시간(Speed)</strong>: 평균 처리 시간, P50, P90</li>
-                            <li><strong>정확도(Accuracy)</strong>: 자동 해결률, 1회 처리 성공률, 재개율</li>
-                            <li><strong>비용(Cost)</strong>: 티켓당 평균 토큰, 평균 USD 비용</li>
+                            <li><strong>시간(Speed)</strong>: 평균 처리 시간</li>
+                            <li><strong>정확도(Accuracy)</strong>: 재개율</li>
+                            <li><strong>비용(Cost)</strong>: 티켓당 평균 토큰</li>
                         </ul>
                     </li>
                     <li><code>/metrics</code> 명령어로 전체/티켓별 리포트 출력, HTML 리포트 자동 생성</li>
