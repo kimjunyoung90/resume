@@ -1029,57 +1029,6 @@
 
     <hr>
 
-    <h3>뉴스 데이터 수집 시스템 개선 <span class="project-period">2024.03</span></h3>
-
-    <div class="project-overview">
-        <ul>
-            <li>언론사의 기사 데이터를 수집·가공·조회하는 서비스 구조 개선</li>
-        </ul>
-    </div>
-
-    <div class="problem-solving">
-        <div class="ps-title">DB 구조 재설계 및 확장성 개선</div>
-
-        <div class="ps-section">
-            <span class="ps-label problem">문제</span>
-            <div class="ps-content">
-                <ul>
-                    <li>기존 뉴스 서비스는 단일 언론사만을 고려해 설계되었고, 신문사에서 제공하는 카테고리 정보를 <code>paper_categories</code>에 저장하고 뉴스 데이터는 카테고리에 매핑되는 1:N 구조였음</li>
-                    <li>이후 서비스 고도화 과정에서 다수 언론사의 데이터를 수집하고, 각 언론사가 제공하는 뉴스 데이터를 플랫폼 서비스 기준(예: 정치·IT 등)에 맞게 통합하여 제공해야 한다는 요구사항이 전달되었음</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="ps-section">
-            <span class="ps-label solution">해결 과정</span>
-            <div class="ps-content">
-                <p><strong>1) N:M 매핑 구조의 데이터베이스 재설계</strong></p>
-                <ul style="margin-left: 20px;">
-                    <li><code>platform_categories</code> 테이블 신설: 자사 서비스 플랫폼(WEHAGO, NAHAGO)별 표준 카테고리 관리</li>
-                    <li><code>categories_mapping</code> 테이블 추가: <strong>N:M 관계 구현</strong>으로 하나의 언론사 카테고리가 여러 플랫폼 카테고리에 매핑 가능하도록 설계</li>
-                </ul>
-                <p><strong>2) 전략 패턴 기반 수집 로직 공통화</strong></p>
-                <ul style="margin-left: 20px;">
-                    <li>언론사마다 수집 API와 응답 데이터 구조가 상이한 문제 발생</li>
-                    <li>전략 패턴을 도입하여 전체 수집 흐름은 유지하면서 데이터 수집 및 가공 부분을 <strong>전략 클래스로 분리</strong></li>
-                    <li>신규 언론사 추가 시 전략 클래스만 추가하여 확장 가능한 구조로 설계(<strong>개방 폐쇄 원칙</strong> 준수)</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="ps-section">
-            <span class="ps-label result">성과</span>
-            <div class="ps-content">
-                <ul>
-                    <li><strong>N:M 매핑 구조</strong>로 <strong>데이터 추가만으로</strong> <strong>기존 외 2개 언론사 추가 확장</strong></li>
-                    <li><strong>전략 패턴</strong> 적용으로 신규 언론사 추가 시 <strong>확장 구조 설계</strong></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <hr>
-
     <h3>AI 도구 개발 및 활용</h3>
 
     <div class="project-overview">
@@ -1154,7 +1103,58 @@
                 <ul>
                     <li>반복적인 버그 수정 프로세스의 <strong>자동화 흐름 + 평가 인프라</strong> 구축</li>
                     <li>개발자는 최종 MR 검토와 실제 QA 협업에만 집중할 수 있는 환경 마련</li>
-                    <li>자동화 효과를 시간·정확도·비용 3축으로 <strong>정량 검증 가능한 시스템</strong> 확보</li>
+                    <li>자동화 효과를 시간·정확도·비용 3가지 측면으로 <strong>평가 가능한 시스템</strong> 확보</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <h3>뉴스 데이터 수집 시스템 개선 <span class="project-period">2024.03</span></h3>
+
+    <div class="project-overview">
+        <ul>
+            <li>언론사의 기사 데이터를 수집·가공·조회하는 서비스 구조 개선</li>
+        </ul>
+    </div>
+
+    <div class="problem-solving">
+        <div class="ps-title">DB 구조 재설계 및 확장성 개선</div>
+
+        <div class="ps-section">
+            <span class="ps-label problem">문제</span>
+            <div class="ps-content">
+                <ul>
+                    <li>기존 뉴스 서비스는 단일 언론사만을 고려해 설계되었고, 신문사에서 제공하는 카테고리 정보를 <code>paper_categories</code>에 저장하고 뉴스 데이터는 카테고리에 매핑되는 1:N 구조였음</li>
+                    <li>이후 서비스 고도화 과정에서 다수 언론사의 데이터를 수집하고, 각 언론사가 제공하는 뉴스 데이터를 플랫폼 서비스 기준(예: 정치·IT 등)에 맞게 통합하여 제공해야 한다는 요구사항이 전달되었음</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label solution">해결 과정</span>
+            <div class="ps-content">
+                <p><strong>1) N:M 매핑 구조의 데이터베이스 재설계</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li><code>platform_categories</code> 테이블 신설: 자사 서비스 플랫폼(WEHAGO, NAHAGO)별 표준 카테고리 관리</li>
+                    <li><code>categories_mapping</code> 테이블 추가: <strong>N:M 관계 구현</strong>으로 하나의 언론사 카테고리가 여러 플랫폼 카테고리에 매핑 가능하도록 설계</li>
+                </ul>
+                <p><strong>2) 전략 패턴 기반 수집 로직 공통화</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>언론사마다 수집 API와 응답 데이터 구조가 상이한 문제 발생</li>
+                    <li>전략 패턴을 도입하여 전체 수집 흐름은 유지하면서 데이터 수집 및 가공 부분을 <strong>전략 클래스로 분리</strong></li>
+                    <li>신규 언론사 추가 시 전략 클래스만 추가하여 확장 가능한 구조로 설계(<strong>개방 폐쇄 원칙</strong> 준수)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label result">성과</span>
+            <div class="ps-content">
+                <ul>
+                    <li><strong>N:M 매핑 구조</strong>로 <strong>데이터 추가만으로</strong> <strong>기존 외 2개 언론사 추가 확장</strong></li>
+                    <li><strong>전략 패턴</strong> 적용으로 신규 언론사 추가 시 <strong>확장 구조 설계</strong></li>
                 </ul>
             </div>
         </div>
