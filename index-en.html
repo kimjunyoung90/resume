@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Junyoung Kim - Backend Developer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Segoe UI", sans-serif;
+            line-height: 1.8;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 80px 40px;
+            color: #1a202c;
+            background: #ffffff;
+        }
+        
+        /* 헤더 */
+        .header {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            margin-bottom: 0;
+        }
+        
+        h1 {
+            font-size: 2em;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+        
+        .subtitle {
+            font-size: 1.1em;
+            color: #718096;
+            font-weight: 400;
+        }
+        
+        /* Contact 섹션 */
+        .contact-section {
+            display: flex;
+            gap: 40px;
+            margin: 50px 0;
+            padding: 30px 0;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .profile-img {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-img img {
+            width: 140px;
+            height: 140px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        
+        .contact-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .contact-title {
+            font-size: 0.8em;
+            font-weight: 600;
+            color: #a0aec0;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
+        }
+        
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        
+        .contact-links a {
+            color: #2d3748;
+            text-decoration: none;
+            font-size: 0.95em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .contact-links a:hover {
+            color: #1a202c;
+        }
+        
+        .contact-links .icon {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .contact-description {
+            font-size: 0.88em;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+        
+        /* 섹션 헤더 */
+        h2 {
+            font-size: 0.8em;
+            font-weight: 700;
+            color: #1a202c;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 60px 0 28px 0;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #1a202c;
+        }
+        
+        /* 서브 헤더 */
+        h3 {
+            font-size: 1.15em;
+            font-weight: 600;
+            color: #1a202c;
+            margin: 40px 0 12px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        
+        h3 .project-period {
+            font-size: 0.75em;
+            color: #a0aec0;
+            font-weight: 400;
+        }
+        
+        .company-period {
+            font-size: 0.9em;
+            color: #4a5568;
+            font-weight: 400;
+            margin-bottom: 16px;
+        }
+        
+        /* 프로젝트 헤더 */
+        h4 {
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #1a202c;
+            margin: 48px 0 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        
+        .project-period {
+            font-size: 0.8em;
+            color: #a0aec0;
+            font-weight: 400;
+        }
+        
+        .project-overview {
+            margin: 16px 0 32px 0;
+            padding-left: 0;
+        }
+        
+        .project-overview ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .project-overview li {
+            position: relative;
+            padding-left: 0;
+            margin-bottom: 6px;
+            color: #2d3748;
+            font-size: 0.92em;
+            line-height: 1.6;
+        }
+        
+        .project-overview li:before {
+            content: none;
+        }
+        
+        .project-overview li:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* 문제해결 카드 */
+        .problem-solving {
+            margin-bottom: 48px;
+        }
+        
+        .ps-title {
+            font-size: 1em;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .ps-section {
+            margin-bottom: 16px;
+        }
+        
+        .ps-label {
+            display: inline-block;
+            font-size: 0.8em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            margin-bottom: 6px;
+        }
+        
+        .ps-label.problem {
+            background: #fff5f5;
+            color: #c53030;
+        }
+
+        .ps-label.solution {
+            background: #ebf8ff;
+            color: #2c5282;
+        }
+
+        .ps-label.result {
+            background: #f0fff4;
+            color: #22543d;
+        }
+        
+        .ps-content {
+            padding-left: 16px;
+            margin-top: 8px;
+        }
+
+        .ps-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            margin-top: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .ps-content li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            color: #1a202c;
+            font-size: 0.97em;
+            line-height: 1.6;
+        }
+        
+        .ps-content li:last-child {
+            margin-bottom: 0;
+        }
+        
+        .ps-content li:before {
+            content: "–";
+            position: absolute;
+            left: 0;
+            color: #cbd5e0;
+        }
+
+        
+        /* 일반 리스트 */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 16px 0;
+        }
+        
+        li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 4px;
+            color: #1a202c;
+            font-size: 0.95em;
+            line-height: 1.7;
+        }
+        
+        li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #cbd5e0;
+            font-weight: bold;
+        }
+        
+        /* 강조 텍스트 */
+        strong {
+            color: #1a202c;
+            font-weight: 600;
+        }
+        
+        /* 링크 */
+        a {
+            color: #2d3748;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            color: #1a202c;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        /* 코드 */
+        code {
+            background: #f1f5f9;
+            padding: 5px 10px;
+            border-radius: 14px;
+            font-family: 'SF Mono', 'Monaco', 'Menlo', monospace;
+            font-size: 0.85em;
+            color: #475569;
+            font-weight: 500;
+        }
+        
+        
+        /* Skills 리스트 */
+        .skills-list {
+            list-style: none;
+            padding: 0;
+            margin: 16px 0;
+        }
+        
+        .skills-list li {
+            padding-left: 0;
+            margin-bottom: 8px;
+            color: #2d3748;
+            font-size: 0.95em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .skills-list li:before {
+            content: none;
+        }
+        
+        .skills-list li strong {
+            flex-shrink: 0;
+            color: #1a202c;
+            font-weight: 600;
+            margin-right: 8px;
+            display: inline-block;
+            width: 85px;
+        }
+        
+        /* 구분선 */
+        hr {
+            border: none;
+            border-top: 1px solid #e2e8f0;
+            margin: 48px 0;
+        }
+        
+        /* 인증 */
+        .cert-item {
+            margin-bottom: 8px;
+            color: #1a202c;
+            font-size: 0.95em;
+        }
+
+        .cert-item strong {
+            color: #1a202c;
+        }
+
+        .cert-item em {
+            color: #a0aec0;
+            font-style: normal;
+            margin-left: 8px;
+        }
+
+        /* PDF/Print 스타일 */
+        @media print {
+            body {
+                max-width: 210mm; /* A4 width */
+                padding: 15mm 20mm;
+                background: white;
+            }
+
+            /* Contact 섹션 - 가로 레이아웃 유지 */
+            .contact-section {
+                display: flex !important;
+                flex-direction: row !important;
+                align-items: center !important;
+                gap: 40px !important;
+                margin: 30px 0 !important;
+                padding: 20px 0 !important;
+                page-break-inside: avoid;
+            }
+
+            .profile-img {
+                flex-shrink: 0;
+                text-align: left !important;
+                display: flex !important;
+                align-items: center !important;
+            }
+
+            .profile-img img {
+                width: 140px !important;
+                height: 140px !important;
+                min-width: 140px !important;
+                min-height: 140px !important;
+                max-width: 140px !important;
+                max-height: 140px !important;
+                border-radius: 8px;
+                object-fit: cover;
+            }
+
+            .contact-info {
+                flex: 1;
+                text-align: left !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+            }
+
+            .contact-links {
+                align-items: flex-start !important;
+                gap: 4px !important;
+            }
+
+            .contact-links a {
+                line-height: 1.4 !important;
+            }
+
+            .contact-description {
+                line-height: 1.4 !important;
+                margin-top: 4px !important;
+            }
+
+            /* 링크 색상 */
+            a {
+                color: #2d3748 !important;
+                text-decoration: none;
+            }
+
+            /* 페이지 나누기 제어 */
+
+            /* 주요 섹션(H2) 앞에서 페이지 나누기 선호 */
+            h2 {
+                page-break-before: auto;
+                page-break-after: avoid;
+                margin-top: 40px !important;
+            }
+
+            /* 첫 번째 H2는 페이지 나누기 방지 */
+            h2:first-of-type {
+                page-break-before: avoid;
+            }
+
+            /* Skills 섹션은 새 페이지에서 시작 */
+            #skills-section {
+                page-break-before: always !important;
+            }
+
+            /* 프로젝트/회사(H3)는 함께 유지 */
+            h3 {
+                page-break-before: auto;
+                page-break-after: avoid;
+                page-break-inside: avoid;
+            }
+
+            /* 세부 경험(H4)는 본문과 함께 유지 */
+            h4 {
+                page-break-after: avoid;
+                page-break-inside: avoid;
+            }
+
+            /* Contact 섹션은 첫 페이지에 유지 */
+            .contact-section {
+                page-break-after: avoid;
+                page-break-inside: avoid;
+            }
+
+            /* Working Style, Skills는 함께 유지 */
+            .work-style-section,
+            .skills-section {
+                page-break-inside: avoid;
+            }
+
+            /* 문제-해결-성과 섹션 제어 */
+            .ps-section {
+                page-break-inside: auto; /* 긴 내용은 나눌 수 있도록 */
+            }
+
+            /* 라벨과 내용 첫 부분은 함께 유지 */
+            .ps-label {
+                page-break-after: avoid;
+            }
+
+            .ps-content {
+                margin-bottom: 24px;
+                page-break-inside: auto; /* 내용이 페이지를 넘어갈 수 있도록 */
+            }
+
+            /* 개별 리스트는 자연스럽게 나눌 수 있도록 */
+            .ps-content ul {
+                page-break-inside: auto;
+            }
+
+            /* 개별 리스트 아이템은 분리되지 않도록 */
+            .ps-content li {
+                page-break-inside: avoid;
+            }
+
+            /* 첫 번째 세부 경험은 다음 페이지로 */
+            .first-detail {
+                page-break-before: always; /* 새 페이지에서 시작 */
+            }
+
+            /* 프로젝트 전체를 가능한 함께 유지 */
+            .project-section {
+                page-break-inside: avoid;
+            }
+
+            /* Work Experience 아이템들 */
+            .work-item {
+                page-break-inside: avoid;
+            }
+
+            /* HR 구분선 근처에서 페이지 나누기 선호 */
+            hr {
+                page-break-before: auto;
+                page-break-after: auto;
+                margin: 32px 0 !important;
+            }
+
+            /* Skills 테이블은 분리 방지 */
+            table {
+                page-break-inside: avoid;
+            }
+
+            /* 자격증 목록은 함께 유지 */
+            .cert-list {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* 반응형 (화면용) */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 60px 30px;
+            }
+
+            h1 {
+                font-size: 1.75em;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            /* Contact 섹션 반응형 */
+            .contact-section {
+                flex-direction: column;
+                gap: 24px;
+                margin: 40px 0;
+                padding: 24px 0;
+            }
+
+            .profile-img {
+                text-align: center;
+            }
+
+            .profile-img img {
+                width: 120px !important;
+                height: auto !important;
+            }
+
+            .contact-info {
+                text-align: center;
+            }
+
+            .contact-links {
+                align-items: center;
+            }
+
+            h2 {
+                font-size: 0.75em;
+                margin: 48px 0 24px 0;
+            }
+
+            h3 {
+                font-size: 1.05em;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            h3 .project-period {
+                font-size: 0.85em;
+            }
+
+            h4 {
+                font-size: 1em;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .project-period {
+                font-size: 0.85em;
+            }
+
+            hr {
+                margin: 40px 0;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            body {
+                padding: 40px 20px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .subtitle {
+                font-size: 0.95em;
+            }
+
+            .contact-section {
+                gap: 20px;
+                margin: 30px 0;
+                padding: 20px 0;
+            }
+
+            .profile-img img {
+                width: 100px !important;
+            }
+
+            .contact-links a {
+                font-size: 0.9em;
+            }
+
+            .contact-description {
+                font-size: 0.85em;
+            }
+
+            code {
+                font-size: 0.8em;
+                padding: 4px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Junyoung Kim - Backend Developer (5 Years of Experience)</h1>
+    </div>
+
+    <div class="contact-section">
+        <div class="profile-img">
+            <img src="https://kimjunyoung90.github.io/resume/images/profile.png" style="width: 200px; height: 211px;" alt="Profile" onerror="this.style.display='none'"/>
+        </div>
+        <div class="contact-info">
+            <div class="contact-title">Contact</div>
+            <div class="contact-links">
+                <a href="mailto:wnsdud1900427@gmail.com">✉️ wnsdud1900427@gmail.com</a>
+                <a href="https://github.com/kimjunyoung90" target="_blank">
+                    <img src="https://kimjunyoung90.github.io/resume/images/github-mark.png" class="icon" alt="GitHub" onerror="this.style.display='none'"/>
+                    https://github.com/kimjunyoung90
+                </a>
+                <a href="https://snvlqkq.tistory.com/" target="_blank">📝 https://snvlqkq.tistory.com</a>
+            </div>
+            <div class="contact-description">
+                <strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/saga-examples/blob/main/choreography/README.md" target="_blank">Event-Driven Architecture (EDA) with Kafka</a><br>
+                <strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/54" target="_blank">Concurrency Handling Strategies</a> and <a href="https://snvlqkq.tistory.com/57" target="_blank">Caching Strategies</a>
+            </div>
+        </div>
+    </div>
+
+    <h2>My Working Style</h2>
+    <ul>
+        <li>
+            <strong>I find and fix the root cause of problems.</strong>
+            <div style="margin-top: 8px; color: #718096; line-height: 1.7;">
+                When latency spiked, I analyzed CPU/memory usage and thread dumps to identify and remove a serialized-processing bottleneck, improving TPS by 47%.
+            </div>
+        </li>
+        <li>
+            <strong>I actively leverage AI tools to boost development productivity.</strong>
+            <div style="margin-top: 8px; color: #718096; line-height: 1.7;">
+                I run internal Claude training for developers, QA, and publishers (<a href="https://kimjunyoung90.github.io/resume/claude-education.html" target="_blank" rel="noopener noreferrer">training materials</a>) and share guide documents to spread AI adoption across the team.<br>
+                I built an MCP server that queries monitoring metrics collected by the Elastic APM Agent through the Kibana API using natural language, streamlining the process of checking metrics and improving operational efficiency.
+            </div>
+        </li>
+        <li>
+            <strong>I document and share knowledge.</strong>
+            <div style="margin-top: 8px; color: #718096; line-height: 1.7;">
+                I contribute to the growth of the whole organization, not just my own.<br>
+                I wrote and shared a monitoring guide covering the meaning of metrics, system components, how they work, and the transaction analysis process, reducing onboarding costs for system operations.
+            </div>
+        </li>
+    </ul>
+
+    <hr>
+
+    <h2 id="skills-section">Skills</h2>
+    <ul class="skills-list">
+        <li><strong>Backend</strong> <code>Java</code> <code>Spring Framework</code> <code>MyBatis</code></li>
+        <li><strong>DB</strong> <code>Oracle</code> <code>PostgreSQL</code> <code>Redis</code></li>
+        <li><strong>Frontend</strong> <code>JavaScript</code> <code>React</code> <code>Redux</code> <code>Redux-Saga</code></li>
+        <li><strong>DevOps</strong> <code>Linux</code> <code>Jenkins</code> <code>Git</code> <code>ELK</code> <code>APM</code></li>
+        <li><strong>Messaging</strong> <code>Kafka</code></li>
+        <li><strong>Collaboration</strong> <code>Jira</code> <code>Confluence</code></li>
+    </ul>    <h2>Work Experience</h2>
+
+    <h3>Douzone Bizon, WEHAGO Development Center (5th year)</h3>
+    <div class="company-period"><strong>2021.09 ~ Present</strong></div>
+    <ul>
+        <li><strong>Backend development and operations with Java and Spring</strong></li>
+        <li><strong>MSA Saga pattern design and implementation</strong></li>
+        <li><strong>Database design and optimization</strong></li>
+        <li><strong>Service monitoring, incident response, and bottleneck analysis & improvement</strong></li>
+        <li><strong>Writing test code with JUnit/Mockito</strong></li>
+        <li><strong>Frontend development with React/Redux</strong></li>
+    </ul>
+
+    <h2>Projects</h2>
+
+    <h3>Electronic Tax Invoice Service Operations & Maintenance <span class="project-period">2021.09 ~ Present</span></h3>
+
+    <div class="project-overview">
+        <ul>
+            <li>Operated a tax-invoice issuance/filing and electronic-document platform handling <strong>65 million transactions per month, up to 1,200 TPS</strong></li>
+        </ul>
+    </div>
+
+    <div class="problem-solving first-detail">
+        <div class="ps-title">Latency 9s → 350ms, Throughput +47%</div>
+
+        <div class="ps-section">
+            <span class="ps-label problem">Problem</span>
+            <div class="ps-content">
+                <ul>
+                    <li>40% of total monthly traffic is concentrated in the first 10 days of the month</li>
+                    <li>During that period, the response time of a specific API spiked to <strong>over 9 seconds</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label solution">Approach</span>
+            <div class="ps-content">
+                <p><strong>1) APM analysis</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Monitoring showed that time spent inside the application accounted for over 90% of the total elapsed time</li>
+                    <li>System CPU was 5% and memory 30%, both within normal range</li>
+                    <li>Suspected abnormal behavior of threads inside the application</li>
+                </ul>
+                <p><strong>2) Thread analysis</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Detected a <strong>large number of BLOCKED threads</strong> during <strong>thread dump analysis</strong></li>
+                    <li>The stack trace revealed that a specific method was being <strong>serialized by <code>synchronized</code></strong></li>
+                    <li>Removed <code>synchronized</code> after code-level analysis</li>
+                </ul>
+                <p><strong>3) Impact analysis of removing synchronized</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Removing <code>synchronized</code> would let previously serialized requests run in parallel, raising concerns about <strong>increased DB load</strong></li>
+                    <li><strong>DB CPU</strong>: 10–20% on average, up to 60%, judged safe for parallel traffic</li>
+                    <li><strong>DB connections</strong>: current pool size (max 40 × 8 instances = 320) had headroom against the DB max limit (2,205); planned to increase pool size if connections ran short</li>
+                </ul>
+                <p><strong>4) Validating the improvement with load testing</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Compared latency and TPS before/after removal under identical conditions (dev environment)</li>
+                    <li>TPS <strong>13.5 → 19.8 (about +47%)</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label result">Result</span>
+            <div class="ps-content">
+                <ul>
+                    <li>Eliminated the bottleneck during the early-month peak</li>
+                    <li>Production latency stayed stable, improving from <strong>over 9s to 350ms</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-solving">
+        <div class="ps-title">Query Performance Improved via Indexing + Query Tuning (6,800ms → 9.412ms)</div>
+
+        <div class="ps-section">
+            <span class="ps-label problem">Problem</span>
+            <div class="ps-content">
+                <ul>
+                    <li>Latency occurred in the NTS (National Tax Service) purchase tax-invoice lookup API</li>
+                    <li>APM analysis showed query execution accounted for <strong>over 99%</strong> of the total response time</li>
+                    <li>Target table: NTS-collected data, around <strong>53 million rows</strong> at the time</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label solution">Approach</span>
+            <div class="ps-content">
+                <p><strong>1) Execution plan analysis</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>cost <strong>2,513,296</strong> / execution time <strong>6,800ms</strong></li>
+                    <li>Cost was high despite an Index Scan, so the query and index needed review</li>
+                </ul>
+                <p><strong>2) Query analysis</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Business registration number: equality condition</li>
+                    <li>Issue date (YYYYMMDD string): range condition, but with a <code>to_timestamp</code> function applied</li>
+                    <li>Applying the function changes the value from the indexed original, making the index unusable → <strong>index review needed</strong></li>
+                </ul>
+                <p><strong>3) Index analysis</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>No index including the issue date existed → removing the function alone could not solve it</li>
+                    <li>The business registration number sat in the <strong>4th (non-leading) position of a composite index</strong></li>
+                    <li>No <strong>composite index</strong> to efficiently scan both conditions</li>
+                </ul>
+                <p><strong>4) Query tuning and index creation</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Removed <code>to_timestamp</code>: since YYYYMMDD is lexicographically ordered = date-ordered, string comparison guarantees the same result</li>
+                    <li><strong>Created a composite index on (buyer business registration number, issue date)</strong></li>
+                    <li>Column order: equality (business number) leading + range (issue date) trailing</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label result">Result</span>
+            <div class="ps-content">
+                <table style="border-collapse: collapse; margin-top: 8px; font-size: 0.95em;">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left; padding: 6px 16px; border-bottom: 1px solid #e2e8f0; color: #1a202c; font-weight: 600;">Metric</th>
+                            <th style="text-align: left; padding: 6px 16px; border-bottom: 1px solid #e2e8f0; color: #1a202c; font-weight: 600;">Before</th>
+                            <th style="text-align: left; padding: 6px 16px; border-bottom: 1px solid #e2e8f0; color: #1a202c; font-weight: 600;">After</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 6px 16px; border-bottom: 1px solid #e2e8f0; color: #1a202c;">Optimizer estimated cost</td>
+                            <td style="padding: 6px 16px; border-bottom: 1px solid #e2e8f0; color: #1a202c;">2,513,296</td>
+                            <td style="padding: 6px 16px; border-bottom: 1px solid #e2e8f0; color: #1a202c;">5,306.11</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 6px 16px; color: #1a202c;">Measured execution time</td>
+                            <td style="padding: 6px 16px; color: #1a202c;">6,800ms</td>
+                            <td style="padding: 6px 16px; color: #1a202c;">9.412ms</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-solving">
+        <div class="ps-title">MSA Data Consistency Improvement</div>
+
+        <div class="ps-section">
+            <span class="ps-label problem">Problem</span>
+            <div class="ps-content">
+                <ul>
+                    <li>The service I owned ran in an orchestration-based MSA environment</li>
+                    <li>Flow: client request → tax invoice (orchestration) → point deduction → invoice issuance → point deduction rollback</li>
+                    <li>When document creation failed, points were not rolled back → causing financial loss to customers</li>
+                    <li>No mechanism existed to restore data consistency when the compensating transaction (point refund) itself failed</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label solution">Approach</span>
+            <div class="ps-content">
+                <p><strong>1) Persisting compensation results</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Created a dedicated table to store the <strong>history of failed compensating transactions</strong></li>
+                    <li>Composed of document number, reprocessing status, retry count, and user ID</li>
+                    <li>Recorded a failure entry whenever a compensating transaction failed</li>
+                </ul>
+
+                <p><strong>2) Building a compensating-transaction reprocessing process</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Implemented as API calls driven by a <strong>Jenkins schedule</strong></li>
+                    <li>Processing order
+                        <ul style="margin-top: 4px;">
+                            <li>Query unprocessed failures</li>
+                            <li>Call the refund API</li>
+                            <li>On success mark <code>SUCCESS</code>, on failure increment the retry count</li>
+                        </ul>
+                    </li>
+                    <li>When the max retry count (5) is exceeded, update to <code>FAIL</code>, <strong>send an internal messenger alert</strong>, and provide a back-office manual recovery feature</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label result">Result</span>
+            <div class="ps-content">
+                <ul>
+                    <li><strong>Zero</strong> point/document data mismatches after rollout</li>
+                    <li>Established a system that restores consistency without manual intervention by automatically reprocessing failed compensations</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-solving">
+        <div class="ps-title">Preventing Internal Financial Loss</div>
+
+        <div class="ps-section">
+            <span class="ps-label problem">Problem</span>
+            <div class="ps-content">
+                <ul>
+                    <li>A launch promotion for a new bond-issuance service ran an event granting each company 100 free bond issuances</li>
+                    <li>Deducting the free-issuance count via a count-based coupon caused a concurrency issue from SELECT-then-UPDATE</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label solution">Approach</span>
+            <div class="ps-content">
+                <p><strong>1) Reproducing and analyzing the concurrency issue</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Reproduced the <strong>concurrency issue using ExecutorService and CountDownLatch</strong></li>
+                    <li>Confirmed duplicate deductions caused by a race condition</li>
+                </ul>
+                <p><strong>2) Applying an optimistic lock</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Judged it a <strong>low-contention environment</strong> since few people per company issue bonds and the service was new with few users</li>
+                    <li>Chose an <strong>optimistic lock</strong> that retries on conflict instead of holding a lock</li>
+                </ul>
+                <p><strong>3) Retry + transaction design</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Composed retries within <strong>a single transaction</strong> to guarantee atomicity</li>
+                    <li>A version-conflict exception inside the transaction would roll it back, making retries meaningless</li>
+                    <li>Used the <strong>noRollbackFor</strong> attribute to prevent rollback on version-conflict exceptions so retries work correctly</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label result">Result</span>
+            <div class="ps-content">
+                <ul>
+                    <li><strong>Handled concurrent issuance requests reliably with no duplicate-deduction issues</strong></li>
+                    <li>Applied efficient concurrency control <strong>based on an optimistic lock</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-solving">
+        <div class="ps-title">Legacy Refactoring & Convention Standardization</div>
+
+        <div class="ps-section">
+            <span class="ps-label problem">Problem</span>
+            <div class="ps-content">
+                <ul>
+                    <li>A single controller (3,130 lines) and single service (25,865 lines) had grown bloated, increasing code-navigation and maintenance costs</li>
+                    <li>Non-standard API design, excessive if/else, unnecessary files, and dead code lowered development productivity and raised communication costs</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label solution">Approach</span>
+            <div class="ps-content">
+                <p><strong>1) Splitting controllers/services by domain</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Defined domains to establish clear separation criteria</li>
+                    <li>Separated responsibilities concentrated in the single controller/service to improve cohesion</li>
+                </ul>
+                <p><strong>2) REST convention standardization</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Documented URI / HTTP method / method-naming rules as a convention, then applied them across the board</li>
+                    <li>Adopted resource-oriented URI design, proper HTTP method usage, and versioning</li>
+                </ul>
+                <p><strong>3) Exception-handling standardization</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Changed if/else-based response patterns to exception-based handling to improve code clarity</li>
+                    <li>Introduced a global handler to standardize exception handling</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label result">Result</span>
+            <div class="ps-content">
+                <ul>
+                    <li>Decomposed the single controller (3,130 lines) and service (25,865 lines) into <strong>14 classes by resource</strong>, reducing the largest class size by <strong>about 73% / 64%</strong></li>
+                    <li>Applied REST conventions (URI/HTTP method/naming) as a standard across <strong>107 methods</strong></li>
+                    <li>Ensured consistent response handling with exception-based responses + a global handler</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <h3>AI Tooling Development & Usage</h3>
+
+    <div class="project-overview">
+        <ul>
+            <li>Contributing to development and operations productivity by leveraging AI tools.</li>
+        </ul>
+    </div>
+
+    <div class="problem-solving">
+        <div class="ps-title">Elastic APM MCP Server Development</div>
+        <ul style="margin-top: 12px;">
+            <li>Built an MCP server that queries monitoring metrics collected by the Elastic APM Agent through the Kibana API</li>
+            <li>Provides 7 tools for querying service lists, transaction performance, error groups, and CPU/memory runtime metrics in natural language</li>
+            <li>Lets you query the time spent in each segment a request passes through (DB queries, external calls, etc.) to quickly pinpoint bottlenecks</li>
+            <li>Provides time-range filters so the AI can perform period-over-period comparisons (e.g., this week vs. last week's traffic)</li>
+            <li>Exposes read-only operations so it is safe to use with no risk of modifying operational data</li>
+        </ul>
+    </div>
+
+    <hr>
+
+    <h3>News Data Collection System Improvement <span class="project-period">2024.03</span></h3>
+
+    <div class="project-overview">
+        <ul>
+            <li>Improved the architecture of a service that collects, processes, and serves news article data from media outlets</li>
+        </ul>
+    </div>
+
+    <div class="problem-solving">
+        <div class="ps-title">DB Redesign & Scalability Improvement</div>
+
+        <div class="ps-section">
+            <span class="ps-label problem">Problem</span>
+            <div class="ps-content">
+                <ul>
+                    <li>The existing news service was designed for a single media outlet: it stored outlet-provided category info in <code>paper_categories</code>, with news data mapped to categories in a 1:N structure</li>
+                    <li>A later requirement called for collecting data from multiple outlets and integrating each outlet's news under the platform's own categories (e.g., Politics, IT)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label solution">Approach</span>
+            <div class="ps-content">
+                <p><strong>1) Database redesign with an N:M mapping structure</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Added a <code>platform_categories</code> table to manage standard categories per service platform (WEHAGO, NAHAGO)</li>
+                    <li>Added a <code>categories_mapping</code> table to implement an <strong>N:M relationship</strong>, so one outlet category can map to multiple platform categories</li>
+                </ul>
+                <p><strong>2) Generalizing collection logic with the Strategy pattern</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Each outlet had a different collection API and response structure</li>
+                    <li>Introduced the Strategy pattern to keep the overall collection flow while <strong>isolating data collection and processing into strategy classes</strong></li>
+                    <li>Designed for extension: adding a new outlet only requires a new strategy class (following the <strong>Open–Closed Principle</strong>)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label result">Result</span>
+            <div class="ps-content">
+                <ul>
+                    <li>With the <strong>N:M mapping structure</strong>, expanded to <strong>2 additional outlets</strong> by <strong>adding data only</strong></li>
+                    <li>With the <strong>Strategy pattern</strong>, established an <strong>extensible structure</strong> for adding new outlets</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <h3>E-commerce Toy Project</h3>
+
+    <div class="project-overview">
+        <ul>
+            <li>An e-commerce toy project using <strong>Redis and Kafka</strong></li>
+            <li>Domains: products/brands, likes, orders/payments, coupons</li>
+        </ul>
+    </div>
+
+    <div class="problem-solving first-detail">
+        <div class="ps-title">Product Lookup Caching with Redis</div>
+
+        <div class="ps-section">
+            <span class="ps-label problem">Problem</span>
+            <div class="ps-content">
+                <ul>
+                    <li>Product lookups make up most of commerce traffic, yet product info changes infrequently → querying the DB every time wastes resources</li>
+                    <li>Applied Redis-based caching to reduce DB load and improve response time</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label solution">Approach</span>
+            <div class="ps-content">
+                <p><strong>1) Caching and cache-invalidation strategy</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Cache hit: return cached data; cache miss: query the DB, then cache and return</li>
+                    <li>Invalidation strategy: to prevent lost updates, delete via a TransactionEventListener after the update transaction commits</li>
+                    <li>On delete failure, allow temporary inconsistency for the TTL duration</li>
+                </ul>
+                <p><strong>2) Caching multi-item product lookups</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Cached only the frequently viewed first page of products to use cache storage efficiently</li>
+                    <li>A two-tier cache (product list IDs + detail info) avoids refreshing the entire list cache when one item changes</li>
+                    <li>For ordering changes caused by cache refresh, allow temporary inconsistency for the TTL duration</li>
+                </ul>
+                <p><strong>3) Preventing cache stampede</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Used a distributed lock to prevent traffic from hitting the DB all at once when expired-cache lookups surge</li>
+                    <li>Applied jitter when bulk-caching many products to avoid TTLs expiring all at once</li>
+                    <li>Flow: miss → wait for lock → re-check cache → query DB</li>
+                </ul>
+                <p><strong>4) Isolating Redis failures</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Used exception handling to keep the normal flow so a Redis failure does not cascade into a service outage</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label result">Result</span>
+            <div class="ps-content">
+                <ul>
+                    <li>Absorbed product-lookup traffic at the cache layer, reducing DB load and improving response time</li>
+                    <li>The single-item + list-ID two-tier cache lets a <strong>single-item update propagate to list responses</strong>, cutting cache memory usage</li>
+                    <li>Distributed lock + TTL jitter prevent cache stampede; on Redis failure, DB responses ensure service continuity</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-solving">
+        <div class="ps-title">Kafka-based Event Processing</div>
+
+        <div class="ps-section">
+            <span class="ps-label problem">Problem</span>
+            <div class="ps-content">
+                <ul>
+                    <li>Adopted Kafka to aggregate users' purchased-product information</li>
+                    <li>Message publishing is an external system not bound to the transaction, allowing event loss and ghost events</li>
+                    <li>Duplicate message publishing degrades data reliability through duplicate consumer processing</li>
+                    <li>On publish/consume failure, the retry process risks stalling subsequent message processing</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label solution">Approach</span>
+            <div class="ps-content">
+                <p><strong>1) Applying the Outbox pattern</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Bound business logic and the event to publish in the same transaction, writing the message to an outbox table</li>
+                    <li>A scheduler reads the outbox, publishes messages, and marks them done on success</li>
+                    <li>On publish failure, increment retryCount → on exceeding the max retries, move to a DLQ → operator manually analyzes and recovers</li>
+                </ul>
+                <p><strong>2) Designing idempotent message consumption</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>On consumption, bind to the same transaction as the business logic and store the consumed message in <code>event_handled</code> (<code>eventId</code>)</li>
+                    <li>On receiving a duplicate message, guarantee idempotency via a DB-level unique constraint on <code>eventId</code></li>
+                    <li>On persistent consumption failure, route unconsumable messages to a DLT</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label result">Result</span>
+            <div class="ps-content">
+                <ul>
+                    <li>Binding the business transaction and outbox write <strong>blocks both event loss and ghost events</strong>, ensuring the business flow even during a Kafka outage</li>
+                    <li><code>eventId</code> + a DB unique constraint form a double safety net that blocks duplicate consumer processing in an at-least-once environment</li>
+                    <li>Messages exceeding the retry limit are isolated to a DLQ/DLT to keep the normal message flow, with a manual analysis/recovery path for operators</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <h2>Certifications</h2>
+    <div class="cert-item"><strong>Engineer Information Processing</strong> <em>2023.09</em></div>
+    <div class="cert-item"><strong>SQLD (SQL Developer)</strong> <em>2022.06</em></div>
+    <div class="cert-item"><strong>Network Administrator Level 2</strong> <em>2022.04</em></div>
+
+</body>
+</html>
