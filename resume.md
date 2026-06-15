@@ -184,12 +184,8 @@
 **① 응집도 개선**
 - 거대 단일 서비스(21,430줄)를 **11개 도메인 서비스로 분리** → **8,613줄(약 60%↓)**
 
-**② API 설계 표준화 (REST 컨벤션·versioning 도입)**
-- 조회·삭제까지 전부 POST에 URI 명명도 제각각이던 API를 **HTTP method 활용 및 자원 중심 URI로 표준화**하고 **versioning 도입**
-- **API 설계 지침·컨벤션을 문서로 정립**, **단일 표준으로 정착**
-
-**③ 운영 개선 (로깅 현대화)**
-- 로깅 프레임워크 **3종(Log4j 1.x·Commons Logging·java.util.logging) 혼용**을 **SLF4J facade + Log4j 2.x 단일 체계로 현대화**, EOL 버전 교체로 보안 리스크 해소
+**② 운영 개선 (로깅 현대화)**
+- **3종(Log4j 1.x·Commons Logging·java.util.logging)의 로깅 프레임워크를 혼용**해서 사용하는 프로젝트의 로깅을 **SLF4J facade + Log4j 2.x로 현대화**, EOL 버전 교체로 보안 리스크 해소
 
 ---
 
