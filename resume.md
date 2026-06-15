@@ -22,7 +22,7 @@
 
 - **데이터를 기반으로 문제를 분석하고 해결합니다.**
 
-    Latency 급증 시 APM 지표와 Thread Dump 분석으로 병목의 원인을 분석했습니다. 병목 제거 후 API의 Latency를 9초에서 350ms로 안정화했습니다.
+    Latency 급증 시 APM 지표와 Thread Dump 분석으로 병목의 원인을 찾아 API의 Latency를 9초에서 350ms로 안정화했습니다.
 
 - **AI 도구를 적극 활용해 개발 생산성을 높입니다.**
 

@@ -691,15 +691,15 @@
     <h2>My Working Style</h2>
     <ul>
         <li>
-            <strong>문제의 근원을 찾아내어 해결합니다.</strong>
+            <strong>데이터를 기반으로 문제를 분석하고 해결합니다.</strong>
             <div style="margin-top: 8px; color: #718096; line-height: 1.7;">
-                latency 급증 시 CPU·메모리 사용량 분석, Thread Dump 분석을 통해 직렬 처리 병목을 찾아내 제거하여 TPS 47%를 향상시켰습니다.
+                Latency 급증 시 APM 지표와 Thread Dump 분석으로 병목의 원인을 찾아 API의 Latency를 9초에서 350ms로 안정화했습니다.
             </div>
         </li>
         <li>
             <strong>AI 도구를 적극 활용해 개발 생산성을 높입니다.</strong>
             <div style="margin-top: 8px; color: #718096; line-height: 1.7;">
-                개발·QA·퍼블리셔 대상 사내 Claude 교육을 진행하고 (<a href="https://kimjunyoung90.github.io/resume/claude-education.html" target="_blank" rel="noopener noreferrer">교육자료</a>), AI 활용을 확산하고 있습니다.<br>
+                개발·QA·퍼블리셔 대상 사내 Claude 교육을 진행하고 (<a href="https://kimjunyoung90.github.io/resume/claude-education.html" target="_blank" rel="noopener noreferrer">교육자료</a>), AI 활용을 확산하고 있습니다. 
                 Kibana API를 통해 Elastic APM Agent로 수집된 모니터링 지표를 자연어로 조회하는 MCP 서버를 개발해, 모니터링 지표 확인 과정을 간소화하고 운영 효율을 높였습니다.
             </div>
         </li>
@@ -764,7 +764,7 @@
                 <p><strong>1) APM 분석</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>모니터링 분석 시 애플리케이션 내부에서 소모되는 시간의 비중이 전체 소요 시간의 90% 이상을 차지</li>
-                    <li>시스템의 CPU·메모리 확인 결과 CPU 5%, 메모리 30%로 정상 범위로 내부 로직의 비효율은 아니었음</li>
+                    <li>시스템의 CPU·메모리 확인 결과 CPU 5%, 메모리 30%로 정상 범위로 내부 로직의 비효율은 아니라고 판단</li>
                     <li>애플리케이션 내부 스레드 비정상 의심</li>
                 </ul>
                 <p><strong>2) Thread 분석</strong></p>
@@ -823,7 +823,7 @@
                 <ul style="margin-left: 20px;">
                     <li>조회 조건은 사업자번호 + 작성일자</li>
                     <li>두 조건을 효율적으로 탐색할 <strong>복합 인덱스 부재</strong></li>
-                    <li>기존 사용되던 Index Scan은 사업자번호는 <strong>복합 인덱스의 4번째(비선행) 컬럼</strong></li>
+                    <li>기존 Index Scan 사용된 Index는 사업자번호가 <strong>복합 인덱스의 비선행(3번째) 컬럼</strong></li>
                 </ul>
                 <p><strong>3) 인덱스 생성 및 쿼리 개선</strong></p>
                 <ul style="margin-left: 20px;">
@@ -874,7 +874,7 @@
                     <li>담당 서비스는 Orchestration 방식의 MSA 환경</li>
                     <li>클라이언트 요청 → 세금계산서(Orchestration) → 포인트 차감 → 세금계산서 발행 → 포인트 차감 취소 순으로 진행</li>
                     <li>문서 생성 실패 시 포인트가 취소되지 않는 문제 발생 → 고객 금전적 손실 야기</li>
-                    <li>보상 트랜잭션(포인트 환불) 실패 시 데이터 정합성을 회복할 메커니즘이 부재</li>
+                    <li>보상 트랜잭션(포인트 차감 취소) 실패 시 데이터 정합성을 회복할 메커니즘이 부재</li>
                 </ul>
             </div>
         </div>
@@ -967,14 +967,9 @@
         <div class="ps-content">
             <p><strong>① 응집도 개선</strong></p>
             <ul style="margin-left: 20px;">
-                <li>거대 단일 서비스(21,430줄)를 <strong>11개 도메인 서비스로 분리</strong> → <strong>8,613줄(약 60%↓)</strong></li>
+                <li>거대 단일 서비스(21,430줄)를 <strong>11개 도메인 서비스로 분리</strong></li>
             </ul>
-            <p><strong>② API 설계 표준화 (REST 컨벤션·versioning 도입)</strong></p>
-            <ul style="margin-left: 20px;">
-                <li>조회·삭제까지 전부 POST에 URI 명명도 제각각이던 API를 <strong>HTTP method 활용 및 자원 중심 URI로 표준화</strong>하고 <strong>versioning 도입</strong></li>
-                <li><strong>API 설계 지침·컨벤션을 문서로 정립</strong>, <strong>단일 표준으로 정착</strong></li>
-            </ul>
-            <p><strong>③ 운영 개선 (로깅 현대화)</strong></p>
+            <p><strong>② 운영 개선 (로깅 현대화)</strong></p>
             <ul style="margin-left: 20px;">
                 <li>로깅 프레임워크 <strong>3종(Log4j 1.x·Commons Logging·java.util.logging) 혼용</strong>을 <strong>SLF4J facade + Log4j 2.x 단일 체계로 현대화</strong>, EOL 버전 교체로 보안 리스크 해소</li>
             </ul>
