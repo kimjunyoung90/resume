@@ -483,10 +483,10 @@
                 page-break-inside: avoid;
             }
 
-            /* Working Style, Skills는 함께 유지 */
+            /* Working Style, Skills는 길어지면 페이지를 넘길 수 있도록 */
             .work-style-section,
             .skills-section {
-                page-break-inside: avoid;
+                page-break-inside: auto;
             }
 
             /* 문제-해결-성과 섹션 제어 */
@@ -514,19 +514,25 @@
                 page-break-inside: avoid;
             }
 
-            /* 첫 번째 세부 경험은 다음 페이지로 */
+            /* 첫 번째 세부 경험은 앞 내용과 자연스럽게 이어지도록 (빈 페이지 방지) */
             .first-detail {
-                page-break-before: always; /* 새 페이지에서 시작 */
+                page-break-before: auto;
             }
 
-            /* 프로젝트 전체를 가능한 함께 유지 */
+            /* 프로젝트 제목(h3) + 도메인 개요는 한 덩어리로 유지 (페이지 경계 잘림 방지) */
+            .project-overview {
+                page-break-inside: avoid;
+                page-break-before: avoid; /* 바로 앞 h3와 분리되지 않도록 */
+            }
+
+            /* 프로젝트는 길면 페이지를 넘길 수 있도록 (잘림 방지) */
             .project-section {
-                page-break-inside: avoid;
+                page-break-inside: auto;
             }
 
-            /* Work Experience 아이템들 */
+            /* Work Experience 아이템들도 길면 나눌 수 있도록 */
             .work-item {
-                page-break-inside: avoid;
+                page-break-inside: auto;
             }
 
             /* HR 구분선 근처에서 페이지 나누기 선호 */
