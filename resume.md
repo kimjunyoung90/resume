@@ -20,14 +20,13 @@
 
 # My Working Style
 
-- **문제의 근원을 찾아내어 해결합니다.**
+- **데이터를 기반으로 문제를 분석하고 해결합니다.**
 
-    latency 급증 시 CPU·메모리 사용량 분석, Thread Dump 분석을 통해 직렬 처리 병목을 찾아내 제거하여 TPS 47%를 향상시켰습니다.
+    Latency 급증 시 APM 지표와 Thread Dump 분석으로 병목의 원인을 분석했습니다. 병목 제거 후 API의 Latency를 9초에서 350ms로 안정화 했습니다.
 
 - **AI 도구를 적극 활용해 개발 생산성을 높입니다.**
 
-    개발·QA·퍼블리셔 대상 사내 Claude 교육을 진행하고[교육자료|https://kimjunyoung90.github.io/resume/claude-education.html], AI 활용을 확산하고 있습니다.
-    Kibana API를 통해 Elastic APM Agent로 수집된 모니터링 지표를 자연어로 조회하는 MCP 서버를 개발해, 모니터링 지표 확인 과정을 간소화하고 운영 효율을 높였습니다.
+    개발·QA·퍼블리셔 대상 사내 Claude 교육을 진행하고[교육자료|https://kimjunyoung90.github.io/resume/claude-education.html], AI 활용을 확산하고 있습니다. 모니터링 지표를 자연어로 조회하는 MCP 서버를 개발해, 모니터링 과정을 간소화하고 운영 효율을 높였습니다.
 
 - **정보를 문서로 정리해 공유합니다.**
 
