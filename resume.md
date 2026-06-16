@@ -13,7 +13,8 @@
 			<img src="https://kimjunyoung90.github.io/resume/images/github-mark.png" width="16" style="vertical-align: middle;"/> <a href="https://github.com/kimjunyoung90">https://github.com/kimjunyoung90</a><br>
 			📝 <a href="https://snvlqkq.tistory.com">https://snvlqkq.tistory.com</a><br><br>
 			<strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/saga-examples/blob/main/choreography/README.md">Kafka를 사용한 이벤트 기반 아키텍처(EDA)</a><br>
-			<strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/54">동시성 처리 전략</a> 및 <a href="https://snvlqkq.tistory.com/57">캐싱 처리 전략</a>
+			<strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/54">동시성 처리 전략</a> 및 <a href="https://snvlqkq.tistory.com/57">캐싱 처리 전략</a><br>
+			<strong>OpenSource:</strong> <a href="https://www.npmjs.com/package/elastic-apm-mcp-server">Elastic APM 모니터링 MCP 서버</a>
 		</p>
 	</div>
 </div>
@@ -26,7 +27,7 @@
 
 - **AI 도구를 적극 활용해 개발 생산성을 높입니다.**
 
-    개발·QA·퍼블리셔 대상 사내 Claude 교육을 진행하고[교육자료|https://kimjunyoung90.github.io/resume/claude-education.html], AI 활용을 확산하고 있습니다. 모니터링 지표를 자연어로 조회하는 MCP 서버를 개발해, 모니터링 과정을 간소화하고 운영 효율을 높였습니다.
+    개발·QA·퍼블리셔 대상 사내 Claude 교육을 진행하고[교육자료|https://kimjunyoung90.github.io/resume/claude-education.html], AI 활용을 확산하고 있습니다. 모니터링 지표를 자연어로 조회하는 [MCP 서버|https://www.npmjs.com/package/elastic-apm-mcp-server]를 개발해, 모니터링 과정을 간소화하고 운영 효율을 높였습니다.
 
 - **정보를 문서로 정리해 공유합니다.**
 
