@@ -242,7 +242,7 @@
 #### 해결 과정
 **1) 캐싱 및 캐시 갱신 전략**
 - 캐시 Hit: 캐싱 데이터 반환, 캐시 Miss: DB 조회 후 데이터 캐싱 후 반환
-- 캐시 갱신 전략: Lost Update 방지를 위한 수정 트랜잭션 commit 완료 후 TransactionEventListener로 삭제
+- 캐시 갱신 전략: 캐시・DB 정합성 보장을 위한 수정 트랜잭션 commit 완료 후 TransactionEventListener로 삭제
 - 삭제 실패 시 TTL 동안 일시적 불일치 허용
 
 **2) 상품 다건 조회 캐싱**
