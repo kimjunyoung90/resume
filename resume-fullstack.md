@@ -185,8 +185,8 @@
 **① 응집도 개선**
 - 거대 단일 서비스 클래스를 **11개로 분리**
 
-**② 운영 개선 (로깅 현대화)**
-- 로깅 프레임워크 **3종(Log4j·Commons Logging·java.util.logging) 혼용**을 **SLF4J + Log4j 단일 체계로 통일**
+**② 로깅 개선**
+- 로깅 프레임워크 **3종(Log4j, Commons Logging, java.util.logging) 혼용**을 **SLF4J + Log4j 단일 체계로 통일**
 
 ---
 
