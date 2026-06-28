@@ -957,16 +957,16 @@
     </div>
 
     <div class="problem-solving">
-        <div class="ps-title">레거시 구조 개선 및 컨벤션 표준화</div>
+        <div class="ps-title">레거시 개선</div>
 
         <div class="ps-content">
             <p><strong>① 응집도 개선</strong></p>
             <ul style="margin-left: 20px;">
-                <li>거대 단일 서비스(21,430줄)를 <strong>11개 도메인 서비스로 분리</strong></li>
+                <li>거대 단일 서비스 클래스를 <strong>11개로 분리</strong></li>
             </ul>
             <p><strong>② 운영 개선 (로깅 현대화)</strong></p>
             <ul style="margin-left: 20px;">
-                <li>로깅 프레임워크 <strong>3종(Log4j 1.x·Commons Logging·java.util.logging) 혼용</strong>을 <strong>SLF4J facade + Log4j 2.x 단일 체계로 현대화</strong>, EOL 버전 교체로 보안 리스크 해소</li>
+                <li>로깅 프레임워크 <strong>3종(Log4j·Commons Logging·java.util.logging) 혼용</strong>을 <strong>SLF4J + Log4j 단일 체계로 통일</strong></li>
             </ul>
         </div>
     </div>
