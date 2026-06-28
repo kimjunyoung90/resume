@@ -14,7 +14,7 @@
 			📝 <a href="https://snvlqkq.tistory.com">https://snvlqkq.tistory.com</a><br><br>
 			<strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/saga-examples/blob/main/choreography/README.md">Kafka를 사용한 이벤트 기반 아키텍처(EDA)</a><br>
 			<strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/54">동시성 처리 전략</a> 및 <a href="https://snvlqkq.tistory.com/57">캐싱 처리 전략</a><br>
-			<strong>OpenSource:</strong> <a href="https://www.npmjs.com/package/elastic-apm-mcp-server">Elastic APM 모니터링 MCP 서버</a>
+			<strong>OpenSource:</strong> <a href="https://www.npmjs.com/package/elastic-apm-mcp-server">Kibana 연동 MCP 서버</a>
 		</p>
 	</div>
 </div>
@@ -191,10 +191,10 @@
 
 ## AI 도구 개발 및 활용
 
-- Elastic APM 지표(서비스·트랜잭션·에러·자원)를 자연어로 조회하는 MCP 서버를 개발해, 7개 도구로 모니터링 지표 확인 과정을 간소화했습니다.
+- APM 데이터(서비스·트랜잭션·에러·자원)를 자연어로 조회하는 MCP 서버를 개발해, 7개 도구로 모니터링 지표 확인 과정을 간소화했습니다.
 
-### Elastic APM MCP 서버 개발
-  - Kibana API를 통해 Elastic APM Agent로 수집된 모니터링 지표를 조회하는 MCP 서버 개발
+### 모니터링 연동 MCP 서버 개발
+  - Kibana API를 통해 APM Agent로 수집된 모니터링 지표를 조회하는 MCP 서버 개발
   - 서비스 목록·트랜잭션 성능·에러 그룹·CPU/메모리 런타임 지표를 자연어로 조회하는 7개 도구 제공
   - 하나의 요청이 거치는 구간(DB 쿼리·외부 호출 등)별 소요 시간을 조회해, 병목 지점을 빠르게 식별하도록 지원
   - 시간 범위 필터를 제공해, AI가 기간 간 지표 비교(예: 지난주 대비 현재 트래픽)를 수행하도록 지원
