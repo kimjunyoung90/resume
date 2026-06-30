@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>김준영 - 백엔드 개발자</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
     <style>
         * {
             margin: 0;
@@ -12,7 +13,7 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Segoe UI", sans-serif;
+            font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Segoe UI", sans-serif;
             line-height: 1.8;
             max-width: 850px;
             margin: 0 auto;
@@ -382,6 +383,12 @@
 
         /* PDF/Print 스타일 */
         @media print {
+            /* 배경색·배경이미지가 인쇄 시 제거되지 않도록 강제 (Chrome '배경 그래픽' 옵션 없이도 색 유지) */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
             body {
                 max-width: 210mm; /* A4 width */
                 padding: 15mm 20mm;
