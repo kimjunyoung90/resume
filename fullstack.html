@@ -736,19 +736,19 @@
     
     <div class="project-overview">
         <ul>
-            <li><strong>최대 1,200 TPS</strong> 트래픽을 처리하는 세금계산서 발행·신고 및 전자문서 플랫폼 운영</li>
+            <li><strong>최대 1,200 TPS</strong>, 세금계산서 발행·신고 및 전자문서 플랫폼 운영</li>
         </ul>
     </div>
 
     <div class="problem-solving first-detail">
-        <div class="ps-title">Latency 9초 → 350ms, 처리량 47% 향상</div>
+        <div class="ps-title">API Latency 9초 → Thread Dump 분석 해결</div>
 
         <div class="ps-section">
             <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
-                    <li>월 초(1~10일) 전체 트래픽의 40%가 집중되는 패턴</li>
-                    <li>해당 시기 세금계산서 생성 API 응답시간이 최대 <strong>9초 이상</strong>으로 치솟는 현상 발생</li>
+                    <li>월 초(1~10일) 전체 트래픽 40% 집중되는 패턴</li>
+                    <li>세금계산서 생성 API 응답시간이 최대 <strong>9초 이상</strong>으로 치솟는 현상 발생</li>
                 </ul>
             </div>
         </div>
@@ -758,26 +758,26 @@
             <div class="ps-content">
                 <p><strong>1) APM 분석</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>모니터링 분석 시 애플리케이션 내부에서 소모되는 시간의 비중이 전체 소요 시간의 90% 이상을 차지</li>
-                    <li>시스템의 CPU·메모리 확인 결과 CPU 5%, 메모리 30%로 정상 범위로 내부 로직의 비효율은 아니라고 판단</li>
-                    <li>애플리케이션 내부 스레드 비정상 의심</li>
+                    <li>애플리케이션 내부에서 소모되는 시간이 전체 소요 시간의 90% 이상</li>
+                    <li>시스템의 CPU·메모리 5%, 30%로 정상 범위</li>
+                    <li>애플리케이션 내부 스레드 병목 의심</li>
                 </ul>
                 <p><strong>2) Thread 분석</strong></p>
                 <ul style="margin-left: 20px;">
                     <li><strong>Thread Dump 분석</strong> 과정에서 <strong>BLOCKED 스레드 대량 포착</strong></li>
                     <li>Stack Trace 확인 결과 특정 메서드가 <strong><code>synchronized</code>에 의해 직렬 처리</strong>되고 있음을 발견</li>
-                    <li>코드 레벨 분석 후 synchronized 제거</li>
+                    <li>코드 분석 후 synchronized 제거</li>
                 </ul>
                 <p><strong>3) synchronized 제거에 따른 영향도 분석</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>synchronized 제거 시 직렬 처리되던 요청이 병렬로 실행되면서 <strong>DB 부하 증가</strong> 우려</li>
-                    <li><strong>DB CPU</strong>: 평균 10~20%, 최대 60%로 트래픽 병렬 처리 시 안전하다고 판단</li>
-                    <li><strong>DB 커넥션</strong>: 현재 커넥션 풀 크기(max 40 × 8대 = 320) 대비 DB 최대 한도(2,205)는 여유가 있어, 커넥션 부족 시 풀 크기 증가 고려</li>
+                    <li>synchronized 제거 시 병렬 처리로 인한 <strong>DB 부하 증가</strong> 우려</li>
+                    <li><strong>DB CPU</strong>: 평균 10~20%, 최대 60%로 병렬 처리 안전하다고 판단</li>
+                    <li><strong>DB 커넥션</strong>: 현재 커넥션 풀 크기(max 40 × 8대 = 320) 대비 DB 최대 한도(2,205)는 여유</li>
                 </ul>
                 <p><strong>4) 부하 테스트를 통한 개선 효과 검증</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>제거 전·후 latency와 TPS를 동일 조건에서 비교</li>
-                    <li>TPS <strong>13.5 → 19.8(약 47% 증가)</strong></li>
+                    <li>TPS <strong>약 47% 증가</strong></li>
                 </ul>
             </div>
         </div>
@@ -787,21 +787,21 @@
             <div class="ps-content">
                 <ul>
                     <li>월초 피크 구간 병목 현상 제거 및 애플리케이션 처리량 향상</li>
-                    <li>운영 기준 latency 최대 <strong>9초 이상 → 350ms</strong>로 단축</li>
+                    <li>latency 최대 <strong>9초 이상 → 350ms</strong>로 단축</li>
                 </ul>
             </div>
         </div>
     </div>
 
     <div class="problem-solving">
-        <div class="ps-title">인덱스 + 쿼리 튜닝으로 조회 성능 개선 (6,800ms → 9.412ms)</div>
+        <div class="ps-title">인덱스 생성 + 쿼리 튜닝, 조회 성능 개선 (6,800ms → 9.412ms)</div>
 
         <div class="ps-section">
             <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
                     <li>국세청 수집 세금계산서 조회 API에서 지연 발생</li>
-                    <li>APM 분석 결과 쿼리 실행이 전체 응답시간의 <strong>99% 이상</strong> 차지</li>
+                    <li>쿼리 실행이 전체 응답시간의 <strong>99% 이상</strong></li>
                 </ul>
             </div>
         </div>
@@ -811,7 +811,7 @@
             <div class="ps-content">
                 <p><strong>1) 실행계획 분석</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>cost <strong>2,513,296</strong> / 실행시간 <strong>6,800ms</strong></li>
+                    <li>cost <strong>약 250만</strong> / 실행시간 <strong>6,800ms</strong></li>
                     <li>실행 계획 상 Index Scan임에도 비용이 높아 인덱스 점검</li>
                 </ul>
                 <p><strong>2) 인덱스 분석</strong></p>
@@ -844,12 +844,12 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="padding: 6px 16px; border-bottom: 1px solid #e2e8f0; color: #1a202c;">옵티마이저 추정 cost</td>
-                            <td style="padding: 6px 16px; border-bottom: 1px solid #e2e8f0; color: #1a202c;">2,513,296</td>
-                            <td style="padding: 6px 16px; border-bottom: 1px solid #e2e8f0; color: #1a202c;">5,306.11</td>
+                            <td style="padding: 6px 16px; border-bottom: 1px solid #e2e8f0; color: #1a202c;">cost</td>
+                            <td style="padding: 6px 16px; border-bottom: 1px solid #e2e8f0; color: #1a202c;">250만</td>
+                            <td style="padding: 6px 16px; border-bottom: 1px solid #e2e8f0; color: #1a202c;">5,000</td>
                         </tr>
                         <tr>
-                            <td style="padding: 6px 16px; color: #1a202c;">실측 실행시간</td>
+                            <td style="padding: 6px 16px; color: #1a202c;">시간</td>
                             <td style="padding: 6px 16px; color: #1a202c;">6,800ms</td>
                             <td style="padding: 6px 16px; color: #1a202c;">9.412ms</td>
                         </tr>
@@ -860,13 +860,13 @@
     </div>
 
     <div class="problem-solving">
-        <div class="ps-title">MSA 데이터 정합성 개선</div>
+        <div class="ps-title">MSA 보상 트랜잭션 실패 재처리 프로세스 구축</div>
 
         <div class="ps-section">
             <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
-                    <li>담당 서비스는 Orchestration 방식의 MSA 환경</li>
+                    <li>Orchestration 방식의 MSA 환경</li>
                     <li>클라이언트 요청 → 세금계산서(Orchestration) → 포인트 차감 → 세금계산서 발행 → 포인트 차감 취소 순으로 진행</li>
                     <li>문서 생성 실패 시 포인트가 취소되지 않는 문제 발생 → 고객 금전적 손실 야기</li>
                     <li>보상 트랜잭션(포인트 차감 취소) 실패 시 데이터 정합성을 회복할 메커니즘이 부재</li>
@@ -911,13 +911,13 @@
     </div>
 
     <div class="problem-solving">
-        <div class="ps-title">사내 금전 손실 방지</div>
+        <div class="ps-title">쿠폰 사용 동시성 제어</div>
 
         <div class="ps-section">
             <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
-                    <li>신규 채권 발행 서비스 출시 프로모션으로 회사별 무료 채권 100건 발행 쿠폰 제공</li>
+                    <li>서비스 출시 프로모션으로 회사별 채권 무료 발행 쿠폰 제공</li>
                     <li>쿠폰 사용 시 SELECT 후 UPDATE로 인한 동시성 문제 탐지</li>
                 </ul>
             </div>
@@ -966,7 +966,7 @@
             </ul>
             <p><strong>② 로깅 개선</strong></p>
             <ul style="margin-left: 20px;">
-                <li>로깅 프레임워크 <strong>3종(Log4j, Commons Logging, java.util.logging) 혼용</strong>을 <strong>SLF4J + Log4j 단일 체계로 통일</strong></li>
+                <li><strong>3종(Log4j, Commons Logging, java.util.logging)의 로깅 혼재</strong> → <strong>SLF4J + Log4j</strong> 통일</li>
             </ul>
         </div>
     </div>
@@ -994,18 +994,17 @@
 
     <div class="project-overview">
         <ul>
-            <li>APM 데이터(서비스·트랜잭션·에러·자원)를 자연어로 조회하는 MCP 서버를 개발해, 7개 도구로 모니터링 지표 확인 과정을 간소화했습니다.</li>
+            <li>APM 데이터(서비스·트랜잭션·에러·자원)를 자연어로 조회하는 MCP 서버 개발</li>
         </ul>
     </div>
 
     <div class="problem-solving">
         <div class="ps-title">모니터링 연동 MCP 서버 개발</div>
         <ul style="margin-top: 12px;">
-            <li>Kibana API를 통해 APM Agent로 수집된 모니터링 지표를 조회하는 MCP 서버 개발</li>
-            <li>서비스 목록·트랜잭션 성능·에러 그룹·CPU/메모리 런타임 지표를 자연어로 조회하는 7개 도구 제공</li>
-            <li>하나의 요청이 거치는 구간(DB 쿼리·외부 호출 등)별 소요 시간을 조회해, 병목 지점을 빠르게 식별하도록 지원</li>
-            <li>시간 범위 필터를 제공해, AI가 기간 간 지표 비교(예: 지난주 대비 현재 트래픽)를 수행하도록 지원</li>
-            <li>조회(read-only) 기능만 제공해 운영 데이터 변경 위험 없이 안전하게 설계</li>
+            <li>LLM ↔ MCP 서버 ↔ Kibana API 구조</li>
+            <li>Latency·TPS·에러·CPU/메모리 조회 도구 제공</li>
+            <li>기간별 지표 비교 기능 제공(예: 지난주 대비 현재 트래픽, Latency 비교해줘)</li>
+            <li>POST 기능 차단으로 보안 위험성 제거(단순 GET 기능 제공)</li>
         </ul>
     </div>
 
@@ -1125,16 +1124,15 @@
     </div>
 
     <div class="problem-solving">
-        <div class="ps-title">Kafka 기반 이벤트 처리</div>
+        <div class="ps-title">이벤트 기반 상품 정보 집계(Kafka)</div>
 
         <div class="ps-section">
             <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
-                    <li>사용자 구매 상품 정보 집계의 필요로 인한 Kafka 적용</li>
-                    <li>메시지 발행은 외부 시스템이라 트랜잭션으로 묶이지 않아 이벤트 유실 및 유령 이벤트 발생 가능</li>
-                    <li>메시지 중복 발행 시 컨슈머의 중복처리로 인한 데이터 신뢰성 저하</li>
-                    <li>메시지 발행・소비 실패 시 재시도 프로세스로 인해 후속 메시지 처리 정체의 위험성</li>
+                    <li>이벤트 기반 사용자 상품 구매 정보 집계</li>
+                    <li>이벤트 유실 및 유령 이벤트 발생 가능</li>
+                    <li>메시지 중복 발행 시 이벤트 중복 처리</li>
                 </ul>
             </div>
         </div>
