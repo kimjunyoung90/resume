@@ -831,15 +831,17 @@
                 <ul style="margin-left: 20px;">
                     <li>조회 조건은 사업자번호 + 작성일자</li>
                     <li>두 조건을 효율적으로 탐색할 <strong>복합 인덱스 부재</strong></li>
-                    <li>기존 Index Scan 사용된 Index는 사업자번호가 <strong>복합 인덱스의 비선행(3번째) 컬럼</strong></li>
+                    <li>사업자번호로 Index Scan이 수행됐지만, 사용된 인덱스에서 사업자번호가 비선행 컬럼이라 결과적으로 Index Full Scan으로 동작</li>
                 </ul>
-                <p><strong>3) 인덱스 생성 및 쿼리 개선</strong></p>
+                <p><strong>3) 인덱스 설계</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>검색 조건 : 사업자번호(등치 조건), 작성일자(범위 조건)</li>
-                    <li>작성일자(YYYYMMDD 문자열) 조건 적용 시 <code>to_timestamp</code> 함수 적용되어 있어 인덱스 스캔 불가</li>
-                    <li><code>to_timestamp</code> 제거: YYYYMMDD는 사전순=날짜순이라 문자열 비교로 동일 결과 보장</li>
-                    <li><strong>(매입자 사업자번호, 작성일자) 복합 인덱스 생성</strong></li>
+                    <li>조건 기반 복합 인덱스 생성</li>
                     <li>컬럼 순서: 등치(사업자번호) 선행 + 범위(작성일자) 후행</li>
+                </ul>
+                <p><strong>4) 쿼리 수정</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>작성일자 조건에 <code>to_timestamp</code> 함수로 감싸져 있어 인덱스 스캔 불가</li>
+                    <li>검토 후 <code>to_timestamp</code> 제거</li>
                 </ul>
             </div>
         </div>
@@ -890,24 +892,23 @@
         <div class="ps-section">
             <span class="ps-label solution">해결 과정</span>
             <div class="ps-content">
-                <p><strong>1) 보상 결과 영속화</strong></p>
+                <p><strong>1) 실패 이력 영속화</strong></p>
                 <ul style="margin-left: 20px;">
                     <li><strong>보상 트랜잭션 실패 이력</strong>을 저장하는 전용 테이블 생성</li>
                     <li>문서 번호, 재처리 상태, 재처리 횟수, 사용자 고유 번호로 구성</li>
                     <li>보상 트랜잭션 실패 시 실패 이력 적재</li>
                 </ul>
 
-                <p><strong>2) 보상 트랜잭션 재처리 프로세스 구축</strong></p>
+                <p><strong>2) 자동 재처리 구현</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li><strong>Jenkins 스케줄을 활용</strong>한 API 호출 방식으로 구현</li>
-                    <li>처리 순서
-                        <ul style="margin-top: 4px;">
-                            <li>미처리 실패건 조회</li>
-                            <li>환불 API 호출</li>
-                            <li>성공 시 <code>SUCCESS</code>, 실패 시 재시도 횟수 증가</li>
-                        </ul>
-                    </li>
-                    <li>최대 재시도 횟수(5회) 초과 시 <code>FAIL</code>로 업데이트, <strong>자사 메신저 알림 발송</strong> 및 백오피스 수동 복구 기능 구현</li>
+                    <li>스케줄러로 미처리 실패건을 주기적으로 조회해 환불 API 재호출</li>
+                    <li>성공 시 <code>SUCCESS</code>, 실패 시 재시도 횟수 증가</li>
+                </ul>
+
+                <p><strong>3) 최종 실패 대응</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>최대 재시도 횟수 초과 시 <code>FAIL</code> 처리</li>
+                    <li>자사 메신저 알림 발송 및 백오피스 수동 복구 기능 제공</li>
                 </ul>
             </div>
         </div>
@@ -916,8 +917,8 @@
             <span class="ps-label result">성과</span>
             <div class="ps-content">
                 <ul>
-                    <li>도입 후 포인트·문서 데이터 불일치 <strong>0건</strong></li>
-                    <li>보상 실패 건 자동 재처리로 수동 개입 없이 정합성 복구 가능한 체계 확보</li>
+                    <li>보상 실패 사전 인지·대응 신속화</li>
+                    <li>수동 데이터 보정 업무 최소화</li>
                 </ul>
             </div>
         </div>
