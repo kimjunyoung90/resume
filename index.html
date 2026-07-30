@@ -54,19 +54,6 @@
             border-bottom: 1px solid #e2e8f0;
         }
         
-        .profile-img {
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-        }
-
-        .profile-img img {
-            width: 140px;
-            height: 140px;
-            border-radius: 8px;
-            object-fit: cover;
-        }
-        
         .contact-info {
             flex: 1;
             display: flex;
@@ -406,24 +393,6 @@
                 page-break-inside: avoid;
             }
 
-            .profile-img {
-                flex-shrink: 0;
-                text-align: left !important;
-                display: flex !important;
-                align-items: center !important;
-            }
-
-            .profile-img img {
-                width: 140px !important;
-                height: 140px !important;
-                min-width: 140px !important;
-                min-height: 140px !important;
-                max-width: 140px !important;
-                max-height: 140px !important;
-                border-radius: 8px;
-                object-fit: cover;
-            }
-
             .contact-info {
                 flex: 1;
                 text-align: left !important;
@@ -582,15 +551,6 @@
                 padding: 24px 0;
             }
 
-            .profile-img {
-                text-align: center;
-            }
-
-            .profile-img img {
-                width: 120px !important;
-                height: auto !important;
-            }
-
             .contact-info {
                 text-align: center;
             }
@@ -650,10 +610,6 @@
                 padding: 20px 0;
             }
 
-            .profile-img img {
-                width: 100px !important;
-            }
-
             .contact-links a {
                 font-size: 0.9em;
             }
@@ -675,9 +631,6 @@
     </div>
 
     <div class="contact-section">
-        <div class="profile-img">
-            <img src="https://kimjunyoung90.github.io/resume/images/profile.png" style="width: 200px; height: 211px;" alt="프로필" onerror="this.style.display='none'"/>
-        </div>
         <div class="contact-info">
             <div class="contact-title">Contact</div>
             <div class="contact-links">
@@ -735,12 +688,17 @@
     <h3>더존비즈온 WEHAGO 개발센터 (5년차)</h3>
     <div class="company-period"><strong>2021.09 ~ 재직중</strong></div>
     <ul>
-        <li><strong>Java, Spring 기반 백엔드 개발 및 운영</strong></li>
-        <li><strong>MSA Saga 패턴 설계 및 구현</strong></li>
-        <li><strong>데이터베이스 설계 및 최적화</strong></li>
-        <li><strong>서비스 모니터링 및 장애대응, 병목 분석 및 개선</strong></li>
-        <li><strong>JUnit/Mockito 기반 테스트 코드 작성</strong></li>
-        <li><strong>React/Redux 기반 프론트엔드 개발</strong></li>
+        <li><strong>세금계산서·거래명세서·청구서 등 전자문서 발행 서비스 개발 및 운영</strong></li>
+        <li><strong>고객사·영업·사내 타 부서 요구사항 분석 및 정책 검토</strong></li>
+        <li><strong>외부 고객사 API 연동 지원 및 연동 가이드 문서화</strong></li>
+        <li><strong>국세청 전송 시스템 연동 데이터 적재</strong></li>
+        <li><strong>MSA 환경의 포인트·결제 서비스 연동 및 보상 트랜잭션 설계</strong></li>
+        <li><strong>AOP 기반 권한 검증 공통 모듈 설계 및 적용</strong></li>
+        <li><strong>테이블·인덱스 설계 및 쿼리 성능 최적화</strong></li>
+        <li><strong>APM·ELK 활용 장애 대응 및 국세청 전송 실패 등 운영 이슈 처리</strong></li>
+        <li><strong>사용자 화면 개발 및 프론트 레거시 개선</strong></li>
+        <li><strong>로깅 체계 통합 등 기술 부채 해소</strong></li>
+        <li><strong>8대 서버 무중단 순차 배포</strong></li>
     </ul>
 
     <h2>Projects</h2>
@@ -931,6 +889,7 @@
             <div class="ps-content">
                 <ul>
                     <li>서비스 출시 프로모션으로 회사별 채권 무료 발행 쿠폰 제공</li>
+                    <li>쿠폰은 회사 단위로 발급되고, 같은 회사 소속 직원이 동일한 쿠폰을 함께 사용할 수 있는 구조</li>
                     <li>쿠폰 사용 시 SELECT 후 UPDATE로 인한 동시성 문제 탐지</li>
                 </ul>
             </div>
