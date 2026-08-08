@@ -11,7 +11,7 @@
 			📝 <a href="https://snvlqkq.tistory.com">https://snvlqkq.tistory.com</a><br><br>
 			<strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/saga-examples/blob/main/choreography/README.md">Kafka를 사용한 이벤트 기반 아키텍처(EDA)</a><br>
 			<strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/54">동시성 처리 전략</a> 및 <a href="https://snvlqkq.tistory.com/57">캐싱 처리 전략</a><br>
-			<strong>OpenSource:</strong> <a href="https://www.npmjs.com/package/elastic-apm-mcp-server">Kibana 연동 MCP 서버</a>
+			<strong>MCP:</strong> <a href="https://www.npmjs.com/package/elastic-apm-mcp-server">Kibana 연동 MCP 서버</a>
 		</p>
 	</div>
 </div>
@@ -128,11 +128,11 @@
 | cost | 250만 | 5,000 |
 | 시간 | 6,800ms | 9.412ms |
 
-### MSA 보상 트랜잭션 실패 재처리 프로세스 구축
+### MSA 보상 트랜잭션 실패 후속 프로세스 구축
 
 #### 문제
 - 포인트 차감 -> 세금계산서 발행 -> 포인트 차감 취소 프로세스
-- 문서 생성 실패 시 포인트가 취소되지 않는 문제 발생
+- 세금계산서 발행 실패 시 포인트가 취소되지 않는 문제 발생
 - 보상 트랜잭션(포인트 차감 취소) 실패 후 데이터 정합성을 회복할 메커니즘 부재
 
 #### 해결 과정
@@ -196,7 +196,7 @@
 
 - 언론사의 기사 데이터를 수집·가공·조회하는 서비스 구조 개선
 
-### DB 구조 재설계 및 확장성 개선
+### 테이블 구조 재설계 및 확장성 개선
 
 #### 문제
 - 기존 뉴스 서비스는 단일 언론사만을 고려해 설계되었고, 신문사에서 제공하는 카테고리 정보를 `paper_categories`에 저장하고 뉴스 데이터는 카테고리에 매핑되는 1:N 구조 였음
@@ -223,35 +223,29 @@
 - **Redis·Kafka**를 활용한 이커머스 토이 프로젝트
 - 도메인: 상품·브랜드, 좋아요, 주문·결제, 쿠폰
 
-### 상품 조회 Redis 캐싱
+### 상품 조회 캐싱
 
 #### 문제
-- 상품 조회는 커머스에서 전체 트래픽의 대부분을 차지하지만 상품 정보의 변경 빈도는 낮음 → 매번 DB 조회는 자원 낭비
-- Redis 기반 캐싱 적용으로 DB 부하를 감소시키고 응답 속도를 개선
+- 상품 데이터는 조회 비중이 높고 변경 빈도는 낮음
+- 트래픽 증가에 따른 DB 부하와 응답 지연 우려
 
 #### 해결 과정
-**1) 캐싱 및 캐시 갱신 전략**
-- 캐시 Hit: 캐싱 데이터 반환, 캐시 Miss: DB 조회 후 데이터 캐싱 후 반환
-- 캐시 갱신 전략: 캐시・DB 정합성 보장을 위한 수정 트랜잭션 commit 완료 후 TransactionEventListener로 삭제
-- 삭제 실패 시 TTL 동안 일시적 불일치 허용
+**1) 캐시 조회 및 갱신 전략**
+- 캐시 조회 전략 : 캐시 Hit 시 캐싱 데이터 반환, 캐시 Miss 시 DB 조회 -> 데이터 캐싱 후 반환
+- 캐시 갱신 전략 : 캐시 저장소 <-> DB 정합성 보장을 위한 DB 수정 트랜잭션 commit 완료 후 TransactionEventListener로 삭제
 
 **2) 상품 다건 조회 캐싱**
 - 상품 다건 조회 시 자주 조회되는 1페이지 상품만 캐싱하여 캐시 저장소 효율적 사용
 - 이중 캐시 구조로(상품 목록 id + 상세 정보) 캐싱 데이터 갱신 시 목록 캐시 전체 갱신 방지
-- 캐시 갱신으로 인한 정렬 변경 시 TTL 동안 일시적 불일치 허용
 
 **3) Cache Stampede 방지**
-- 만료된 캐시 조회가 집중적으로 발생할 때 트래픽이 DB로 한꺼번에 몰리지 않도록 분산 락 기반 stampede 현상 방지
-- 다건의 상품 정보 일괄 캐싱 시 jitter를 활용하여 TTL 일괄 만료 방지
-- 미스 -> 락 대기 -> 캐시 재조회 -> DB 조회 흐름
-
-**4) Redis 장애 격리**
-- Redis 장애가 서비스 장애로 확산되지 않도록 예외 처리를 통해 정상 흐름 유지
+- 캐시 만료 시 집중적인 조회 트래픽 유입으로 인한 DB 부하 증가를 우려하여 분산 락 기반 stampede 현상 방지
+- 상품 정보 일괄 캐시 만료를 방지하기 위해 Jitter를 활용한 만료 시간 분산
 
 #### 성과
 - 상품 조회 트래픽을 캐시 레이어로 흡수해 DB 부하 감소 및 응답 속도 개선
-- 단건 + 목록 ID 이중 캐시 구조로 **단건 갱신만으로 목록 응답까지 반영**, 캐시 메모리 사용량 절감
-- 분산 락 + TTL Jitter로 Cache Stampede 방지, Redis 장애 시 DB 응답으로 서비스 연속성 확보
+- 상품 다건 조회 시 상품 ID 캐시 구조로 **단건 상품 데이터 갱신만으로 다건 조회 응답까지 반영**한 효율적 전략 구성
+- 분산 락 + Jitter로 Cache Stampede 방지
 
 ### 이벤트 기반 상품 정보 집계(Kafka)
 
