@@ -761,7 +761,7 @@
     </div>
 
     <div class="problem-solving">
-        <div class="ps-title">인덱스 생성 + 쿼리 튜닝, 조회 성능 개선 (6,800ms → 9.412ms)</div>
+        <div class="ps-title">인덱스 생성 + 쿼리 수정, 조회 성능 개선 (6,800ms → 9.412ms)</div>
 
         <div class="ps-section">
             <span class="ps-label problem">문제</span>
@@ -1036,7 +1036,7 @@
                 </ul>
                 <p><strong>3) Cache Stampede 방지</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>캐시 만료 시 집중적인 조회 트래픽 유입으로 인한 DB 부하 증가를 우려하여 분산 락 기반 stampede 현상 방지</li>
+                    <li>캐시 만료 시 집중적인 조회 트래픽 유입으로 인한 DB 부하 증가를 우려하여 로컬 락 기반 stampede 현상 방지</li>
                     <li>상품 정보 일괄 캐시 만료를 방지하기 위해 Jitter를 활용한 만료 시간 분산</li>
                 </ul>
             </div>
@@ -1048,7 +1048,7 @@
                 <ul>
                     <li>상품 조회 트래픽을 캐시 레이어로 흡수해 DB 부하 감소 및 응답 속도 개선</li>
                     <li>상품 다건 조회 시 상품 ID 캐시 구조로 <strong>단건 상품 데이터 갱신만으로 다건 조회 응답까지 반영</strong>한 효율적 전략 구성</li>
-                    <li>분산 락 + Jitter로 Cache Stampede 방지</li>
+                    <li>로컬 락 + Jitter로 Cache Stampede 방지</li>
                 </ul>
             </div>
         </div>

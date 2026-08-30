@@ -793,7 +793,7 @@
     </div>
 
     <div class="problem-solving">
-        <div class="ps-title">Query Performance Improved via Indexing + Query Tuning (6,800ms → 9.412ms)</div>
+        <div class="ps-title">Query Performance Improved via Indexing + Query Fix (6,800ms → 9.412ms)</div>
 
         <div class="ps-section">
             <span class="ps-label problem">Problem</span>
@@ -1114,7 +1114,7 @@
                 </ul>
                 <p><strong>3) Preventing cache stampede</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>Used a distributed lock to prevent traffic from hitting the DB all at once when expired-cache lookups surge</li>
+                    <li>Used a local lock to prevent traffic from hitting the DB all at once when expired-cache lookups surge</li>
                     <li>Applied jitter when bulk-caching many products to avoid TTLs expiring all at once</li>
                     <li>Flow: miss → wait for lock → re-check cache → query DB</li>
                 </ul>
@@ -1131,7 +1131,7 @@
                 <ul>
                     <li>Absorbed product-lookup traffic at the cache layer, reducing DB load and improving response time</li>
                     <li>The single-item + list-ID two-tier cache lets a <strong>single-item update propagate to list responses</strong>, cutting cache memory usage</li>
-                    <li>Distributed lock + TTL jitter prevent cache stampede; on Redis failure, DB responses ensure service continuity</li>
+                    <li>Local lock + TTL jitter prevent cache stampede; on Redis failure, DB responses ensure service continuity</li>
                 </ul>
             </div>
         </div>
