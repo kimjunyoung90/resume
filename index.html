@@ -639,11 +639,11 @@
                     <img src="https://kimjunyoung90.github.io/resume/images/github-mark.png" class="icon" alt="GitHub" onerror="this.style.display='none'"/>
                     https://github.com/kimjunyoung90
                 </a>
-                <a href="https://snvlqkq.tistory.com/" target="_blank">📝 https://snvlqkq.tistory.com</a>
+                <a href="https://velog.io/@rlawnsdud05" target="_blank">📝 https://velog.io/@rlawnsdud05</a>
             </div>
             <div class="contact-description">
                 <strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/saga-examples/blob/main/choreography/README.md" target="_blank">Kafka를 사용한 이벤트 기반 아키텍처(EDA)</a><br>
-                <strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/54" target="_blank">동시성 처리 전략</a> 및 <a href="https://snvlqkq.tistory.com/57" target="_blank">캐싱 처리 전략</a><br>
+                <strong>Blog:</strong> <a href="https://velog.io/@rlawnsdud05/동시성-전략-경합-빈도만-보면-안-되는-이유" target="_blank">동시성 처리 전략</a> 및 <a href="https://velog.io/@rlawnsdud05/캐싱-간단할-줄-알았다.-그런데" target="_blank">캐싱 처리 전략</a><br>
                 <strong>MCP:</strong> <a href="https://www.npmjs.com/package/elastic-apm-mcp-server" target="_blank">Kibana 연동 MCP 서버</a>
             </div>
         </div>
@@ -654,7 +654,7 @@
         <li>
             <strong>데이터를 기반으로 문제를 분석하고 해결합니다.</strong>
             <div style="margin-top: 8px; color: #718096; line-height: 1.7;">
-                Latency 급증 시 APM 지표와 Thread Dump 분석으로 병목의 원인을 찾아 API의 Latency를 9초에서 350ms로 안정화했습니다.
+                latency 급증 시 APM 지표와 Thread Dump 분석으로 병목의 원인을 찾아 API의 latency를 9초에서 350ms로 안정화했습니다.
             </div>
         </li>
         <li>
@@ -703,12 +703,12 @@
     
     <div class="project-overview">
         <ul>
-            <li><strong>최대 1,200 TPS</strong>, 세금계산서 발행·신고 및 전자문서 플랫폼 운영</li>
+            <li>세금계산서 발행·신고 및 전자문서 플랫폼 운영</li>
         </ul>
     </div>
 
     <div class="problem-solving first-detail">
-        <div class="ps-title">API Latency 9초 → Thread Dump 분석 해결</div>
+        <div class="ps-title">API Latency 개선 9초 → 350ms</div>
 
         <div class="ps-section">
             <span class="ps-label problem">문제</span>
@@ -735,16 +735,18 @@
                     <li>Stack Trace 확인 결과 특정 메서드가 <strong><code>synchronized</code>에 의해 직렬 처리</strong>되고 있음을 발견</li>
                     <li>코드 분석 후 synchronized 제거</li>
                 </ul>
-                <p><strong>3) synchronized 제거에 따른 영향도 분석</strong></p>
+                <p><strong>3) 부하 테스트 수행</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>synchronized 제거 시 병렬 처리로 인한 <strong>DB 부하 증가</strong> 우려</li>
-                    <li><strong>DB CPU</strong>: 평균 10~20%, 최대 60%로 병렬 처리 안전하다고 판단</li>
-                    <li><strong>DB 커넥션</strong>: 현재 커넥션 풀 크기(max 40 × 8대 = 320) 대비 DB 최대 한도(2,205)는 여유</li>
+                    <li>락 제거 후 성능 측정</li>
+                    <li><code>synchronized</code> 유무만 다른 두 버전 비교</li>
+                    <li>AS-IS: 동시 요청 증가시 직렬처리로 인한 TPS 12 고정</li>
+                    <li>TO-BE: 동시성에 비례해 처리량 상승 → TPS 최대 70로 개선</li>
                 </ul>
-                <p><strong>4) 부하 테스트를 통한 개선 효과 검증</strong></p>
+                <p><strong>4) 추가 병목 현상 확인</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>제거 전·후 latency와 TPS를 동일 조건에서 비교</li>
-                    <li>TPS <strong>약 47% 증가</strong></li>
+                    <li>부하 증가시 병목이 애플리케이션에서 DB로 이동 되는 현상 확인</li>
+                    <li>커밋 시 로그 flush와 데이터 파일 반영 과정의 디스크 I/O가 새로운 병목 지점으로 확인</li>
+                    <li>운영 반영 후 모니터링 수행하며 문제 발생 시 추가 개선 과제로 진행</li>
                 </ul>
             </div>
         </div>
@@ -753,8 +755,8 @@
             <span class="ps-label result">성과</span>
             <div class="ps-content">
                 <ul>
-                    <li>월초 피크 구간 병목 현상 제거 및 애플리케이션 처리량 향상</li>
-                    <li>latency 최대 <strong>9초 이상 → 350ms</strong>로 단축</li>
+                    <li>직렬 처리 병목 제거로 단일 인스턴스 처리량 개선 <strong>TPS 12 → 70</strong></li>
+                    <li>운영 반영 후 월초 latency <strong>9초 → 350ms</strong> 안정화</li>
                 </ul>
             </div>
         </div>
