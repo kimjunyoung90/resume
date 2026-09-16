@@ -8,9 +8,9 @@
 		<p>
 			✉️ wnsdud1900427@gmail.com<br>
 			<img src="https://kimjunyoung90.github.io/resume/images/github-mark.png" width="16" style="vertical-align: middle;"/> <a href="https://github.com/kimjunyoung90">https://github.com/kimjunyoung90</a><br>
-			📝 <a href="https://snvlqkq.tistory.com">https://snvlqkq.tistory.com</a><br><br>
+			📝 <a href="https://velog.io/@rlawnsdud05">https://velog.io/@rlawnsdud05</a><br><br>
 			<strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/saga-examples/blob/main/choreography/README.md">Kafka를 사용한 이벤트 기반 아키텍처(EDA)</a><br>
-			<strong>Blog:</strong> <a href="https://snvlqkq.tistory.com/54">동시성 처리 전략</a> 및 <a href="https://snvlqkq.tistory.com/57">캐싱 처리 전략</a><br>
+			<strong>Blog:</strong> <a href="https://velog.io/@rlawnsdud05/동시성-전략-경합-빈도만-보면-안-되는-이유">동시성 처리 전략</a> 및 <a href="https://velog.io/@rlawnsdud05/캐싱-간단할-줄-알았다.-그런데">캐싱 처리 전략</a><br>
 			<strong>MCP:</strong> <a href="https://www.npmjs.com/package/elastic-apm-mcp-server">Kibana 연동 MCP 서버</a>
 		</p>
 	</div>
@@ -20,7 +20,7 @@
 
 - **데이터를 기반으로 문제를 분석하고 해결합니다.**
 
-    Latency 급증 시 APM 지표와 Thread Dump 분석으로 병목의 원인을 찾아 API의 Latency를 9초에서 350ms로 안정화했습니다.
+    latency 급증 시 APM 지표와 Thread Dump 분석으로 병목의 원인을 찾아 API의 latency를 9초에서 350ms로 안정화했습니다.
 
 - **AI 도구를 적극 활용해 개발 생산성을 높입니다.**
 
@@ -66,9 +66,9 @@
 
 ## 전자세금계산서 서비스 운영 및 유지보수 (2021.09 ~ 현재)
 
-- **최대 1,200 TPS**, 세금계산서 발행·신고 및 전자문서 플랫폼 운영
+- 세금계산서 발행·신고 및 전자문서 플랫폼 운영
 
-### API Latency 9초 -> Thread Dump 분석 해결
+### API Latency 개선 9초 -> 350ms
 
 #### 문제
 - 월 초(1~10일) 전체 트래픽 40% 집중되는 패턴
@@ -85,18 +85,20 @@
 - Stack Trace 확인 결과 특정 메서드가 **`synchronized`에 의해 직렬 처리**되고 있음을 발견
 - 코드 분석 후 synchronized 제거
 
-**3) synchronized 제거에 따른 영향도 분석**
-- synchronized 제거 시 병렬 처리로 인한 **DB 부하 증가** 우려
-- **DB CPU**: 평균 10~20%, 최대 60%로 병렬 처리 안전하다고 판단
-- **DB 커넥션**: 현재 커넥션 풀 크기(max 40 × 8대 = 320) 대비 DB 최대 한도(2,205)는 여유
+**3) 부하 테스트 수행**
+- 락 제거 후 성능 측정
+- `synchronized` 유무만 다른 두 버전 비교
+- AS-IS: 동시 요청 증가시 직렬처리로 인한 TPS 12 고정
+- TO-BE: 동시성에 비례해 처리량 상승 -> TPS 최대 70로 개선
 
-**4) 부하 테스트를 통한 개선 효과 검증**
-- 제거 전·후 latency와 TPS를 동일 조건에서 비교
-- TPS **약 47% 증가**
+**4) 추가 병목 현상 확인**
+- 부하 증가시 병목이 애플리케이션에서 DB로 이동 되는 현상 확인
+- 커밋 시 로그 flush와 데이터 파일 반영 과정의 디스크 I/O가 새로운 병목 지점으로 확인
+- 운영 반영 후 모니터링 수행하며 문제 발생 시 추가 개선 과제로 진행
 
 #### 성과
-- 월초 피크 구간 병목 현상 제거 및 애플리케이션 처리량 향상
-- latency 최대 **9초 이상 → 350ms**로 단축
+- 직렬 처리 병목 제거로 단일 인스턴스 처리량 개선 **TPS 12 → 70**
+- 운영 반영 후 월초 latency **9초 → 350ms** 안정화
 
 ### 인덱스 생성 + 쿼리 수정, 조회 성능 개선 (6,800ms → 9.412ms)
 
