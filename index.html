@@ -836,15 +836,15 @@
     </div>
 
     <div class="problem-solving">
-        <div class="ps-title">MSA 보상 트랜잭션 실패 후속 프로세스 구축</div>
+        <div class="ps-title">보상 트랜잭션 재처리 프로세스 구축</div>
 
         <div class="ps-section">
             <span class="ps-label problem">문제</span>
             <div class="ps-content">
                 <ul>
-                    <li>포인트 차감 → 세금계산서 발행 → 포인트 차감 취소 프로세스</li>
-                    <li>세금계산서 발행 실패 시 포인트가 취소되지 않는 문제 발생</li>
-                    <li>보상 트랜잭션(포인트 차감 취소) 실패 후 데이터 정합성을 회복할 메커니즘 부재</li>
+                    <li>포인트 차감 → 세금계산서 발행 → (발행 실패 시) 포인트 차감 취소 프로세스</li>
+                    <li>네트워크 오류, 포인트 시스템 문제로 보상 트랜잭션(포인트 차감 취소) 실패 케이스 존재</li>
+                    <li>포인트만 차감되고 문서는 발행되지 않은 채 남으며, 이를 회복할 메커니즘 부재</li>
                 </ul>
             </div>
         </div>
@@ -852,20 +852,25 @@
         <div class="ps-section">
             <span class="ps-label solution">해결 과정</span>
             <div class="ps-content">
-                <p><strong>1) 실패 이력 영속화</strong></p>
+                <p><strong>1) 보상 트랜잭션 결과 케이스 분석</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li><strong>보상 트랜잭션 실패 이력</strong>을 저장하는 전용 테이블 생성</li>
-                    <li>문서 번호, 재처리 상태, 재처리 횟수, 사용자 고유 번호로 구성</li>
-                    <li>보상 트랜잭션 실패 시 실패 이력 적재</li>
+                    <li>보상 트랜잭션 결과를 성공 / 실패 / 응답 미수신으로 구분</li>
+                    <li>실패와 응답 미수신은 포인트가 차감된 채 남아 있을 수 있어 재처리 대상으로 분류</li>
                 </ul>
 
-                <p><strong>2) 자동 재처리 구현</strong></p>
+                <p><strong>2) 보상 결과 영속화</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>스케줄러로 미처리 실패건을 주기적으로 조회해 환불 API 재호출</li>
+                    <li>보상 트랜잭션 실패·응답 미수신 건을 관리하는 테이블 생성</li>
+                    <li>취소 호출에 필요한 식별 정보, 재처리 상태, 재처리 횟수, 사용자 고유 번호로 구성</li>
+                </ul>
+
+                <p><strong>3) 자동 재처리 구현</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>스케줄러로 미처리 건을 인입 시간 순으로 조회해 취소 API 재호출</li>
                     <li>성공 시 <code>SUCCESS</code>, 실패 시 재시도 횟수 증가</li>
                 </ul>
 
-                <p><strong>3) 최종 실패 대응</strong></p>
+                <p><strong>4) 최종 실패 대응</strong></p>
                 <ul style="margin-left: 20px;">
                     <li>최대 재시도 횟수 초과 시 <code>FAIL</code> 처리</li>
                     <li>자사 메신저 알림 발송 및 백오피스 수동 복구 기능 제공</li>
@@ -877,8 +882,8 @@
             <span class="ps-label result">성과</span>
             <div class="ps-content">
                 <ul>
-                    <li>보상 실패 사전 인지·대응 신속화</li>
-                    <li>수동 데이터 보정 업무 최소화</li>
+                    <li>시스템이 보상 실패를 자동으로 인지하고 재처리하는 프로세스 구축</li>
+                    <li>고객 불편 감소 및 수동 복구 업무 감소</li>
                 </ul>
             </div>
         </div>
