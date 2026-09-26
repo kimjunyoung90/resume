@@ -1,6 +1,6 @@
 
 # 김준영 경력기술서
-**5년차 풀스택 개발자**
+**6년차 풀스택 개발자**
 
 <div style="display: flex; align-items: flex-start; gap: 30px; margin-top: 20px;">
 	<div style="flex: 1;">
@@ -52,7 +52,7 @@
 
 # Work Experience
 
-## 더존비즈온 WEHAGO 개발센터 (5년차)
+## 더존비즈온 WEHAGO 개발센터 (6년차)
 
 **2021.09 ~ 재직중**
 
