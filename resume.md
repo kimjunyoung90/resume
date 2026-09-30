@@ -10,8 +10,7 @@
 			<img src="https://kimjunyoung90.github.io/resume/images/github-mark.png" width="16" style="vertical-align: middle;"/> <a href="https://github.com/kimjunyoung90">https://github.com/kimjunyoung90</a><br>
 			📝 <a href="https://velog.io/@rlawnsdud05">https://velog.io/@rlawnsdud05</a><br><br>
 			<strong>GitHub:</strong> <a href="https://github.com/kimjunyoung90/saga-examples/blob/main/choreography/README.md">Kafka를 사용한 이벤트 기반 아키텍처(EDA)</a><br>
-			<strong>Blog:</strong> <a href="https://velog.io/@rlawnsdud05/동시성-전략-경합-빈도만-보면-안-되는-이유">동시성 처리 전략</a> 및 <a href="https://velog.io/@rlawnsdud05/캐싱-간단할-줄-알았다.-그런데">캐싱 처리 전략</a><br>
-			<strong>MCP:</strong> <a href="https://www.npmjs.com/package/elastic-apm-mcp-server">Kibana 연동 MCP 서버</a>
+			<strong>Blog:</strong> <a href="https://velog.io/@rlawnsdud05/동시성-전략-경합-빈도만-보면-안-되는-이유">동시성 처리 전략</a> 및 <a href="https://velog.io/@rlawnsdud05/캐싱-간단할-줄-알았다.-그런데">캐싱 처리 전략</a>
 		</p>
 	</div>
 </div>
@@ -22,14 +21,9 @@
 
     latency 급증 시 APM 지표와 Thread Dump 분석으로 병목의 원인을 찾아 API의 latency를 9초에서 350ms로 안정화했습니다.
 
-- **AI 도구를 활용해 개발 생산성을 높입니다.**
+- **함께하는 성장을 지향합니다.**
 
-    개발·QA·퍼블리셔 대상 사내 Claude 교육을 진행하고[교육자료|https://kimjunyoung90.github.io/resume/claude-education.html], AI 활용을 확산하고 있습니다. 모니터링 지표를 자연어로 조회하는 [MCP 서버|https://www.npmjs.com/package/elastic-apm-mcp-server]를 개발해, 모니터링 과정을 간소화하고 운영 효율을 높였습니다.
-
-- **조직의 동반 성장에 기여합니다.**
-
-    개인의 성장이 아닌 조직 전체의 성장에 기여합니다.
-	모니터링 지표 의미, 구성요소, 동작 방식, 트랜잭션 분석 과정 등을 정리한 모니터링 가이드 문서를 작성하고 공유하여 시스템 운영 온보딩 비용을 줄였습니다.
+    빠르게 발전하는 AI 속에서 어려움을 겪는 동료들을 보고, 직접 공부하며 정리한 내용을 팀에 공유했습니다. 이후 개발·QA·퍼블리셔 30여 명 대상 교육으로 확장되어, 더 많은 동료들이 AI 개념을 잡는 데 도움을 줄 수 있었습니다[교육자료|https://kimjunyoung90.github.io/resume/claude-education.html].
 
 ---
 
@@ -206,18 +200,6 @@
 #### 성과
 - 발행 동시 요청 상황에서도 **중복 차감 이슈 없이 안정적으로 처리**
 - **Optimistic Lock 기반**의 효율적 동시성 제어 적용
-
----
-
-## AI 도구 개발 및 활용
-
-- APM 데이터(서비스·트랜잭션·에러·자원)를 자연어로 조회하는 MCP 서버 개발
-
-### 모니터링 연동 MCP 서버 개발
-  - LLM <-> MCP 서버 <-> Kibana API 구조
-  - Latency·TPS·에러·CPU/메모리 조회 도구 제공
-  - 기간별 지표 비교 기능 제공(예: 지난주 대비 현재 트래픽, Latency 비교해줘)
-  - POST 기능 차단으로 보안 위험성 제거(단순 GET 기능 제공)
 
 ---
 
