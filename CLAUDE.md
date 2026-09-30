@@ -5,9 +5,7 @@
 ## 명령어
 
 ```bash
-npm install          # gh-pages 의존성 설치 (최초 1회)
 npx serve .          # index.html 로컬 미리보기 서버 실행
-npm run deploy       # GitHub Pages 배포 (루트 디렉토리를 gh-pages 브랜치에 푸시)
 ```
 
 별도 빌드 단계 없음 — `index.html`을 브라우저에서 직접 열거나 `npx serve .`로 확인.
@@ -30,10 +28,6 @@ npm run deploy       # GitHub Pages 배포 (루트 디렉토리를 gh-pages 브�
 - CSS 클래스명은 하이픈으로 구분된 소문자: `.contact-section`, `.project-period`, `.ps-label`
 - `@media print` 블록은 PDF/A4 페이지 나누기를 제어 — 레이아웃 깨짐 방지를 위해 신중하게 수정
 - 이미지 파일명은 소문자 + 하이픈으로 `images/` 하위에 저장
-
-## 배포
-
-`npm run deploy`는 `gh-pages -d .`를 실행하여 루트 디렉토리 전체(`.git` 제외)를 `gh-pages` 브랜치에 푸시합니다. 배포 후 `https://kimjunyoung90.github.io/resume/`에서 결과를 확인합니다.
 
 ## 트러블슈팅 작성 형식
 
