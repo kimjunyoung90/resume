@@ -17,9 +17,9 @@
 
 # My Working Style
 
-- **데이터를 기반으로 문제를 분석하고 해결합니다.**
+- **데이터와 수치를 기반으로 문제를 끝까지 분석하고 추적하여 해결합니다.**
 
-    latency 급증 시 APM 지표와 Thread Dump 분석으로 병목의 원인을 찾아 API의 latency를 9초에서 350ms로 안정화했습니다.
+    APM 지표에서 지연의 90% 이상이 애플리케이션 내부에서 발생함을 확인하고, Thread Dump에서 BLOCKED 스레드를 추적해 synchronized 메서드에서 요청이 직렬로 대기하고 있음을 발견했습니다. synchronized를 제거해 API latency를 9초에서 350ms로 안정화했습니다.
 
 - **함께하는 성장을 지향합니다.**
 
