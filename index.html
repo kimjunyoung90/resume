@@ -944,8 +944,8 @@
             <div class="ps-content">
                 <ul>
                     <li>서비스 출시 프로모션으로 회사별 채권 무료 발행 쿠폰 제공</li>
-                    <li>쿠폰은 회사 단위로 발급되고, 소속 직원이 동일한 쿠폰을 함께 사용할 수 있는 구조</li>
-                    <li>쿠폰 사용 시 SELECT 후 UPDATE로 인한 동시성 문제 발생</li>
+                    <li>쿠폰은 회사 단위로 발급되고, 소속 직원이 같은 쿠폰의 잔여 건수를 함께 차감하는 구조</li>
+                    <li>잔여 건수를 SELECT로 읽고 애플리케이션에서 계산한 값을 UPDATE하는 방식이라, 동시 요청이 같은 잔여 값을 읽고 덮어쓰면 차감이 누락되어 쿠폰이 초과 사용될 수 있는 구조</li>
                 </ul>
             </div>
         </div>
@@ -953,21 +953,23 @@
         <div class="ps-section">
             <span class="ps-label solution">해결 과정</span>
             <div class="ps-content">
-                <p><strong>1) 동시성 문제 재현 및 분석</strong></p>
+                <p><strong>1) 동시성 문제 재현 및 원인 분석</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li><strong>ExecutorService, CountDownLatch 기반 동시성 이슈</strong> 재현</li>
-                    <li>Race Condition에 따른 중복 차감 발생 확인</li>
+                    <li><strong>ExecutorService, CountDownLatch</strong>로 동시 요청 테스트를 작성해 차감 누락(Lost Update) 재현</li>
+                    <li>원인은 읽기·계산·쓰기가 분리되어 그 사이에 다른 요청이 끼어드는 것으로 판단</li>
                 </ul>
-                <p><strong>2) Optimistic Lock 적용</strong></p>
+                <p><strong>2) 원자적 업데이트 적용</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>회사별 채권 발행 담당자가 소수이며 초기 서비스로 사용자가 적어 <strong>경합 빈도가 낮은 환경</strong>으로 판단</li>
-                    <li>락을 잡지 않고 충돌 시 재시도하는 <strong>Optimistic Lock</strong>을 선택</li>
+                    <li>차감 규칙이 "잔여 건수가 남아 있으면 1 감소" 하나뿐이라 쿼리 한 문장으로 표현할 수 있다고 판단</li>
+                    <li><code>UPDATE ... SET 잔여 = 잔여 - 1 WHERE 회사 = ? AND 잔여 &gt; 0</code>으로 읽기·계산·쓰기를 하나의 쿼리로 통합</li>
+                    <li>UPDATE 시 DB가 대상 행에 배타 락을 걸고 WHERE 조건 평가와 갱신을 락 안에서 수행하므로, 동시 요청이 행 단위로 직렬화됨</li>
+                    <li>영향 행 수가 0이면 쿠폰 소진으로 처리해 잔여 건수가 음수로 내려가지 않도록 보장</li>
                 </ul>
-                <p><strong>3) 재시도 + 트랜잭션 설계</strong></p>
+                <p><strong>3) 락 전략 비교</strong></p>
                 <ul style="margin-left: 20px;">
-                    <li>재시도 포함 <strong>하나의 트랜잭션</strong>으로 구성하여 원자성 보장</li>
-                    <li>트랜잭션 내부에서 버전 충돌 예외 발생 시 트랜잭션이 롤백되어 재시도 자체가 무의미해지는 문제 존재</li>
-                    <li><strong>noRollbackFor</strong> 속성으로 버전 충돌 예외 시 롤백을 방지하여 재시도가 정상 동작하도록 구현</li>
+                    <li>낙관적 락은 version 관리와 충돌 시 재시도 로직이, 비관적 락은 별도의 잠금 조회(SELECT FOR UPDATE)가 추가로 필요</li>
+                    <li>잔여 값을 애플리케이션에서 판단할 필요가 없어 <strong>DB의 행 락만으로 정합성을 보장할 수 있으므로</strong> 원자적 업데이트를 선택</li>
+                    <li>원자적 업데이트는 변경 이력을 남기지 않는 한계가 있으나, 쿠폰 사용 이력은 사용 건마다 누적 기록되어 별도로 추적 가능함을 확인</li>
                 </ul>
             </div>
         </div>
@@ -976,8 +978,9 @@
             <span class="ps-label result">성과</span>
             <div class="ps-content">
                 <ul>
-                    <li>발행 동시 요청 상황에서도 <strong>중복 차감 이슈 없이 안정적으로 처리</strong></li>
-                    <li><strong>Optimistic Lock 기반</strong>의 효율적 동시성 제어 적용</li>
+                    <li>동일한 동시 요청 테스트에서 <strong>차감 누락 없이 요청 수만큼 정확히 차감</strong></li>
+                    <li>WHERE 조건으로 <strong>잔여 건수 초과 사용 차단</strong></li>
+                    <li>version 컬럼·재시도 로직 없이 <strong>쿼리 한 문장으로 동시성 제어</strong></li>
                 </ul>
             </div>
         </div>
