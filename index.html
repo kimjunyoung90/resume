@@ -869,6 +869,42 @@
     </div>
 
     <div class="problem-solving">
+        <div class="ps-title">쿠폰 사용 동시성 제어</div>
+
+        <div class="ps-section">
+            <span class="ps-label problem">문제</span>
+            <div class="ps-content">
+                <ul>
+                    <li>채권 서비스 출시 프로모션으로 회사별 무료 쿠폰 제공</li>
+                    <li>쿠폰은 회사 단위로 발급되고, 여러 직원이 쿠폰을 함께 사용하는 구조</li>
+                    <li>쿠폰에 사용 횟수를 저장하는 횟수형 쿠폰이었고, 횟수를 SELECT 후 UPDATE로 차감하는 구문에서 쿠폰 초과 사용이 우려되는 구조</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label solution">해결 과정</span>
+            <div class="ps-content">
+                <p><strong>1) 원자적 UPDATE로 개선</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>기존 이력은 차감 전 잔여 건수를 기록해 조회가 필요한 구조였으나, 사용 건수만 적재해도 이력 요구사항을 충족한다고 판단해 이력 구조를 변경</li>
+                    <li>잔여 횟수 확인(<code>잔여 &gt; 0</code>)을 WHERE 조건절로 옮겨 차감과 한 문장으로 합치고, 확인과 차감 사이 다른 트랜잭션 개입 방지</li>
+                    <li>영향 행이 0건일 때만 상태를 조회해 케이스(만료·소진·없음)별 응답</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ps-section">
+            <span class="ps-label result">성과</span>
+            <div class="ps-content">
+                <ul>
+                    <li>확인과 차감을 <strong>단일 쿼리</strong>로 합쳐, 동시 요청에서도 <strong>쿠폰 초과 사용</strong> 차단</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-solving">
         <div class="ps-title">인덱스 생성 + 쿼리 수정, 조회 성능 개선 (6,800ms → 9.412ms)</div>
 
         <div class="ps-section">
@@ -932,53 +968,6 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="problem-solving">
-        <div class="ps-title">쿠폰 사용 동시성 제어</div>
-
-        <div class="ps-section">
-            <span class="ps-label problem">문제</span>
-            <div class="ps-content">
-                <ul>
-                    <li>서비스 출시 프로모션으로 회사별 채권 무료 발행 쿠폰 제공</li>
-                    <li>쿠폰은 회사 단위로 발급되고, 소속 직원이 동일한 쿠폰을 함께 사용할 수 있는 구조</li>
-                    <li>쿠폰 사용 시 SELECT 후 UPDATE로 인한 동시성 문제 발생</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="ps-section">
-            <span class="ps-label solution">해결 과정</span>
-            <div class="ps-content">
-                <p><strong>1) 동시성 문제 재현 및 분석</strong></p>
-                <ul style="margin-left: 20px;">
-                    <li><strong>ExecutorService, CountDownLatch 기반 동시성 이슈</strong> 재현</li>
-                    <li>Race Condition에 따른 중복 차감 발생 확인</li>
-                </ul>
-                <p><strong>2) Optimistic Lock 적용</strong></p>
-                <ul style="margin-left: 20px;">
-                    <li>회사별 채권 발행 담당자가 소수이며 초기 서비스로 사용자가 적어 <strong>경합 빈도가 낮은 환경</strong>으로 판단</li>
-                    <li>락을 잡지 않고 충돌 시 재시도하는 <strong>Optimistic Lock</strong>을 선택</li>
-                </ul>
-                <p><strong>3) 재시도 + 트랜잭션 설계</strong></p>
-                <ul style="margin-left: 20px;">
-                    <li>재시도 포함 <strong>하나의 트랜잭션</strong>으로 구성하여 원자성 보장</li>
-                    <li>트랜잭션 내부에서 버전 충돌 예외 발생 시 트랜잭션이 롤백되어 재시도 자체가 무의미해지는 문제 존재</li>
-                    <li><strong>noRollbackFor</strong> 속성으로 버전 충돌 예외 시 롤백을 방지하여 재시도가 정상 동작하도록 구현</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="ps-section">
-            <span class="ps-label result">성과</span>
-            <div class="ps-content">
-                <ul>
-                    <li>발행 동시 요청 상황에서도 <strong>중복 차감 이슈 없이 안정적으로 처리</strong></li>
-                    <li><strong>Optimistic Lock 기반</strong>의 효율적 동시성 제어 적용</li>
-                </ul>
             </div>
         </div>
     </div>
