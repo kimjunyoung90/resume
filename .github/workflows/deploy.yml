@@ -18,3 +18,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
           exclude_assets: '.github,node_modules,package.json,package-lock.json,.gitignore'
+          # 배포 커밋이 내 잔디에 잡히지 않도록 봇 계정으로 커밋하고, 이력은 남기지 않음
+          user_name: 'github-actions[bot]'
+          user_email: '41898282+github-actions[bot]@users.noreply.github.com'
+          force_orphan: true
