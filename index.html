@@ -658,7 +658,7 @@
         <li>
             <strong>데이터와 수치를 기반으로 문제를 끝까지 분석하고 추적하여 해결합니다.</strong>
             <div style="margin-top: 8px; color: #718096; line-height: 1.7;">
-                APM 지표에서 지연의 90% 이상이 애플리케이션 내부에서 발생함을 확인하고, Thread Dump에서 BLOCKED 스레드를 추적해 synchronized 메서드에서 요청이 직렬로 대기하고 있음을 발견했습니다. synchronized를 제거해 API latency를 9초에서 350ms로 안정화했습니다.
+                APM부터 Thread Dump까지 분석해 synchronized 메서드에서 요청이 직렬로 대기하는 병목을 찾아 제거하여 latency를 9초에서 350ms로 안정화했습니다.
             </div>
         </li>
         <li>
