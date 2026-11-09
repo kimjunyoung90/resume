@@ -1,0 +1,36 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.command' | grep -q 'git push' && cd /Users/snvlqkq/resume && npm run deploy 2>/dev/null || true",
+            "timeout": 60,
+            "statusMessage": "GitHub Pages 배포 중..."
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "mcp__sequential-thinking__sequentialthinking",
+      "Bash(git -C /Users/snvlqkq/resume-1 log --oneline -10)",
+      "Bash(brew install:*)",
+      "Bash(pandoc:*)",
+      "Bash(/opt/homebrew/bin/pandoc index.html -o 김준영_이력서.docx)",
+      "Bash(git -C /Users/snvlqkq/resume diff resume.md)",
+      "Bash(git -C /Users/snvlqkq/resume diff --cached resume.md)",
+      "Bash(git -C /Users/snvlqkq/resume diff index.html)",
+      "mcp__mcp-obsidian__obsidian_list_files_in_dir",
+      "mcp__mcp-obsidian__obsidian_get_file_contents",
+      "WebSearch",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
